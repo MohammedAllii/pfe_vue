@@ -175,36 +175,13 @@ export default {
     this.allCv();
   },
   methods: {
-    updateProfile() {
-      this.$store
-        .dispatch("updateUserProfileAction", {
-          name: this.user.name,
-          email: this.user.email,
-        })
-        .then((res) => {
-          console.log(res);
-          console.log("profile was update");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
     async allCv() {
       axios
-        .get("http://localhost:8000/api/auth/allCv/" + this.user.id)
+        .get("http://localhost:8000/api/auth/relevantjobs")
         .then((response) => {
           this.cvs = response.data;
           console.log(response.data);
         });
-    },
-    go(id) {
-      axios
-        .get("http://localhost:8000/api/auth/affichecv/" + id)
-        .then((response) => {
-          this.cvs = response.data;
-          console.log(response.data);
-        });
-      this.$router.push("/affiche");
     },
   },
 };

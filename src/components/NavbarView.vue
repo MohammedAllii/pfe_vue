@@ -1,7 +1,9 @@
 <template>
   <v-toolbar dense app color="transparent">
     <v-toolbar-title class="text-uppercase-title"
-      ><router-link to="/">CATCH IT </router-link>
+      ><router-link to="/"
+        ><img src="../favicon.ico" style="width: 130px; height: 75px" />
+      </router-link>
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-li class="nav-item" v-if="loggedIn">

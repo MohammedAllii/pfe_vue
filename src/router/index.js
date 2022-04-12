@@ -11,6 +11,7 @@ import PostuleCv from "../views/PostuleCv";
 import HomeView from "../views/Home/HomeView";
 import InternshipsView from "../views/Home/InternshipsView";
 import FullTimeView from "../views/Home/FullTimeView";
+import RemoteWorkView from "../views/Home/RemoteWorkView";
 
 const routes = [
   {
@@ -82,6 +83,14 @@ const routes = [
     path: "/fulltime",
     name: "fulltime",
     component: FullTimeView,
+    meta: {
+      secure: true,
+    },
+  },
+  {
+    path: "/remotework",
+    name: "remotework",
+    component: RemoteWorkView,
     meta: {
       secure: true,
     },

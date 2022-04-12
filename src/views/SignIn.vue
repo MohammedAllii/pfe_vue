@@ -12,14 +12,12 @@
         <form style="max-width: 450px; margin: auto">
           <h2>Sign IN Catch IT</h2>
           <div class="input-icons">
-            <i class="fa fa-user icon"> </i>
+            <i class="fa fa-envelope icon"> </i>
             <input
               class="input-field"
-              type="text"
+              type="email"
               placeholder="Email"
               v-model="email"
-              :rules="emailrules"
-              required
             />
           </div>
           <div class="input-icons">
