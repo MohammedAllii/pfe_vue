@@ -16,7 +16,7 @@
             <input
               class="input-field"
               type="text"
-              placeholder="Full Name"
+              placeholder="Candidate Name"
               v-model="name"
             />
           </div>
@@ -42,21 +42,6 @@
           <div class="input-icons">
             <input class="input-field" type="hidden" v-model="role" />
           </div>
-          <div class="input-field">
-            <input class="input-field" type="date" v-model="date_naissance" />
-          </div>
-          <div class="input-field">
-            <v-select
-              class="form-control"
-              aria-label="Default select example"
-              v-model="civilite"
-            >
-              <option selected>Sélectionnez Civilité</option>
-              <option>Mr</option>
-              <option>Mme</option>
-              <option>Mlle</option>
-            </v-select>
-          </div>
 
           <v-spacer></v-spacer>
           <v-hover>
@@ -75,27 +60,13 @@
             Have an account!
             <router-link to="/SignIn" style="color: green">SignIn</router-link>
           </p>
-          <div align="center" justify="center">
-            <v-btn style="width: 350px; border-radius: 30px" color="white "
-              ><v-icon color="blue">mdi-facebook</v-icon> Facebook</v-btn
-            >
-            <br />
-            <br />
-            <v-btn style="width: 350px; border-radius: 30px" color="white"
-              ><v-icon color="red">mdi-google</v-icon> Google</v-btn
-            >
-            <br />
-            <br />
-            <v-btn style="width: 350px; border-radius: 30px" color="white"
-              ><v-icon color="black">mdi-github</v-icon> Github</v-btn
-            >
-          </div>
         </form>
       </center>
     </div>
   </v-container>
   <footer-view />
 </template>
+
 <script>
 import NavbarView from "@/components/NavbarView.vue";
 import FooterView from "@/components/FooterView.vue";
@@ -108,8 +79,6 @@ export default {
       email: "",
       password: "",
       role: "user",
-      civilite: "",
-      date_naissance: "",
       error: "",
       isLoading: false,
     };
@@ -123,14 +92,12 @@ export default {
           email: this.email,
           password: this.password,
           role: this.role,
-          civilite: this.civilite,
-          date_naissance: this.date_naissance,
         })
         .then((res) => {
           console.log(res);
           this.isLoading = false;
 
-          this.$router.push("/DashbordView");
+          this.$router.push("/");
         })
         .catch((err) => {
           this.isLoading = false;

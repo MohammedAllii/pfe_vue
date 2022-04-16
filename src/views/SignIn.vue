@@ -30,6 +30,7 @@
               required
             />
           </div>
+          <div style="color: red" v-if="error">{{ error }}</div>
           <v-spacer></v-spacer>
           <v-hover>
             <v-btn
@@ -92,9 +93,9 @@ export default {
           console.log(res);
           this.isLoading = false;
           if (res.data.user.role == "user") {
-            this.$router.push("/CandidateView");
+            this.$router.push("/");
           } else {
-            this.$router.push("/CompanyView");
+            this.$router.push("/");
           }
         })
         .catch((err) => {

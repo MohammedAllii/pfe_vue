@@ -31,10 +31,10 @@
   <v-container>
     <div>
       <v-tabs fixed-tabs background-color="#F5F5F5" dark>
-        <v-tab to="/"> Relevant Jobs </v-tab>
-        <v-tab to="/internships"> internships </v-tab>
-        <v-tab to="/fulltime"> Full time WORK </v-tab>
-        <v-tab to="remotework"> Remote work </v-tab>
+        <v-tab @click.prevent="allCv"> Relevant Jobs </v-tab>
+        <v-tab @click.prevent="internships"> internships </v-tab>
+        <v-tab @click.prevent="fulltime"> Full time WORK </v-tab>
+        <v-tab @click.prevent="remotework"> Remote work </v-tab>
       </v-tabs>
     </div>
     <br />
@@ -63,8 +63,9 @@
           <v-icon> {{ cv.name }} </v-icon>
         </v-avatar>
         <p>{{ cv.email }}</p>
+        <p>{{ cv.localite }}</p>
         <v-btn flat rounded color="#F4FF81" style="margin-right: 20px">
-          CHECK THIS!
+          {{ cv.poste }}
         </v-btn>
       </v-col>
     </v-row>
@@ -84,16 +85,10 @@
     <h4 class="text-center">We take care of everything</h4>
     <br /><br />
     <v-row>
-      <v-col
-        v-for="about in abouts"
-        :key="about.icon"
-        class="text-center"
-        xs="4"
-        md="4"
-      >
-        <v-icon class="text-center" color="#F4FF81">{{ about.icon }}</v-icon>
-        <h5 class="text-center">{{ about.title }}</h5>
-        <p>{{ about.text }}</p>
+      <v-col class="text-center" xs="4" md="4">
+        <v-icon class="text-center" color="#F4FF81">nonnnnnnn </v-icon>
+        <h5 class="text-center">farahhhhhhh</h5>
+        <p>Weslatiiiiiii</p>
       </v-col>
     </v-row>
   </v-container>
@@ -135,18 +130,10 @@
       <br />
       <br />
       <v-row>
-        <v-col
-          v-for="offer in Offers"
-          :key="offer.icon"
-          class="text-center"
-          xs="4"
-          md="3"
-        >
-          <v-icon class="text-center" style="color: yellow">{{
-            offer.icon
-          }}</v-icon>
-          <h5 class="text-center" style="color: black">{{ offer.title }}</h5>
-          <p style="color: black">{{ offer.des }}</p>
+        <v-col class="text-center" xs="4" md="3">
+          <v-icon class="text-center" style="color: yellow">ouiiiiiiiii</v-icon>
+          <h5 class="text-center" style="color: black">hamoudaaaaa</h5>
+          <p style="color: black">mejriiiiiiiiiii</p>
         </v-col>
       </v-row>
     </v-container>
@@ -180,7 +167,6 @@ export default {
         .get("http://localhost:8000/api/auth/allCv/" + this.user.id)
         .then((response) => {
           this.cvs = response.data;
-          console.log(response.data);
         });
     },
   },

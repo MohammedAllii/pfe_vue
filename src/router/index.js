@@ -9,15 +9,18 @@ import DashbordView from "@/views/Admin/DashbordView.vue";
 import GestionUser from "@/views/Admin/GestionUser";
 import PostuleCv from "../views/PostuleCv";
 import HomeView from "../views/Home/HomeView";
-import InternshipsView from "../views/Home/InternshipsView";
-import FullTimeView from "../views/Home/FullTimeView";
-import RemoteWorkView from "../views/Home/RemoteWorkView";
-
+import CVView from "../views/CVView";
+import Exemple from "../views/ExempleView";
+import ProfilCandidat from "../views/ProfilCandidat";
+import store from "@/store";
 const routes = [
   {
     path: "/SignUp",
     name: "SignUP",
     component: SignUp,
+    meta: {
+      guest: true,
+    },
   },
   {
     path: "/CandidateView",
@@ -25,6 +28,14 @@ const routes = [
     component: CandidateView,
     meta: {
       guest: true,
+    },
+  },
+  {
+    path: "/cvview/:id?",
+    name: "cvview",
+    component: CVView,
+    meta: {
+      secure: true,
     },
   },
   {
@@ -59,41 +70,30 @@ const routes = [
     component: GestionUser,
   },
   {
+    path: "/example",
+    name: "example",
+    component: Exemple,
+  },
+  {
+    path: "/profilcandidat/:id?",
+    name: "profilcandidat",
+    component: ProfilCandidat,
+    meta: {
+      secure: true,
+    },
+  },
+  {
     path: "/PostuleCv",
     name: "PostuleCv",
     component: PostuleCv,
+    meta: {
+      secure: true,
+    },
   },
   {
     path: "/",
     name: "HomeView",
     component: HomeView,
-    meta: {
-      secure: true,
-    },
-  },
-  {
-    path: "/internships",
-    name: "internships",
-    component: InternshipsView,
-    meta: {
-      secure: true,
-    },
-  },
-  {
-    path: "/fulltime",
-    name: "fulltime",
-    component: FullTimeView,
-    meta: {
-      secure: true,
-    },
-  },
-  {
-    path: "/remotework",
-    name: "remotework",
-    component: RemoteWorkView,
-    meta: {
-      secure: true,
-    },
   },
 ];
 
@@ -101,5 +101,28 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
-
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.secure)) {
+    // if no token
+    if (!store.state.loggedIn) {
+      //console.log("no token");
+      next({
+        path: "/SignIn",
+      });
+    } else {
+      next();
+    }
+  } else if (to.matched.some((record) => record.meta.guest)) {
+    if (!store.state.loggedIn) {
+      next();
+    } else {
+      //console.log("no token");
+      next({
+        path: "/",
+      });
+    }
+  } else {
+    next();
+  }
+});
 export default router;

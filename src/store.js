@@ -5,6 +5,7 @@ import axios from "axios";
 const store = createStore({
   state: {
     loggedIn: false,
+    loggedCompany: false,
     user: null,
     token: null,
   },
@@ -18,6 +19,9 @@ const store = createStore({
     },
     SET_loggedIn(state, payload) {
       state.loggedIn = payload;
+    },
+    SET_loggedCompany(state, payload) {
+      state.loggedCompany = payload;
     },
     SET_cv(state, payload) {
       state.cvRegisterAction = payload;
@@ -35,6 +39,12 @@ const store = createStore({
             commit("SET_token", res.data.access_token);
             commit("SET_user", res.data.user);
             commit("SET_loggedIn", true);
+            if (res.data.user.role == "company") {
+              commit("SET_loggedCompany", true);
+            }
+            if (res.data.user.role == "user") {
+              commit("SET_loggedCompany", false);
+            }
             resolve(res);
           })
           .catch((err) => {
@@ -50,8 +60,6 @@ const store = createStore({
             email: payload.email,
             password: payload.password,
             role: payload.role,
-            civilite: payload.civilite,
-            date_naissance: payload.date_naissance,
           })
           .then((res) => {
             commit("SET_token", res.data.access_token);
@@ -71,14 +79,13 @@ const store = createStore({
             name: payload.name,
             email: payload.email,
             password: payload.password,
-            adresse: payload.adresse,
             role: payload.role,
-            site_web: payload.site_web,
           })
           .then((res) => {
             commit("SET_token", res.data.access_token);
             commit("SET_user", res.data.user);
             commit("SET_loggedIn", true);
+            commit("SET_loggedCompany", true);
             resolve(res);
           })
           .catch((err) => {
@@ -98,6 +105,7 @@ const store = createStore({
 
             commit("SET_loggedIn", false);
             commit("SET_user", null);
+            commit("SET_loggedCompany", false);
             resolve(res);
           })
           .catch((err) => {
@@ -112,11 +120,7 @@ const store = createStore({
             name: payload.name,
             email: payload.email,
             poste: payload.poste,
-            github: payload.github,
-            linkedin: payload.linkedin,
-            description: payload.description,
-            interet: payload.interet,
-            phone: payload.phone,
+            localite: payload.localite,
             id_user: payload.id_user,
           })
           .then((res) => {
@@ -150,6 +154,9 @@ const store = createStore({
   getters: {
     get_loggedIn(state) {
       return state.loggedIn;
+    },
+    get_loggedCompany(state) {
+      return state.loggedCompany;
     },
     get_user(state) {
       return state.user;
