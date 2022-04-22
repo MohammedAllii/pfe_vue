@@ -206,12 +206,36 @@
 
                         <div class="input-icons">
                           <v-icon>mdi-map-marker-radius</v-icon>
-                          <input
-                            class="input-field"
-                            type="text"
+                          <v-select
                             v-model="localite"
-                            placeholder="Votre localité actuelle"
-                          />
+                            label="Votre localite actuel"
+                            :items="[
+                              'Ariana',
+                              'Béja',
+                              'Ben Arous',
+                              'Bizerte',
+                              'Gabès',
+                              'Gafsa',
+                              'Jendouba',
+                              'Kairouan',
+                              'Kasserine',
+                              'Kébili',
+                              'Kef',
+                              'Mahdia',
+                              'Manouba',
+                              'Médenine',
+                              'Monastir',
+                              'Nabeul',
+                              'Sfax',
+                              'Sidi Bouzid',
+                              ' Siliana',
+                              'Sousse',
+                              ' Tataouine',
+                              'Tozeur',
+                              'Tunis',
+                              'Zaghouan',
+                            ]"
+                          ></v-select>
                         </div>
                         <br />
                         <v-spacer></v-spacer>
@@ -372,13 +396,12 @@ export default {
     submit() {
       let fd = new FormData();
       fd.append("img", this.image);
+      fd.append("name", this.user.name);
+      fd.append("email", this.email1);
+      fd.append("poste", this.poste1);
+      fd.append("localite", this.localite1);
       axios
-        .post("http://localhost:8000/api/auth/uploadcv", fd, {
-          name: this.user.name,
-          email: this.email,
-          poste: this.poste,
-          localite: this.localite,
-        })
+        .post("http://localhost:8000/api/auth/uploadcv", fd, {})
         .then((res) => {
           console.log("response", res.data);
           this.$router.go(0);

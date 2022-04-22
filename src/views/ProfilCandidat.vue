@@ -62,7 +62,7 @@
                   <v-card-text>
                     <v-col cols="12" sm="12">
                       <v-text-field
-                        v-model="name"
+                        v-model="users.name"
                         label="Full Name"
                         variant="outlined"
                         clearable
@@ -110,7 +110,7 @@
                   <v-card-text>
                     <v-form>
                       <v-container>
-                        <v-text-field type="email" v-model="email">
+                        <v-text-field type="email" v-model="users.email">
                         </v-text-field>
                         <div style="color: red" v-if="error">{{ error }}</div>
                       </v-container>
@@ -180,7 +180,7 @@
           </v-col>
         </v-row>
       </v-col>
-      <h6>* * * * * * * *</h6>
+      <h6 id="test">* * * * * * * *</h6>
       <br />
       <br />
       <v-btn
@@ -326,7 +326,7 @@ export default {
     async updatename() {
       axios
         .post("http://localhost:8000/api/auth/updatename/" + this.user.id, {
-          name: this.name,
+          name: this.users.name,
         })
         .then((response) => {
           console.log(response);
@@ -336,7 +336,7 @@ export default {
     async updateemail() {
       axios
         .post("http://localhost:8000/api/auth/updateemail/" + this.user.id, {
-          email: this.email,
+          email: this.users.email,
         })
         .then((response) => {
           console.log(response);
@@ -377,6 +377,21 @@ export default {
           this.$router.go(0);
         })
         .catch((err) => console.log(err));
+    },
+    async addexperience() {
+      axios
+        .post("http://localhost:8000/api/auth/addexperience", {
+          email: this.email,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.isLoading = false;
+          this.error = " Email existe déja";
+          console.log(err.message);
+        });
     },
   },
   mounted() {},

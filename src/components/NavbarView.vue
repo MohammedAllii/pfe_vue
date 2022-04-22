@@ -40,8 +40,8 @@
         :to="{ name: 'profilcandidat', params: { id: users.id } }"
       >
         <v-avatar size="30" style="border-radius: 100%">
-          <v-img v-bind:src="'../images/' + user.avatar"></v-img> </v-avatar
-        >{{ user.name }}
+          <v-img v-bind:src="'../images/' + users.avatar"></v-img> </v-avatar
+        >{{ users.name }}
       </v-btn>
     </v-li>
     <v-li class="nav-item" v-if="!loggedIn">

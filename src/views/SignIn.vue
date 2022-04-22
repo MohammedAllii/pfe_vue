@@ -95,7 +95,7 @@ export default {
           if (res.data.user.role == "user") {
             this.$router.push("/");
           } else {
-            this.$router.push("/");
+            this.$router.push("/ProfileView");
           }
         })
         .catch((err) => {

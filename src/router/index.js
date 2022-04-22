@@ -12,6 +12,8 @@ import HomeView from "../views/Home/HomeView";
 import CVView from "../views/CVView";
 import Exemple from "../views/ExempleView";
 import ProfilCandidat from "../views/ProfilCandidat";
+import ModifierExperience from "../views/ModiferExperience";
+import ModifierDiplome from "../views/ModifierDiplome";
 import store from "@/store";
 const routes = [
   {
@@ -86,6 +88,22 @@ const routes = [
     path: "/PostuleCv",
     name: "PostuleCv",
     component: PostuleCv,
+    meta: {
+      secure: true,
+    },
+  },
+  {
+    path: "/modifierexperience/:id?",
+    name: "modifierexperience",
+    component: ModifierExperience,
+    meta: {
+      secure: true,
+    },
+  },
+  {
+    path: "/modifierdiplome/:id?",
+    name: "modifierdiplome",
+    component: ModifierDiplome,
     meta: {
       secure: true,
     },

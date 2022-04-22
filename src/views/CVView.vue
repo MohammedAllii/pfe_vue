@@ -8,11 +8,15 @@
       <p style="margin-left: 850px">
         <v-icon>mdi-eye-check-outline</v-icon> Visualiser Ce CV
       </p>
+      <v-progress-linear
+        v-model="value"
+        :buffer-value="bufferValue"
+      ></v-progress-linear>
       <br />
     </v-row>
   </v-container>
-  <v-container style="border: 1px solid; max-width: 70%; border-radius: 2%">
-    <div align="center" style="width: 100%; height: 20%">
+  <v-container>
+    <div align="center" style="border-style: ridge">
       <v-avatar size="150" style="border-radius: 100%">
         <v-img v-bind:src="'../cvs/' + cvs.avatar"></v-img>
       </v-avatar>
@@ -20,70 +24,710 @@
         <v-dialog transition="dialog-top-transition">
           <template v-slot:activator="{ props }">
             <v-btn flat rounded v-bind="props"
-              ><v-icon>mdi-marker</v-icon></v-btn
+              ><v-icon size="20">mdi-image-edit</v-icon></v-btn
             >
           </template>
           <template v-slot:default="{ isActive }">
             <v-card>
-              <v-toolbar color="primary">Télécharger votre photo</v-toolbar>
               <v-icon style="margin-left: 200px" size="50">
                 mdi-check-outline
               </v-icon>
+              <h5 align="center">Télécharger Votre Photo</h5>
               <form @submit.prevent="submit">
-                <input type="file" @change="onChange" />
+                <v-card-text>
+                  <input type="file" @change="onChange" />
+                </v-card-text>
                 <v-card-actions class="justify-end">
                   <v-btn text rounded @click="isActive.value = false"
                     >Annuler</v-btn
                   >
-                  <v-btn text rounded type="submit">Enregistrer</v-btn>
+                  <v-btn
+                    text
+                    rounded
+                    style="background-color: green"
+                    type="submit"
+                    >ENregistrer</v-btn
+                  >
                 </v-card-actions>
               </form>
             </v-card>
           </template>
         </v-dialog>
       </v-col>
-      <h4>{{ user.name }}</h4>
-      <h5>{{ cvs.poste }}</h5>
-      <h5>{{ cvs.localite }}</h5>
-      <v-divider></v-divider>
-      <h5>{{ cvs.email }}</h5>
-    </div>
-  </v-container>
-  <v-container>
-    <h5>Langue du CV</h5>
-    <v-row justify="space-around">
-      <v-col cols="auto">
-        <v-dialog transition="dialog-bottom-transition">
+      <strong style="font-size: 35px"
+        >&nbsp;&nbsp;{{ cvs.name }} {{ cvs.last_name }}</strong
+      >
+      <h5>
+        <v-icon>mdi-domain</v-icon><strong>Poste :</strong>&nbsp;&nbsp;{{
+          cvs.poste
+        }}
+      </h5>
+      <h5>
+        <v-icon>mdi-map-marker-check</v-icon
+        ><strong>Localité :</strong>&nbsp;&nbsp;{{ cvs.localite }}
+      </h5>
+
+      <br />
+      <div v-if="cvs.adresse != null">
+        <h5>
+          <v-icon>mdi-home-map-marker</v-icon
+          ><strong>Adresse :</strong>&nbsp;&nbsp;{{ cvs.adresse }}
+        </h5>
+      </div>
+      <br />
+      <div v-if="cvs.nationalite != null">
+        <h5>
+          <v-icon>mdi-map-marker-check</v-icon
+          ><strong>Nationalité :</strong>&nbsp;&nbsp;{{ cvs.nationalite }}
+        </h5>
+      </div>
+      <div v-if="cvs.date_naissance != null">
+        <h5>
+          <v-icon>mdi-cake-variant</v-icon
+          ><strong>Date de naissance :</strong>&nbsp;&nbsp;{{
+            cvs.date_naissance
+          }}
+        </h5>
+      </div>
+      <v-row justify="center">
+        <v-dialog
+          v-model="dialog2"
+          fullscreen
+          :scrim="false"
+          transition="dialog-bottom-transition"
+        >
           <template v-slot:activator="{ props }">
-            <v-btn rounded color="#EEFF41" v-bind="props"
-              >From the bottom</v-btn
+            <v-btn flat rounded v-bind="props"
+              ><v-icon size="30">mdi-account-edit</v-icon></v-btn
             >
           </template>
-          <template v-slot:default="{ isActive }">
-            <v-card>
-              <v-card-text>
-                <v-card class="mx-auto" width="400" prepend-icon="mdi-file">
-                  <template v-slot:title> Langue CV </template>
-                  <v-autocomplete
-                    ref="country"
-                    v-model="country"
-                    :rules="[() => !!country || 'This field is required']"
-                    :items="countries"
-                    label="Country"
-                    placeholder="Select..."
-                    required
-                  ></v-autocomplete>
-                </v-card>
-              </v-card-text>
-              <v-card-actions class="justify-end">
-                <v-btn text @click="isActive.value = false">Annuler</v-btn>
-                <v-btn text @click="isActive.value = false">Enregistrer</v-btn>
-              </v-card-actions>
-            </v-card>
-          </template>
+          <v-card>
+            <v-toolbar dark color="green">
+              <v-btn icon dark @click="dialog2 = false">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+              <v-toolbar-title>close</v-toolbar-title>
+              <v-spacer></v-spacer>
+            </v-toolbar>
+            <v-container fluid align="center">
+              <v-icon size="50"> mdi-account-off-outline </v-icon>
+              <h5 align="center">Données personnelles</h5>
+            </v-container>
+            <v-container fluid align="center">
+              <v-card class="mx-auto" max-width="500">
+                <v-card-title
+                  class="text-h6 font-weight-regular justify-space-between"
+                >
+                  <span>{{ currentTitle }}</span>
+                  <v-avatar color="green" size="24" v-text="step"></v-avatar>
+                </v-card-title>
+
+                <v-window v-model="step">
+                  <v-window-item :value="1">
+                    <v-card-text>
+                      <v-row>
+                        <v-col cols="12" sm="6" md="4">
+                          <v-icon>mdi-account-edit</v-icon>
+                          <v-text-field
+                            color="success"
+                            label="Name"
+                            v-model="name"
+                            variant="outlined"
+                          ></v-text-field>
+                        </v-col>
+                        <v-spacer></v-spacer>
+                        <v-col cols="12" sm="6" md="4">
+                          <v-icon>mdi-account-edit</v-icon>
+                          <v-text-field
+                            color="success"
+                            label="Last name               "
+                            v-model="last_name"
+                            variant="outlined"
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row>
+                        <v-col cols="12" sm="6" md="4">
+                          <v-icon>mdi-network-outline</v-icon>
+                          <v-text-field
+                            color="success"
+                            label="Votre poste actuel"
+                            v-model="poste"
+                            variant="outlined"
+                          ></v-text-field>
+                        </v-col>
+                        <v-spacer></v-spacer>
+                        <v-col cols="12" sm="6" md="4">
+                          <v-icon>mdi-account-search-outline</v-icon>
+                          <v-select
+                            v-model="localite"
+                            label="where do youlive?"
+                            :items="[
+                              'Ariana',
+                              'Béja',
+                              'Ben Arous',
+                              'Bizerte',
+                              'Gabès',
+                              'Gafsa',
+                              'Jendouba',
+                              'Kairouan',
+                              'Kasserine',
+                              'Kébili',
+                              'Kef',
+                              'Mahdia',
+                              'Manouba',
+                              'Médenine',
+                              'Monastir',
+                              'Nabeul',
+                              'Sfax',
+                              'Sidi Bouzid',
+                              ' Siliana',
+                              'Sousse',
+                              ' Tataouine',
+                              'Tozeur',
+                              'Tunis',
+                              'Zaghouan',
+                            ]"
+                          ></v-select>
+                        </v-col>
+                      </v-row>
+                    </v-card-text>
+                  </v-window-item>
+
+                  <v-window-item :value="2">
+                    <v-card-text>
+                      <v-card-text>
+                        <v-row>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-icon>mdi-email-check-outline</v-icon>
+                            <v-text-field
+                              color="success"
+                              label="Email"
+                              type="email"
+                              v-model="email"
+                              variant="outlined"
+                            ></v-text-field>
+                          </v-col>
+                          <v-spacer></v-spacer>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-icon>mdi-cellphone-wireless</v-icon>
+                            <v-text-field
+                              color="success"
+                              label="Téléphone"
+                              placeholder="Placeholder"
+                              v-model="phone"
+                              variant="outlined"
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+                        <v-row>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-icon>mdi-map-marker-outline</v-icon>
+                            <v-text-field
+                              color="success"
+                              label="Adresse"
+                              placeholder="Placeholder"
+                              v-model="adresse"
+                              variant="outlined"
+                            ></v-text-field>
+                          </v-col>
+                          <v-spacer></v-spacer>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-icon>mdi-code-tags-check</v-icon>
+                            <v-text-field
+                              color="success"
+                              label="Code postal"
+                              placeholder="Placeholder"
+                              v-model="code_postal"
+                              variant="outlined"
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+                        <v-row>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-icon>mdi-account-question-outline</v-icon>
+                            <v-text-field
+                              color="success"
+                              label="Etat"
+                              placeholder="Placeholder"
+                              v-model="etat"
+                              variant="outlined"
+                            ></v-text-field>
+                          </v-col>
+                          <v-spacer></v-spacer>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-icon>mdi-airplane</v-icon>
+                            <v-text-field
+                              color="success"
+                              label="Ville"
+                              variant="outlined"
+                              v-model="ville"
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+                      </v-card-text>
+                    </v-card-text>
+                  </v-window-item>
+
+                  <v-window-item :value="3">
+                    <v-container>
+                      <v-row>
+                        <v-col cols="12" sm="12">
+                          <v-icon>mdi-map-minus</v-icon>
+                          <v-text-field
+                            color="success"
+                            label="Nationalité"
+                            variant="outlined"
+                            v-model="nationalite"
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row>
+                        <v-col cols="12" sm="12">
+                          <v-icon>mdi-update</v-icon>
+                          <v-text-field
+                            color="success"
+                            label="Date de naissance"
+                            type="date"
+                            v-model="date_naissance"
+                            variant="outlined"
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-window-item>
+                </v-window>
+
+                <v-divider></v-divider>
+
+                <v-card-actions>
+                  <v-btn v-if="step > 1" text @click="step--"> Back </v-btn>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    v-if="step < 3"
+                    color="black"
+                    depressed
+                    @click="step++"
+                  >
+                    Next
+                  </v-btn>
+                  <v-btn
+                    v-if="step > 2"
+                    color="black"
+                    depressed
+                    @click.prevent="updateinfo"
+                    style="background-color: green"
+                  >
+                    Enregistrer
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-container>
+          </v-card>
         </v-dialog>
-      </v-col>
-    </v-row>
+      </v-row>
+
+      <v-divider></v-divider>
+      <h5><v-icon>mdi-email-multiple</v-icon>&nbsp;&nbsp;{{ cvs.email }}</h5>
+      <br />
+      <div v-if="cvs.phone != null">
+        <h5><v-icon>mdi-phone-dial</v-icon>&nbsp;&nbsp;{{ cvs.phone }}</h5>
+      </div>
+    </div>
+    <br />
+    <br />
+    <div v-if="cvs.resume != null">
+      <h5 align="left">Résumé</h5>
+      <v-container>
+        <v-banner lines="six" icon="mdi-note-text" color="grey" class="my-4">
+          <v-banner-text>
+            <h6>
+              {{ cvs.resume }}
+            </h6>
+            <br />
+          </v-banner-text>
+          <template v-slot:actions>
+            <div class="text-center">
+              <v-menu transition="fab-transition">
+                <template v-slot:activator="{ props }">
+                  <v-btn dark color="primary" v-bind="props">
+                    <v-icon>mdi-format-list-bulleted-type</v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item>
+                    <v-btn
+                      v-text="'supprimer'"
+                      @click.prevent="deleteresume"
+                    ></v-btn>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </div>
+          </template>
+        </v-banner>
+      </v-container>
+    </div>
+    <br />
+    <div v-if="cvs.interet != null">
+      <h5 align="left">Intéret</h5>
+      <v-container>
+        <v-banner lines="six" icon="mdi-script-text" color="grey" class="my-4">
+          <v-banner-text>
+            <h6>
+              {{ cvs.interet }}
+            </h6>
+            <br />
+          </v-banner-text>
+          <template v-slot:actions>
+            <div class="text-center">
+              <v-menu transition="fab-transition">
+                <template v-slot:activator="{ props }">
+                  <v-btn dark color="primary" v-bind="props">
+                    <v-icon>mdi-format-list-bulleted-type</v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item>
+                    <v-btn
+                      v-text="'supprimer'"
+                      @click.prevent="deleteinteret"
+                    ></v-btn>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </div>
+          </template>
+        </v-banner>
+      </v-container>
+    </div>
+    <br />
+    <div v-if="experiences != null">
+      <h5 align="left">Expérience Professionnelles</h5>
+      <v-container v-for="experience in experiences" :key="experience.id">
+        <v-banner lines="six" icon="mdi-file-compare" color="grey" class="my-4">
+          <h5 style="color: green">{{ experience.poste }}</h5>
+          <h6>{{ experience.name_company }}</h6>
+          <h6>
+            <strong>{{ experience.country }}</strong>
+          </h6>
+          <h6>
+            {{ experience.debut }}<strong style="color: red">/</strong
+            >{{ experience.fin }}
+          </h6>
+          <h6>
+            <strong>{{ experience.description }}</strong>
+          </h6>
+          <template v-slot:actions>
+            <div class="text-center">
+              <v-menu transition="fab-transition">
+                <template v-slot:activator="{ props }">
+                  <v-btn dark color="primary" v-bind="props">
+                    <v-icon>mdi-format-list-bulleted-type</v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item>
+                    <v-btn
+                      v-text="'supprimer'"
+                      @click.prevent="deleteexperience(experience.id)"
+                    ></v-btn>
+                  </v-list-item>
+                  <v-list-item
+                    ><v-btn
+                      :to="{
+                        name: 'modifierexperience',
+                        params: { id: experience.id },
+                      }"
+                      >Modifier</v-btn
+                    >
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </div>
+          </template>
+        </v-banner>
+      </v-container>
+    </div>
+    <br />
+    <div v-if="diplomes != null">
+      <h5 align="left">Formations et Diplômes</h5>
+      <v-container v-for="diplome in diplomes" :key="diplome.id">
+        <v-banner lines="six" icon="mdi-file-compare" color="grey" class="my-4">
+          <h5 style="color: green">{{ diplome.etablissement }}</h5>
+          <h6>{{ diplome.diplome }}</h6>
+          <h6>
+            <strong>{{ diplome.country }}</strong>
+          </h6>
+          <h6>
+            {{ diplome.debut }}<strong style="color: red">/</strong
+            >{{ diplome.fin }}
+          </h6>
+          <h6>
+            <strong>{{ diplome.description }}</strong>
+          </h6>
+          <template v-slot:actions>
+            <div class="text-center">
+              <v-menu transition="fab-transition">
+                <template v-slot:activator="{ props }">
+                  <v-btn dark color="primary" v-bind="props">
+                    <v-icon>mdi-format-list-bulleted-type</v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item>
+                    <v-btn
+                      v-text="'supprimer'"
+                      @click.prevent="deletediplome(diplome.id)"
+                    ></v-btn>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-btn
+                      :to="{
+                        name: 'modifierdiplome',
+                        params: { id: diplome.id },
+                      }"
+                      >Modifier</v-btn
+                    >
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </div>
+          </template>
+        </v-banner>
+      </v-container>
+    </div>
+    <br />
+    <div v-if="cvs.skills != null">
+      <h5 align="left">Skills</h5>
+      <v-container>
+        <v-banner lines="six" icon="mdi-script-text" color="grey" class="my-4">
+          <v-banner-text>
+            <h6>
+              {{ cvs.skills }}
+            </h6>
+            <br />
+          </v-banner-text>
+          <template v-slot:actions>
+            <div class="text-center">
+              <v-menu transition="fab-transition">
+                <template v-slot:activator="{ props }">
+                  <v-btn dark color="primary" v-bind="props">
+                    <v-icon>mdi-format-list-bulleted-type</v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item>
+                    <v-btn
+                      v-text="'supprimer'"
+                      @click.prevent="deleteskills"
+                    ></v-btn>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </div>
+          </template>
+        </v-banner>
+      </v-container>
+    </div>
+    <br />
+    <div v-if="competences != null">
+      <h5 align="left">Compétences</h5>
+      <v-container v-for="competence in competences" :key="competence.id">
+        <v-banner lines="six" icon="mdi-file-compare" color="grey" class="my-4">
+          <h6>
+            <strong>{{ competence.competence }}</strong
+            >({{ competence.experience }})
+          </h6>
+          <template v-slot:actions>
+            <div class="text-center">
+              <v-menu transition="fab-transition">
+                <template v-slot:activator="{ props }">
+                  <v-btn dark color="primary" v-bind="props">
+                    <v-icon>mdi-format-list-bulleted-type</v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item>
+                    <v-btn
+                      v-text="'supprimer'"
+                      @click.prevent="deletecompetence(competence.id)"
+                    ></v-btn>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-col cols="auto">
+                      <v-dialog transition="dialog-top-transition">
+                        <template v-slot:activator="{ props }">
+                          <v-btn v-bind="props" v-text="'modifier'"></v-btn>
+                        </template>
+                        <template v-slot:default="{ isActive }">
+                          <v-card align="center">
+                            <br />
+                            <v-icon size="40"
+                              >mdi-set-left-center
+                              <h5>Give us YOUR capacities</h5></v-icon
+                            >
+                            <p>
+                              votre Compétences
+                              <v-col cols="12" sm="12">
+                                <v-text-field
+                                  v-model="comp"
+                                  label="compétences"
+                                  variant="outlined"
+                                  clearable
+                                  clear-icon="mdi-cancel"
+                                  style="width: 550px"
+                                ></v-text-field>
+                              </v-col>
+                            </p>
+                            <p>
+                              Expériences
+
+                              <v-select
+                                v-model="exper"
+                                label="Experience"
+                                :items="[
+                                  '0.5 ans',
+                                  '1 ans',
+                                  '2 ans',
+                                  '3 ans',
+                                  '4 ans',
+                                  '5 ans',
+                                  '6 ans',
+                                  '7 ans',
+                                  '8 ans',
+                                  '9 ans',
+                                  '10 ans',
+                                  '11 ans',
+                                  '12 ans',
+                                  '13 ans',
+                                  '14 ans',
+                                  '15 ans',
+                                  '16 ans',
+                                  '17 ans',
+                                  '18 ans',
+                                  '19 ans',
+                                  '20 ans',
+                                ]"
+                              ></v-select>
+                            </p>
+                            <v-card-actions class="justify-end">
+                              <v-btn
+                                text
+                                rounded
+                                @click="isActive.value = false"
+                                >Annuler</v-btn
+                              >
+                              <v-btn
+                                text
+                                rounded
+                                style="background-color: green"
+                                @click.prevent="updatecompetence(competence.id)"
+                                >Modifier</v-btn
+                              >
+                            </v-card-actions>
+                          </v-card>
+                        </template>
+                      </v-dialog>
+                    </v-col>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </div>
+          </template>
+        </v-banner>
+      </v-container>
+    </div>
+    <br />
+    <div v-if="liens != null">
+      <h5 align="left">Liens</h5>
+      <v-container v-for="lien in liens" :key="lien.id">
+        <v-banner lines="six" icon="mdi-file-compare" color="grey" class="my-4">
+          <h6>
+            <strong>{{ lien.titre }}</strong>
+          </h6>
+          <h6>{{ lien.url }}</h6>
+          <template v-slot:actions>
+            <div class="text-center">
+              <v-menu transition="fab-transition">
+                <template v-slot:activator="{ props }">
+                  <v-btn dark color="primary" v-bind="props">
+                    <v-icon>mdi-format-list-bulleted-type</v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item>
+                    <v-btn
+                      v-text="'supprimer'"
+                      @click.prevent="deletelien(lien.id)"
+                    ></v-btn>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-col cols="auto">
+                      <v-dialog transition="dialog-bottom-transition">
+                        <template v-slot:activator="{ props }">
+                          <v-btn v-bind="props" v-text="'modifier'"></v-btn
+                          ><br /><br />
+                        </template>
+                        <template v-slot:default="{ isActive }">
+                          <v-card align="center">
+                            <v-icon size="50"
+                              >mdi-file-document-edit
+                              <h6>Liens</h6></v-icon
+                            >
+                            <p>
+                              Titre
+                              <v-col cols="12" sm="12">
+                                <v-text-field
+                                  v-model="lien.titre"
+                                  label="Titre"
+                                  variant="outlined"
+                                  clearable
+                                  clear-icon="mdi-cancel"
+                                  style="width: 600px"
+                                ></v-text-field>
+                              </v-col>
+                            </p>
+                            <p>
+                              URL
+                              <v-col cols="12" sm="12">
+                                <v-text-field
+                                  v-model="lien.url"
+                                  label="URL"
+                                  variant="outlined"
+                                  clearable
+                                  clear-icon="mdi-cancel"
+                                ></v-text-field>
+                              </v-col>
+                            </p>
+
+                            <v-card-actions class="justify-end">
+                              <v-btn
+                                text
+                                rounded
+                                @click="isActive.value = false"
+                                >Annuler</v-btn
+                              >
+                              <v-btn
+                                text
+                                rounded
+                                style="background-color: green"
+                                @click.prevent="addlien"
+                                >Enregistrer</v-btn
+                              >
+                            </v-card-actions>
+                          </v-card>
+                        </template>
+                      </v-dialog>
+                    </v-col>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </div>
+          </template>
+        </v-banner>
+      </v-container>
+    </div>
   </v-container>
   <v-container>
     <div align="center">
@@ -91,50 +735,311 @@
         <v-col>
           <v-row justify="space-around">
             <v-col cols="auto">
-              <v-dialog transition="dialog-bottom-transition">
-                <template v-slot:activator="{ props }">
-                  <v-btn rounded flat v-bind="props">
-                    <v-icon>mdi-file-document-edit-outline</v-icon> Résumé
-                  </v-btn>
-                </template>
-                <template v-slot:default="{ isActive }">
-                  <v-card align="center">
-                    <br />
-                    <h5>Your CV Resume Please!</h5>
-                    <v-img
-                      src="https://static.vecteezy.com/ti/vecteur-libre/p1/2592733-avatar-figure-humaine-dans-cv-document-line-style-icon-gratuit-vectoriel.jpg"
-                      style="width: 180px; height: 180px"
-                    ></v-img>
-                    <v-textarea
-                      background-color="grey lighten-2"
-                      color="cyan"
-                      label="write your résumé "
-                      style="border-radius: 30px; width: 600px"
-                    ></v-textarea>
-                    <v-card-actions class="justify-end">
-                      <v-btn text rounded @click="isActive.value = false"
-                        >Annuler</v-btn
-                      >
-                      <v-btn
-                        style="background-color: green"
-                        text
-                        rounded
-                        @click="isActive.value = false"
-                        >Enregistrer</v-btn
-                      >
-                    </v-card-actions>
-                  </v-card>
-                </template>
-              </v-dialog>
+              <div v-if="this.resumes == false">
+                <v-dialog transition="dialog-bottom-transition">
+                  <template v-slot:activator="{ props }">
+                    <v-btn rounded flat v-bind="props">
+                      <v-icon>mdi-file-document-edit-outline</v-icon> Résumé
+                    </v-btn>
+                  </template>
+                  <template v-slot:default="{ isActive }">
+                    <v-card align="center">
+                      <br />
+                      <h5>Your CV Resume Please!</h5>
+                      <v-img
+                        src="https://static.vecteezy.com/ti/vecteur-libre/p1/2592733-avatar-figure-humaine-dans-cv-document-line-style-icon-gratuit-vectoriel.jpg"
+                        style="width: 180px; height: 180px"
+                      ></v-img>
+                      <v-textarea
+                        background-color="grey lighten-2"
+                        color="cyan"
+                        label="write your résumé "
+                        style="border-radius: 30px; width: 600px"
+                        v-model="cvs.resume"
+                      ></v-textarea>
+                      <v-card-actions class="justify-end">
+                        <v-btn text rounded @click="isActive.value = false"
+                          >Annuler</v-btn
+                        >
+                        <v-btn
+                          style="background-color: green"
+                          text
+                          rounded
+                          @click.prevent="addresume"
+                          >Enregistrer</v-btn
+                        >
+                      </v-card-actions>
+                    </v-card>
+                  </template>
+                </v-dialog>
+              </div>
             </v-col>
           </v-row>
           <br />
-          <v-btn rounded flat
-            ><v-icon>mdi-briefcase-edit</v-icon> Expériences
-            professionnelles</v-btn
-          >
-          <p><v-icon>mdi-wallpaper</v-icon> Formations et diplômes</p>
+          <v-row justify="center">
+            <v-dialog
+              v-model="dialog"
+              fullscreen
+              :scrim="false"
+              transition="dialog-bottom-transition"
+            >
+              <template v-slot:activator="{ props }">
+                <v-btn rounded flat v-bind="props"
+                  ><v-icon>mdi-briefcase-edit</v-icon> Expériences
+                  professionnelles</v-btn
+                >
+              </template>
+              <v-card>
+                <v-toolbar dark color="green">
+                  <v-btn icon dark @click="dialog = false">
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                  <v-toolbar-title>close</v-toolbar-title>
+                  <v-spacer></v-spacer>
+                </v-toolbar>
 
+                <v-container fluid align="center">
+                  <h5>Expériences professionnelles</h5>
+                  <v-icon size="50">mdi-clipboard-check-outline</v-icon>
+                  <v-row>
+                    <v-col cols="12" sm="6">
+                      <v-text-field
+                        v-model="poste_ex"
+                        label="Poste"
+                        variant="underlined"
+                        clearable
+                      ></v-text-field>
+                    </v-col>
+
+                    <v-col cols="12" sm="6">
+                      <v-text-field
+                        v-model="name_company"
+                        label="Nom de société"
+                        variant="underlined"
+                        clearable
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-col cols="12" sm="6">
+                    <v-select
+                      v-model="country"
+                      label="Country?"
+                      :items="[
+                        'Ariana',
+                        'Béja',
+                        'Ben Arous',
+                        'Bizerte',
+                        'Gabès',
+                        'Gafsa',
+                        'Jendouba',
+                        'Kairouan',
+                        'Kasserine',
+                        'Kébili',
+                        'Kef',
+                        'Mahdia',
+                        'Manouba',
+                        'Médenine',
+                        'Monastir',
+                        'Nabeul',
+                        'Sfax',
+                        'Sidi Bouzid',
+                        ' Siliana',
+                        'Sousse',
+                        ' Tataouine',
+                        'Tozeur',
+                        'Tunis',
+                        'Zaghouan',
+                      ]"
+                    ></v-select>
+                  </v-col>
+                  <v-row>
+                    <v-col cols="12" sm="6">
+                      <v-text-field
+                        v-model="debut"
+                        label="Date Début"
+                        variant="underlined"
+                        type="date"
+                        clearable
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-text-field
+                        v-model="fin"
+                        label="Date Fin"
+                        type="date"
+                        variant="underlined"
+                        clearable
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12" sm="6">
+                      <v-textarea
+                        filled
+                        auto-grow
+                        label="Describe your expérience"
+                        rows="2"
+                        v-model="description"
+                        row-height="20"
+                      ></v-textarea>
+                    </v-col>
+                  </v-row>
+
+                  <v-row>
+                    <v-btn text rounded @click="isActive.value = false"
+                      >Annuler</v-btn
+                    >
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      text
+                      rounded
+                      style="background-color: green"
+                      @click.prevent="addexperience"
+                      >Enregistrer</v-btn
+                    >
+                  </v-row>
+                </v-container>
+              </v-card>
+            </v-dialog>
+          </v-row>
+
+          <br /><br />
+          <v-row justify="center">
+            <v-dialog
+              v-model="dialog1"
+              fullscreen
+              :scrim="false"
+              transition="dialog-bottom-transition"
+            >
+              <template v-slot:activator="{ props }">
+                <v-btn rounded flat v-bind="props"
+                  ><v-icon>mdi-wallpaper</v-icon> Formations et diplômes</v-btn
+                >
+              </template>
+              <v-card>
+                <v-toolbar dark color="green">
+                  <v-btn icon dark @click="dialog1 = false">
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                  <v-toolbar-title>close</v-toolbar-title>
+                  <v-spacer></v-spacer>
+                </v-toolbar>
+                <v-container fluid align="center">
+                  <h5>Formations et diplômes</h5>
+                  <v-icon size="50">mdi-paper-cut-vertical</v-icon>
+                  <v-row>
+                    <v-col cols="12" sm="6">
+                      <v-text-field
+                        v-model="etablissement"
+                        label="Établissement"
+                        variant="underlined"
+                        clearable
+                      ></v-text-field>
+                    </v-col>
+
+                    <v-col cols="12" sm="6">
+                      <v-text-field
+                        v-model="diplome"
+                        label="Diplôme"
+                        variant="underlined"
+                        clearable
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12" sm="6">
+                      <v-select
+                        v-model="countrys"
+                        label="Country?"
+                        :items="[
+                          'Ariana',
+                          'Béja',
+                          'Ben Arous',
+                          'Bizerte',
+                          'Gabès',
+                          'Gafsa',
+                          'Jendouba',
+                          'Kairouan',
+                          'Kasserine',
+                          'Kébili',
+                          'Kef',
+                          'Mahdia',
+                          'Manouba',
+                          'Médenine',
+                          'Monastir',
+                          'Nabeul',
+                          'Sfax',
+                          'Sidi Bouzid',
+                          ' Siliana',
+                          'Sousse',
+                          ' Tataouine',
+                          'Tozeur',
+                          'Tunis',
+                          'Zaghouan',
+                        ]"
+                      ></v-select>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-text-field
+                        v-model="discipline"
+                        label="Discipline"
+                        variant="underlined"
+                        clearable
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12" sm="6">
+                      <v-text-field
+                        v-model="debuts"
+                        label="Date Début"
+                        type="date"
+                        variant="underlined"
+                        clearable
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-text-field
+                        v-model="fins"
+                        type="date"
+                        label="Date Fin"
+                        variant="underlined"
+                        clearable
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12" sm="6">
+                      <v-textarea
+                        filled
+                        auto-grow
+                        v-model="descriptions"
+                        label="Describe"
+                        rows="2"
+                        row-height="20"
+                      ></v-textarea>
+                    </v-col>
+                  </v-row>
+
+                  <v-row>
+                    <v-btn text rounded @click="isActive.value = false"
+                      >Annuler</v-btn
+                    >
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      text
+                      rounded
+                      style="background-color: green"
+                      @click.prevent="adddiplome"
+                      >Enregistrer</v-btn
+                    >
+                  </v-row>
+                </v-container>
+              </v-card>
+            </v-dialog>
+          </v-row>
+
+          <br />
           <v-col cols="auto">
             <v-dialog transition="dialog-top-transition">
               <template v-slot:activator="{ props }">
@@ -154,7 +1059,7 @@
                     votre Compétences
                     <v-col cols="12" sm="12">
                       <v-text-field
-                        v-model="message4"
+                        v-model="competence"
                         label="compétences"
                         variant="outlined"
                         clearable
@@ -167,12 +1072,31 @@
                     Expériences
 
                     <v-select
-                      style="border-style: ridge"
-                      v-model="select"
-                      :items="items"
-                      :rules="[(v) => !!v || 'Item is required']"
-                      label="Item"
-                      required
+                      v-model="experience"
+                      label="Experience"
+                      :items="[
+                        '0.5 ans',
+                        '1 ans',
+                        '2 ans',
+                        '3 ans',
+                        '4 ans',
+                        '5 ans',
+                        '6 ans',
+                        '7 ans',
+                        '8 ans',
+                        '9 ans',
+                        '10 ans',
+                        '11 ans',
+                        '12 ans',
+                        '13 ans',
+                        '14 ans',
+                        '15 ans',
+                        '16 ans',
+                        '17 ans',
+                        '18 ans',
+                        '19 ans',
+                        '20 ans',
+                      ]"
                     ></v-select>
                   </p>
                   <v-card-actions class="justify-end">
@@ -183,7 +1107,7 @@
                       text
                       rounded
                       style="background-color: green"
-                      @click="isActive.value = false"
+                      @click.prevent="addcompetence"
                       >Enregistrer</v-btn
                     >
                   </v-card-actions>
@@ -191,7 +1115,8 @@
               </template>
             </v-dialog>
           </v-col>
-
+        </v-col>
+        <v-col>
           <v-row justify="space-around">
             <v-col cols="auto">
               <v-dialog transition="dialog-bottom-transition">
@@ -221,7 +1146,6 @@
                     </p>
                     <p>
                       Niveau
-
                       <v-select
                         style="border-style: ridge"
                         v-model="select"
@@ -248,11 +1172,63 @@
               </v-dialog>
             </v-col>
           </v-row>
-          <p><v-icon>mdi-file-compare</v-icon> Accréditations</p>
-        </v-col>
-        <v-col>
-          <p><v-icon>mdi-school</v-icon> Distinctions</p>
 
+          <v-row justify="space-around">
+            <v-col cols="auto">
+              <v-dialog transition="dialog-bottom-transition">
+                <template v-slot:activator="{ props }">
+                  <v-btn rounded flat v-bind="props"
+                    ><v-icon>mdi-school</v-icon> Skills</v-btn
+                  >
+                </template>
+                <template v-slot:default="{ isActive }">
+                  <v-card align="center">
+                    <v-icon size="50"> mdi-check-outline </v-icon>
+                    <h5>show us your skills</h5>
+                    <v-card-text>
+                      <v-col cols="12" sm="12">
+                        <v-textarea
+                          :items="[
+                            'Coding',
+                            'Creativity',
+                            'Persuasion',
+                            'Collaboration',
+                            'Adaptability',
+                            'Time Management',
+                            'Effective communication',
+                            'Emotional intelligence',
+                            'Conflict management',
+                            'Teamwork skills',
+                            'Stress management',
+                            'Problem-solving',
+                            'Productivity & organization',
+                            'Critical thinking',
+                          ]"
+                          label="Your skills"
+                          style="width: 400px"
+                          v-model="cvs.skills"
+                          multiple
+                        ></v-textarea>
+                      </v-col>
+                    </v-card-text>
+                    <v-card-actions class="justify-end">
+                      <v-btn text rounded @click="isActive.value = false"
+                        >Annuler</v-btn
+                      >
+                      <v-btn
+                        text
+                        rounded
+                        style="background-color: green"
+                        @click.prevent="addskills"
+                        >Enregistrer</v-btn
+                      >
+                    </v-card-actions>
+                  </v-card>
+                </template>
+              </v-dialog>
+            </v-col>
+          </v-row>
+          <br />
           <v-row justify="space-around">
             <v-col cols="auto">
               <v-dialog transition="dialog-bottom-transition">
@@ -271,7 +1247,7 @@
                       Titre
                       <v-col cols="12" sm="12">
                         <v-text-field
-                          v-model="message4"
+                          v-model="titre"
                           label="Titre"
                           variant="outlined"
                           clearable
@@ -284,7 +1260,7 @@
                       URL
                       <v-col cols="12" sm="12">
                         <v-text-field
-                          v-model="message4"
+                          v-model="url"
                           label="URL"
                           variant="outlined"
                           clearable
@@ -301,7 +1277,7 @@
                         text
                         rounded
                         style="background-color: green"
-                        @click="isActive.value = false"
+                        @click.prevent="addlien"
                         >Enregistrer</v-btn
                       >
                     </v-card-actions>
@@ -310,28 +1286,6 @@
               </v-dialog>
             </v-col>
           </v-row>
-
-          <v-col cols="auto">
-            <v-dialog transition="dialog-top-transition">
-              <template v-slot:activator="{ props }">
-                <v-btn rounded flat v-bind="props"
-                  ><v-icon>mdi-script-outline</v-icon> Volontariat</v-btn
-                ><br /><br />
-              </template>
-              <template v-slot:default="{ isActive }">
-                <v-card>
-                  <v-toolbar color="primary">Opening from the top</v-toolbar>
-                  <v-card-text>
-                    <div class="text-h2 pa-12">Hello world!</div>
-                  </v-card-text>
-                  <v-card-actions class="justify-end">
-                    <v-btn text @click="isActive.value = false">Close</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </template>
-            </v-dialog>
-          </v-col>
-
           <v-row justify="space-around">
             <v-col cols="auto">
               <v-dialog transition="dialog-bottom-transition">
@@ -354,6 +1308,7 @@
                         color="orange orange-darken-4"
                         label="Ecrire"
                         style="width: 600px; border-style: ridge"
+                        v-model="cvs.interet"
                       ></v-textarea>
                     </p>
                     <v-card-actions class="justify-end">
@@ -364,7 +1319,7 @@
                         text
                         rounded
                         style="background-color: green"
-                        @click="isActive.value = false"
+                        @click.prevent="addinteret"
                         >Enregistrer</v-btn
                       >
                     </v-card-actions>
@@ -373,8 +1328,6 @@
               </v-dialog>
             </v-col>
           </v-row>
-
-          <p><v-icon>mdi-hand-pointing-up</v-icon> Références</p>
         </v-col>
       </v-row>
     </div>
@@ -383,9 +1336,9 @@
   <footer-view />
 </template>
 <script>
-import axios from "axios";
 import NavbarView from "@/components/NavbarView.vue";
 import FooterView from "@/components/FooterView.vue";
+import axios from "axios";
 export default {
   components: {
     NavbarView,
@@ -396,113 +1349,84 @@ export default {
       image: null,
       imgs: {},
       cvs: {},
+      experiences: {},
+      diplomes: {},
+      competences: {},
+      liens: {},
+      poste_ex: "",
+      name_company: "",
+      country: "",
+      debut: "",
+      fin: "",
+      description: "",
+      etablissement: "",
+      diplome: "",
+      countrys: "",
+      discipline: "",
+      debuts: "",
+      fins: "",
+      descriptions: "",
+      competence: "",
+      experience: "",
+      comp: "",
+      exper: "",
+      titre: "",
+      url: "",
       idc: this.$route.params.id,
+      dialog: false,
+      dialog1: false,
+      dialog2: false,
+      notifications: false,
+      sound: true,
+      widgets: false,
       value: 10,
       bufferValue: 20,
+      resumes: false,
       interval: 0,
-      countries: [
-        "Anglais",
-        "Arabe",
-        "Chinois",
-        "Espagnol",
-        "Français",
-        "Russe",
-        "Albanais",
-        "Allemand",
-        "Amazigh",
-        "Arménien",
-        "Aymara",
-        "Bengali",
-        "Catalan",
-        "Coréen",
-        "Croate",
-        "Danois",
-        "Guarani",
-        "Grec",
-        "Hongrois",
-        "Italien",
-        "Japonais",
-        "Kikongo",
-        "Kiswahili",
-        "Lingala",
-        "Malais",
-        "Mongol",
-        "Néerlandais",
-        "Occitan",
-        "Ourdou",
-        "Persan",
-        "Portugais",
-        "Quechua",
-        "Roumain",
-        "Samoan",
-        "Serbe",
-        "Sesotho",
-        "Slovaque",
-        "Slovène",
-        "Suédois",
-        "Tamoul",
-        "Turc",
-        "Afrikaans",
-        "Araona",
-        "Azéri",
-        "Baure",
-        "Bésiro",
-        "Bichelamar",
-        "Biélorusse",
-        "Birman",
-        "Bulgare",
-        "Canichana",
-        "Cavineña",
-        "Cayubaba",
-        "Chácobo",
-        "Chichewa",
-        "Chimane",
-        "Créole de Guinée-Bissau",
-        "Créole Antillais",
-        "Créole seychellois",
-        "Divehi",
-        "Dzongkha",
-        "Ese ejja",
-        "Estonien",
-      ],
-      country: this.country,
-      select: null,
-      items: [
-        "0.5an",
-        "1 an",
-        "2 an ",
-        "3 an ",
-        "4 an ",
-        "5 an",
-        "6 an ",
-        "7 an",
-        "8 an ",
-        "9 an ",
-        "10 an ",
-        "11 an",
-        "12 an ",
-        "13 an",
-        "14 an ",
-        "15 an ",
-        "16 an ",
-        "17 an",
-        "18 an ",
-        "19 an",
-        "20 an ",
-        "i dont know exactly",
-      ],
-      items1: ["Débutant", "Courant", "Avancé", "Langue Maternelle"],
+      message3: "ex:designer!",
+      message4: "Nom de la société!",
+      message5: "tell us!",
+      message6: "tell us!",
+      message7: "Enter your Établissement!",
+      message8: "Enter your Diplôme!",
+      message9: "Discipline!",
+      ex4: "success",
+      step: 1,
     };
   },
   computed: {
+    currentTitle() {
+      switch (this.step) {
+        case 1:
+          return "Profil";
+        case 2:
+          return "Données personnelles";
+        default:
+          return "Autres Informations";
+      }
+    },
     user() {
       return this.$store.getters.get_user;
     },
+  },
+  mounted() {
+    this.startBuffer(),
+      this.getExperience(),
+      this.getDiplome(),
+      this.getCompetence(),
+      this.getLien();
   },
   created() {
     this.getCvById();
   },
   methods: {
+    startBuffer() {
+      clearInterval(this.interval);
+      this.interval = setInterval(() => {
+        this.value += Math.random() * (15 - 5) + 5;
+        this.bufferValue += Math.random() * (15 - 5) + 6;
+      }, 2000);
+    },
     async getCvById() {
       let url = "http://localhost:8000/api/auth/affichecv/" + this.idc;
       await axios.get(url).then((response) => {
@@ -525,7 +1449,273 @@ export default {
         })
         .catch((err) => console.log(err));
     },
+    async updateinfo() {
+      axios
+        .post("http://localhost:8000/api/auth/updateinfo/" + this.idc, {
+          name: this.name,
+          last_name: this.last_name,
+          poste: this.poste,
+          localite: this.localite,
+          email: this.email,
+          phone: this.phone,
+          adresse: this.adresse,
+          code_postal: this.code_postal,
+          etat: this.etat,
+          nationalite: this.nationalite,
+          date_naissance: this.date_naissance,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = " impossible de changer info personnels";
+          console.log(err.message);
+        });
+    },
+    async addresume() {
+      axios
+        .post("http://localhost:8000/api/auth/addresume/" + this.idc, {
+          resume: this.cvs.resume,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = " impossible d'ajouter résumer'";
+          console.log(err.message);
+        });
+    },
+    async deleteresume() {
+      axios
+        .post("http://localhost:8000/api/auth/addresume/" + this.idc, {
+          resume: null,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = " impossible d'ajouter résumer'";
+          console.log(err.message);
+        });
+    },
+    async addinteret() {
+      axios
+        .post("http://localhost:8000/api/auth/addinteret/" + this.idc, {
+          interet: this.cvs.interet,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = " impossible d'ajouter interet'";
+          console.log(err.message);
+        });
+    },
+    async addskills() {
+      axios
+        .post("http://localhost:8000/api/auth/addskills/" + this.idc, {
+          skills: this.cvs.skills,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = " impossible d'ajouter skills'";
+          console.log(err.message);
+        });
+    },
+    async deleteskills() {
+      axios
+        .post("http://localhost:8000/api/auth/addskills/" + this.idc, {
+          skills: null,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = " impossible de supprimer skills'";
+          console.log(err.message);
+        });
+    },
+    async deleteinteret() {
+      axios
+        .post("http://localhost:8000/api/auth/addinteret/" + this.idc, {
+          interet: null,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = " impossible de supprimer interet'";
+          console.log(err.message);
+        });
+    },
+    async addexperience() {
+      axios
+        .post("http://localhost:8000/api/auth/addexperience", {
+          poste: this.poste_ex,
+          name_company: this.name_company,
+          country: this.country,
+          debut: this.debut,
+          fin: this.fin,
+          description: this.description,
+          id_cv: this.idc,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = " impossible d'ajouter experience'";
+          console.log(err.message);
+        });
+    },
+    async addcompetence() {
+      axios
+        .post("http://localhost:8000/api/auth/addcompetence", {
+          competence: this.competence,
+          experience: this.experience,
+          id_cv: this.idc,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = " impossible d'ajouter competence'";
+          console.log(err.message);
+        });
+    },
+    async getCompetence() {
+      let url = "http://localhost:8000/api/auth/getcompetence/" + this.idc;
+      await axios.get(url).then((response) => {
+        this.competences = response.data;
+        console.log(response.data);
+      });
+    },
+    async deletecompetence($id) {
+      axios
+        .delete("http://localhost:8000/api/auth/deletecompetence/" + $id, {})
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = " impossible de supprimer competence'";
+          console.log(err.message);
+        });
+    },
+    async updatecompetence($id) {
+      axios
+        .post("http://localhost:8000/api/auth/modifiercompetence/" + $id, {
+          competence: this.comp,
+          experience: this.exper,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = " impossible de changer info personnels";
+          console.log(err.message);
+        });
+    },
+    async getExperience() {
+      let url = "http://localhost:8000/api/auth/getexperience/" + this.idc;
+      await axios.get(url).then((response) => {
+        this.experiences = response.data;
+        console.log(response.data);
+      });
+    },
+    async deleteexperience($id) {
+      axios
+        .delete("http://localhost:8000/api/auth/deleteexperience/" + $id, {})
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = " impossible de supprimer experience'";
+          console.log(err.message);
+        });
+    },
+    async adddiplome() {
+      axios
+        .post("http://localhost:8000/api/auth/adddiplome", {
+          etablissement: this.etablissement,
+          diplome: this.diplome,
+          country: this.countrys,
+          discipline: this.discipline,
+          debut: this.debuts,
+          fin: this.fins,
+          description: this.descriptions,
+          id_cv: this.idc,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = " impossible d'ajouter diplome'";
+          console.log(err.message);
+        });
+    },
+    async getDiplome() {
+      let url = "http://localhost:8000/api/auth/getdiplome/" + this.idc;
+      await axios.get(url).then((response) => {
+        this.diplomes = response.data;
+        console.log(response.data);
+      });
+    },
+    async deletediplome($id) {
+      axios
+        .delete("http://localhost:8000/api/auth/deletediplome/" + $id, {})
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = " impossible de supprimer diplome'";
+          console.log(err.message);
+        });
+    },
+    async addlien() {
+      axios
+        .post("http://localhost:8000/api/auth/addlien", {
+          titre: this.titre,
+          url: this.url,
+          id_cv: this.idc,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = " impossible d'ajouter lien'";
+          console.log(err.message);
+        });
+    },
+    async getLien() {
+      let url = "http://localhost:8000/api/auth/getlien/" + this.idc;
+      await axios.get(url).then((response) => {
+        this.liens = response.data;
+        console.log(response.data);
+      });
+    },
   },
-  mounted() {},
 };
 </script>
+
+<style>
+.dialog-bottom-transition-enter-active,
+.dialog-bottom-transition-leave-active {
+  transition: transform 0.2s ease-in-out;
+}
+</style>
