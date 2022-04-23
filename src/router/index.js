@@ -7,13 +7,18 @@ import SignIn from "../views/SignIn";
 import SideBar from "../components/SideBar";
 import DashbordView from "@/views/Admin/DashbordView.vue";
 import GestionUser from "@/views/Admin/GestionUser";
-import PostuleCv from "../views/PostuleCv";
+import PostuleCv from "../views/Candidat/PostuleCv";
 import HomeView from "../views/Home/HomeView";
-import CVView from "../views/CVView";
-import Exemple from "../views/ExempleView";
+import CVView from "../views/Candidat/CVView";
 import ProfilCandidat from "../views/ProfilCandidat";
-import ModifierExperience from "../views/ModiferExperience";
-import ModifierDiplome from "../views/ModifierDiplome";
+import ModifierExperience from "../views/Candidat/ModiferExperience";
+import ModifierDiplome from "../views/Candidat/ModifierDiplome";
+import CompanyDashboard from "../views/Company/CompanyDashboard";
+import PosteCompany from "../views/Company/PosteCompany";
+import GerePoste from "../views/Company/GerePoste";
+import StatistCompany from "../views/Company/StatistCompany";
+import CandidatureCompany from "../views/Company/CandidatureCompany";
+import SaveCv from "../views/Company/SaveCv";
 import store from "@/store";
 const routes = [
   {
@@ -49,6 +54,54 @@ const routes = [
     },
   },
   {
+    path: "/companydash",
+    name: "companydash",
+    component: CompanyDashboard,
+    meta: {
+      secure: true,
+    },
+  },
+  {
+    path: "/PosteCompany",
+    name: "PosteCompany",
+    component: PosteCompany,
+    meta: {
+      secure: true,
+    },
+  },
+  {
+    path: "/GerePoste",
+    name: "GerePoste",
+    component: GerePoste,
+    meta: {
+      secure: true,
+    },
+  },
+  {
+    path: "/StatistCompany",
+    name: "StatistCompany",
+    component: StatistCompany,
+    meta: {
+      secure: true,
+    },
+  },
+  {
+    path: "/CandidatureCompany",
+    name: "CandidatureCompany",
+    component: CandidatureCompany,
+    meta: {
+      secure: true,
+    },
+  },
+  {
+    path: "/SaveCv",
+    name: "SaveCv",
+    component: SaveCv,
+    meta: {
+      secure: true,
+    },
+  },
+  {
     path: "/SignIn",
     name: "SignIn",
     component: SignIn,
@@ -70,11 +123,6 @@ const routes = [
     path: "/GestionUser",
     name: "GestionUser",
     component: GestionUser,
-  },
-  {
-    path: "/example",
-    name: "example",
-    component: Exemple,
   },
   {
     path: "/profilcandidat/:id?",

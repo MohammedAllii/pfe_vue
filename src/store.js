@@ -6,6 +6,7 @@ const store = createStore({
   state: {
     loggedIn: false,
     loggedCompany: false,
+    loggedUser: false,
     user: null,
     token: null,
   },
@@ -22,6 +23,9 @@ const store = createStore({
     },
     SET_loggedCompany(state, payload) {
       state.loggedCompany = payload;
+    },
+    SET_loggedUser(state, payload) {
+      state.loggedUser = payload;
     },
     SET_cv(state, payload) {
       state.cvRegisterAction = payload;
@@ -44,6 +48,7 @@ const store = createStore({
             }
             if (res.data.user.role == "user") {
               commit("SET_loggedCompany", false);
+              commit("SET_loggedUser", true);
             }
             resolve(res);
           })
@@ -65,6 +70,7 @@ const store = createStore({
             commit("SET_token", res.data.access_token);
             commit("SET_user", res.data.user);
             commit("SET_loggedIn", true);
+            commit("SET_loggedUser", true);
             resolve(res);
           })
           .catch((err) => {
@@ -106,6 +112,7 @@ const store = createStore({
             commit("SET_loggedIn", false);
             commit("SET_user", null);
             commit("SET_loggedCompany", false);
+            commit("SET_loggedUser", false);
             resolve(res);
           })
           .catch((err) => {
@@ -157,6 +164,9 @@ const store = createStore({
     },
     get_loggedCompany(state) {
       return state.loggedCompany;
+    },
+    get_loggedUser(state) {
+      return state.loggedUser;
     },
     get_user(state) {
       return state.user;

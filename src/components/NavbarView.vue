@@ -7,14 +7,27 @@
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-li class="nav-item" v-if="loggedCompany">
-      <v-btn class="flex-row" right="22em" rounded color="grey" dark to="/">
-        <v-icon color="grey">mdi-volume-high</v-icon>
+      <v-btn
+        class="flex-row"
+        right="62em"
+        rounded
+        color="grey"
+        dark
+        to="/companydash"
+      >
+        <v-icon color="grey">mdi-pen-plus</v-icon>
         Publier Poste
       </v-btn>
     </v-li>
-    <v-li class="nav-item" v-if="loggedIn">
+    <v-li class="nav-item" v-if="loggedCompany">
+      <v-btn right="62em" rounded color="grey" dark to="/">
+        <v-icon color="grey">mdi-clipboard-text-search</v-icon>
+        chercher
+      </v-btn>
+    </v-li>
+    <v-li class="nav-item" v-if="loggedUser">
       <v-btn right="55em" rounded color="grey" dark to="/">
-        <v-icon color="grey">mdi-briefcase-search</v-icon>
+        <v-icon color="grey">mdi-clipboard-text-search</v-icon>
         chercher
       </v-btn>
     </v-li>
@@ -74,6 +87,9 @@ export default {
     },
     loggedCompany() {
       return this.$store.getters.get_loggedCompany;
+    },
+    loggedUser() {
+      return this.$store.getters.get_loggedUser;
     },
   },
   methods: {

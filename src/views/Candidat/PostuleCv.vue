@@ -176,7 +176,7 @@
                         <div>
                           <v-img
                             src="https://cdn-icons-png.flaticon.com/512/3135/3135800.png"
-                            style="width: 80px; height: 80px"
+                            style="width: 80px; height: 50px"
                           >
                           </v-img>
                           <p>
@@ -411,3 +411,9 @@ export default {
   },
 };
 </script>
+<style>
+.dialog-bottom-transition-enter-active,
+.dialog-bottom-transition-leave-active {
+  transition: transform 0.2s ease-in-out;
+}
+</style>

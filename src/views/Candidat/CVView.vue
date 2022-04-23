@@ -666,8 +666,7 @@
                     <v-col cols="auto">
                       <v-dialog transition="dialog-bottom-transition">
                         <template v-slot:activator="{ props }">
-                          <v-btn v-bind="props" v-text="'modifier'"></v-btn
-                          ><br /><br />
+                          <v-btn v-bind="props" v-text="'modifier'"></v-btn>
                         </template>
                         <template v-slot:default="{ isActive }">
                           <v-card align="center">
@@ -679,7 +678,7 @@
                               Titre
                               <v-col cols="12" sm="12">
                                 <v-text-field
-                                  v-model="lien.titre"
+                                  v-model="titr"
                                   label="Titre"
                                   variant="outlined"
                                   clearable
@@ -692,7 +691,7 @@
                               URL
                               <v-col cols="12" sm="12">
                                 <v-text-field
-                                  v-model="lien.url"
+                                  v-model="urll"
                                   label="URL"
                                   variant="outlined"
                                   clearable
@@ -712,7 +711,98 @@
                                 text
                                 rounded
                                 style="background-color: green"
-                                @click.prevent="addlien"
+                                @click.prevent="updatelien(lien.id)"
+                                >Enregistrer</v-btn
+                              >
+                            </v-card-actions>
+                          </v-card>
+                        </template>
+                      </v-dialog>
+                    </v-col>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </div>
+          </template>
+        </v-banner>
+      </v-container>
+    </div>
+    <br />
+    <div v-if="langues != null">
+      <h5 align="left">Langues</h5>
+      <v-container v-for="langue in langues" :key="langue.id">
+        <v-banner lines="six" icon="mdi-file-compare" color="grey" class="my-4">
+          <h6>
+            <strong>{{ langue.langue }}</strong
+            >({{ langue.niveau }})
+          </h6>
+          <template v-slot:actions>
+            <div class="text-center">
+              <v-menu transition="fab-transition">
+                <template v-slot:activator="{ props }">
+                  <v-btn dark color="primary" v-bind="props">
+                    <v-icon>mdi-format-list-bulleted-type</v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item>
+                    <v-btn
+                      v-text="'supprimer'"
+                      @click.prevent="deletelangue(langue.id)"
+                    ></v-btn>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-col cols="auto">
+                      <v-dialog transition="dialog-bottom-transition">
+                        <template v-slot:activator="{ props }">
+                          <v-btn v-bind="props" v-text="'modifier'"></v-btn>
+                        </template>
+                        <template v-slot:default="{ isActive }">
+                          <v-card align="center">
+                            <v-icon size="50"
+                              >mdi-fountain-pen
+                              <h5>Langues</h5></v-icon
+                            >
+                            <p>
+                              Langues
+                              <v-col cols="12" sm="12">
+                                <v-text-field
+                                  v-model="lang"
+                                  label="'{{langue.langue}}'"
+                                  variant="outlined"
+                                  clearable
+                                  clear-icon="mdi-cancel"
+                                  style="width: 550px"
+                                ></v-text-field>
+                              </v-col>
+                            </p>
+                            <p>
+                              Niveau
+                              <v-select
+                                style="border-style: ridge"
+                                label="Niveau"
+                                v-model="niv"
+                                :items="[
+                                  'Débutant',
+                                  'Courant',
+                                  'Avancé',
+                                  'Langue maternelle',
+                                ]"
+                                required
+                              ></v-select>
+                            </p>
+                            <v-card-actions class="justify-end">
+                              <v-btn
+                                text
+                                rounded
+                                @click="isActive.value = false"
+                                >Annuler</v-btn
+                              >
+                              <v-btn
+                                text
+                                rounded
+                                style="background-color: green"
+                                @click.prevent="updateLangue(langue.id)"
                                 >Enregistrer</v-btn
                               >
                             </v-card-actions>
@@ -1072,6 +1162,7 @@
                     Expériences
 
                     <v-select
+                      style="border-style: ridge"
                       v-model="experience"
                       label="Experience"
                       :items="[
@@ -1135,8 +1226,8 @@
                       Langues
                       <v-col cols="12" sm="12">
                         <v-text-field
-                          v-model="message4"
-                          label="compétences"
+                          v-model="langue"
+                          label="Langue"
                           variant="outlined"
                           clearable
                           clear-icon="mdi-cancel"
@@ -1148,10 +1239,14 @@
                       Niveau
                       <v-select
                         style="border-style: ridge"
-                        v-model="select"
-                        :items="items1"
-                        :rules="[(v) => !!v || 'Item is required']"
-                        label="Item"
+                        label="Niveau"
+                        v-model="niveau"
+                        :items="[
+                          'Débutant',
+                          'Courant',
+                          'Avancé',
+                          'Langue maternelle',
+                        ]"
                         required
                       ></v-select>
                     </p>
@@ -1163,7 +1258,7 @@
                         text
                         rounded
                         style="background-color: green"
-                        @click="isActive.value = false"
+                        @click.prevent="addlangue"
                         >Enregistrer</v-btn
                       >
                     </v-card-actions>
@@ -1353,6 +1448,7 @@ export default {
       diplomes: {},
       competences: {},
       liens: {},
+      langues: {},
       poste_ex: "",
       name_company: "",
       country: "",
@@ -1372,6 +1468,12 @@ export default {
       exper: "",
       titre: "",
       url: "",
+      titr: "",
+      urll: "",
+      langue: "",
+      niveau: "",
+      lang: "",
+      niv: "",
       idc: this.$route.params.id,
       dialog: false,
       dialog1: false,
@@ -1383,13 +1485,6 @@ export default {
       bufferValue: 20,
       resumes: false,
       interval: 0,
-      message3: "ex:designer!",
-      message4: "Nom de la société!",
-      message5: "tell us!",
-      message6: "tell us!",
-      message7: "Enter your Établissement!",
-      message8: "Enter your Diplôme!",
-      message9: "Discipline!",
       ex4: "success",
       step: 1,
     };
@@ -1414,7 +1509,8 @@ export default {
       this.getExperience(),
       this.getDiplome(),
       this.getCompetence(),
-      this.getLien();
+      this.getLien(),
+      this.getLangue();
   },
   created() {
     this.getCvById();
@@ -1431,7 +1527,6 @@ export default {
       let url = "http://localhost:8000/api/auth/affichecv/" + this.idc;
       await axios.get(url).then((response) => {
         this.cvs = response.data;
-        console.log(response.data);
       });
     },
     onChange(e) {
@@ -1469,8 +1564,7 @@ export default {
           this.$router.go(0);
         })
         .catch((err) => {
-          this.error = " impossible de changer info personnels";
-          console.log(err.message);
+          this.error = err;
         });
     },
     async addresume() {
@@ -1483,8 +1577,7 @@ export default {
           this.$router.go(0);
         })
         .catch((err) => {
-          this.error = " impossible d'ajouter résumer'";
-          console.log(err.message);
+          this.error = err;
         });
     },
     async deleteresume() {
@@ -1497,8 +1590,7 @@ export default {
           this.$router.go(0);
         })
         .catch((err) => {
-          this.error = " impossible d'ajouter résumer'";
-          console.log(err.message);
+          this.error = err;
         });
     },
     async addinteret() {
@@ -1511,8 +1603,7 @@ export default {
           this.$router.go(0);
         })
         .catch((err) => {
-          this.error = " impossible d'ajouter interet'";
-          console.log(err.message);
+          this.error = err;
         });
     },
     async addskills() {
@@ -1525,8 +1616,7 @@ export default {
           this.$router.go(0);
         })
         .catch((err) => {
-          this.error = " impossible d'ajouter skills'";
-          console.log(err.message);
+          this.error = err;
         });
     },
     async deleteskills() {
@@ -1539,8 +1629,7 @@ export default {
           this.$router.go(0);
         })
         .catch((err) => {
-          this.error = " impossible de supprimer skills'";
-          console.log(err.message);
+          this.error = err;
         });
     },
     async deleteinteret() {
@@ -1553,8 +1642,7 @@ export default {
           this.$router.go(0);
         })
         .catch((err) => {
-          this.error = " impossible de supprimer interet'";
-          console.log(err.message);
+          this.error = err;
         });
     },
     async addexperience() {
@@ -1573,8 +1661,7 @@ export default {
           this.$router.go(0);
         })
         .catch((err) => {
-          this.error = " impossible d'ajouter experience'";
-          console.log(err.message);
+          this.error = err;
         });
     },
     async addcompetence() {
@@ -1589,15 +1676,13 @@ export default {
           this.$router.go(0);
         })
         .catch((err) => {
-          this.error = " impossible d'ajouter competence'";
-          console.log(err.message);
+          this.error = err;
         });
     },
     async getCompetence() {
       let url = "http://localhost:8000/api/auth/getcompetence/" + this.idc;
       await axios.get(url).then((response) => {
         this.competences = response.data;
-        console.log(response.data);
       });
     },
     async deletecompetence($id) {
@@ -1608,8 +1693,7 @@ export default {
           this.$router.go(0);
         })
         .catch((err) => {
-          this.error = " impossible de supprimer competence'";
-          console.log(err.message);
+          this.error = err;
         });
     },
     async updatecompetence($id) {
@@ -1623,15 +1707,13 @@ export default {
           this.$router.go(0);
         })
         .catch((err) => {
-          this.error = " impossible de changer info personnels";
-          console.log(err.message);
+          this.error = err;
         });
     },
     async getExperience() {
       let url = "http://localhost:8000/api/auth/getexperience/" + this.idc;
       await axios.get(url).then((response) => {
         this.experiences = response.data;
-        console.log(response.data);
       });
     },
     async deleteexperience($id) {
@@ -1642,8 +1724,7 @@ export default {
           this.$router.go(0);
         })
         .catch((err) => {
-          this.error = " impossible de supprimer experience'";
-          console.log(err.message);
+          this.error = err;
         });
     },
     async adddiplome() {
@@ -1663,15 +1744,13 @@ export default {
           this.$router.go(0);
         })
         .catch((err) => {
-          this.error = " impossible d'ajouter diplome'";
-          console.log(err.message);
+          this.error = err;
         });
     },
     async getDiplome() {
       let url = "http://localhost:8000/api/auth/getdiplome/" + this.idc;
       await axios.get(url).then((response) => {
         this.diplomes = response.data;
-        console.log(response.data);
       });
     },
     async deletediplome($id) {
@@ -1682,8 +1761,7 @@ export default {
           this.$router.go(0);
         })
         .catch((err) => {
-          this.error = " impossible de supprimer diplome'";
-          console.log(err.message);
+          this.error = err;
         });
     },
     async addlien() {
@@ -1698,16 +1776,85 @@ export default {
           this.$router.go(0);
         })
         .catch((err) => {
-          this.error = " impossible d'ajouter lien'";
-          console.log(err.message);
+          this.error = err;
         });
     },
     async getLien() {
       let url = "http://localhost:8000/api/auth/getlien/" + this.idc;
       await axios.get(url).then((response) => {
         this.liens = response.data;
-        console.log(response.data);
       });
+    },
+    async updatelien($id) {
+      axios
+        .post("http://localhost:8000/api/auth/modifierlien/" + $id, {
+          titre: this.titr,
+          url: this.urll,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+    async deletelien($id) {
+      axios
+        .delete("http://localhost:8000/api/auth/deletelien/" + $id, {})
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+    async addlangue() {
+      axios
+        .post("http://localhost:8000/api/auth/addlangue", {
+          langue: this.langue,
+          niveau: this.niveau,
+          id_cv: this.idc,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+    async getLangue() {
+      let url = "http://localhost:8000/api/auth/getlangue/" + this.idc;
+      await axios.get(url).then((response) => {
+        this.langues = response.data;
+      });
+    },
+    async updateLangue($id) {
+      axios
+        .post("http://localhost:8000/api/auth/modifierlangue/" + $id, {
+          langue: this.lang,
+          titre: this.niv,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+    async deletelangue($id) {
+      axios
+        .delete("http://localhost:8000/api/auth/deletelangue/" + $id, {})
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
     },
   },
 };
