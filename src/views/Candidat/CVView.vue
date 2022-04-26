@@ -6,7 +6,12 @@
       <h5>Créer Votre CV</h5>
       <br />
       <p style="margin-left: 850px">
-        <v-icon>mdi-eye-check-outline</v-icon> Visualiser Ce CV
+        <v-btn
+          rounded
+          color="blue"
+          :to="{ name: 'cvform', params: { id: this.idc } }"
+          ><v-icon>mdi-eye-check-outline</v-icon> Visualiser Ce CV</v-btn
+        >
       </p>
       <v-progress-linear
         v-model="value"

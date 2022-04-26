@@ -14,7 +14,7 @@
       <v-row>
         <v-col cols="12" md="4">
           <img
-            src=" https://icons.iconarchive.com/icons/inipagi/job-seeker/256/cv-icon.png "
+            src=" https://www.mastersbooking.fr/sites/default/files/styles/img_blog/public/field/image/resume-2296951_1920_1_0.png?itok=ESjYBHbn "
             style="width: 110px; height: 110px"
           />
         </v-col>
@@ -53,8 +53,8 @@
                   <form style="max-width: 450px; margin: auto">
                     <div>
                       <v-img
-                        src="https://cdn-icons-png.flaticon.com/512/3135/3135800.png"
-                        style="width: 100px; height: 100px"
+                        src="https://www.mastersbooking.fr/sites/default/files/styles/img_blog/public/field/image/resume-2296951_1920_1_0.png?itok=ESjYBHbn"
+                        style="width: 100px; height: 50px"
                       >
                       </v-img>
                       <p>
@@ -93,12 +93,36 @@
 
                       <div class="input-icons">
                         <v-icon>mdi-map-marker-radius</v-icon>
-                        <input
-                          class="input-field"
-                          type="text"
+                        <v-select
                           v-model="localite1"
-                          placeholder="Votre localité actuelle"
-                        />
+                          label="Votre localite actuel"
+                          :items="[
+                            'Ariana',
+                            'Béja',
+                            'Ben Arous',
+                            'Bizerte',
+                            'Gabès',
+                            'Gafsa',
+                            'Jendouba',
+                            'Kairouan',
+                            'Kasserine',
+                            'Kébili',
+                            'Kef',
+                            'Mahdia',
+                            'Manouba',
+                            'Médenine',
+                            'Monastir',
+                            'Nabeul',
+                            'Sfax',
+                            'Sidi Bouzid',
+                            ' Siliana',
+                            'Sousse',
+                            ' Tataouine',
+                            'Tozeur',
+                            'Tunis',
+                            'Zaghouan',
+                          ]"
+                        ></v-select>
                       </div>
                       <br />
                       <v-spacer></v-spacer>
@@ -134,7 +158,7 @@
       <v-row align="center">
         <v-col cols="12" md="4">
           <img
-            src="https://icons.iconarchive.com/icons/inipagi/job-seeker/256/cv-icon.png"
+            src="https://media.istockphoto.com/vectors/resume-vector-icon-vector-id1220384194?k=20&m=1220384194&s=612x612&w=0&h=DjJfjjxoQb6xqDcYfkTWVQlbkbUGwg4ys09JEy9YCPg="
             style="width: 150px; height: 150px"
           />
         </v-col>
@@ -176,7 +200,7 @@
                         <div>
                           <v-img
                             src="https://cdn-icons-png.flaticon.com/512/3135/3135800.png"
-                            style="width: 80px; height: 50px"
+                            style="width: 80px; height: 40px"
                           >
                           </v-img>
                           <p>
@@ -287,13 +311,30 @@
         :key="cv.id"
       >
         <v-banner-text>
-          <router-link
-            :to="{ name: 'cvview', params: { id: cv.id } }"
-            style="text-decoration: none"
-            ><h5>{{ cv.poste }}</h5>
-          </router-link>
+          <div v-if="cv.pdf == null">
+            <router-link
+              :to="{ name: 'cvview', params: { id: cv.id } }"
+              style="text-decoration: none"
+              ><h5>{{ cv.poste }}</h5>
+            </router-link>
+          </div>
+          <div v-if="cv.pdf != null">
+            <h5>{{ cv.poste }}</h5>
+          </div>
           <h6><v-icon icon="mdi-map-marker"></v-icon>{{ cv.localite }}</h6>
-          <h6><v-icon icon="mdi-file-check-outline"></v-icon>CATCH IT CV</h6>
+          <div v-if="cv.pdf == null">
+            <h6><v-icon icon="mdi-file-check-outline"></v-icon>CATCH IT CV</h6>
+          </div>
+          <div v-if="cv.pdf != null">
+            <h6>
+              <a
+                v-bind:href="'../cvs/' + cv.pdf"
+                style="text-decoration: none"
+                target="blank"
+                ><v-icon icon="mdi-file-pdf-box"></v-icon>{{ user.name }} CV</a
+              >
+            </h6>
+          </div>
           <v-chip class="ma-2" color="black" variant="outlined">
             {{ cv.added }}
             <v-icon end icon="mdi-clock"></v-icon>
@@ -307,20 +348,151 @@
                   <v-icon>mdi-format-list-bulleted-type</v-icon>
                 </v-btn>
               </template>
-              <v-list>
-                <v-list-item>
-                  <v-list-item-title v-text="'afficher'"></v-list-item-title>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-title v-text="'modifier'"></v-list-item-title>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-title v-text="'supprimer'"></v-list-item-title>
-                </v-list-item>
-                <v-list-item>
-                  <v-list-item-title v-text="'Télécharger'"></v-list-item-title>
-                </v-list-item>
-              </v-list>
+              <div v-if="cv.pdf == null">
+                <v-list>
+                  <v-list-item>
+                    <router-link
+                      :to="{ name: 'cvform', params: { id: cv.id } }"
+                      style="text-decoration: none"
+                      ><v-btn v-text="'afficher'"></v-btn
+                    ></router-link>
+                  </v-list-item>
+                  <v-list-item>
+                    <router-link
+                      :to="{ name: 'cvview', params: { id: cv.id } }"
+                      style="text-decoration: none"
+                      ><v-btn v-text="'modifier'"></v-btn
+                    ></router-link>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-row justify="center">
+                      <v-dialog v-model="dialog2" persistent>
+                        <template v-slot:activator="{ props }">
+                          <v-hover>
+                            <v-btn v-bind="props" v-text="'supprimer'"></v-btn>
+                          </v-hover>
+                        </template>
+                        <v-card>
+                          <v-card-title
+                            ><v-icon size="50"
+                              >mdi-emoticon-cry-outline
+                            </v-icon>
+                          </v-card-title>
+                          <v-card-text
+                            >Êtes-vous certain de vouloir supprimer ce cv
+                            ?</v-card-text
+                          >
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                              rounded
+                              flat
+                              style="
+                                background-color: green;
+                                padding-left: 40px;
+                                padding-right: 50px;
+                              "
+                              color="white"
+                              text
+                              @click="dialog2 = false"
+                            >
+                              Annuler
+                            </v-btn>
+                            <v-btn
+                              rounded
+                              flat
+                              style="
+                                background-color: red;
+                                padding-left: 40px;
+                                padding-right: 50px;
+                              "
+                              color="white"
+                              text
+                              @click.prevent="deletecv(cv.id)"
+                            >
+                              Delete
+                            </v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
+                    </v-row>
+                  </v-list-item>
+                </v-list>
+              </div>
+              <div v-if="cv.pdf != null">
+                <v-list>
+                  <v-list-item>
+                    <a
+                      v-bind:href="'../cvs/' + cv.pdf"
+                      style="text-decoration: none"
+                      target="blank"
+                      ><v-btn v-text="'afficher'"></v-btn
+                    ></a>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-row justify="center">
+                      <v-dialog v-model="dialog2" persistent>
+                        <template v-slot:activator="{ props }">
+                          <v-hover>
+                            <v-btn v-bind="props" v-text="'supprimer'"></v-btn>
+                          </v-hover>
+                        </template>
+                        <v-card>
+                          <v-card-title
+                            ><v-icon size="50"
+                              >mdi-emoticon-cry-outline
+                            </v-icon>
+                          </v-card-title>
+                          <v-card-text
+                            >Êtes-vous certain de vouloir supprimer ce cv
+                            ?</v-card-text
+                          >
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                              rounded
+                              flat
+                              style="
+                                background-color: green;
+                                padding-left: 40px;
+                                padding-right: 50px;
+                              "
+                              color="white"
+                              text
+                              @click="dialog2 = false"
+                            >
+                              Annuler
+                            </v-btn>
+                            <v-btn
+                              rounded
+                              flat
+                              style="
+                                background-color: red;
+                                padding-left: 40px;
+                                padding-right: 50px;
+                              "
+                              color="white"
+                              text
+                              @click.prevent="deletecv(cv.id)"
+                            >
+                              Delete
+                            </v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
+                    </v-row>
+                  </v-list-item>
+                  <v-list-item>
+                    <a
+                      v-bind:href="'../cvs/' + cv.pdf"
+                      style="text-decoration: none"
+                      target="blank"
+                      v-bind:download="cv.pdf"
+                      ><v-btn v-text="'Télécharger'"></v-btn
+                    ></a>
+                  </v-list-item>
+                </v-list>
+              </div>
             </v-menu>
           </div>
         </template>
@@ -347,10 +519,14 @@ export default {
       email: "",
       poste: "",
       localite: "",
+      email1: "",
+      poste1: "",
+      localite1: "",
       id_user: "",
       error: "",
       isLoading: false,
       dialog: false,
+      dialog2: false,
       cvs: {},
       dialog1: false,
       image: null,
@@ -400,13 +576,25 @@ export default {
       fd.append("email", this.email1);
       fd.append("poste", this.poste1);
       fd.append("localite", this.localite1);
+      fd.append("id_user", this.user.id);
       axios
-        .post("http://localhost:8000/api/auth/uploadcv", fd, {})
+        .post("http://localhost:8000/api/auth/downloadcv", fd, {})
         .then((res) => {
           console.log("response", res.data);
           this.$router.go(0);
         })
         .catch((err) => console.log(err));
+    },
+    async deletecv($id) {
+      axios
+        .delete("http://localhost:8000/api/auth/deletecv/" + $id, {})
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
     },
   },
 };

@@ -2,7 +2,7 @@
   <v-toolbar dense app color="transparent">
     <v-toolbar-title class="text-uppercase-title"
       ><router-link to="/"
-        ><img src="../favicon.ico" style="width: 130px; height: 75px" />
+        ><img src="../favicon.ico" style="width: 130px; height: 85px" />
       </router-link>
     </v-toolbar-title>
     <v-spacer></v-spacer>
@@ -26,9 +26,9 @@
       </v-btn>
     </v-li>
     <v-li class="nav-item" v-if="loggedUser">
-      <v-btn right="55em" rounded color="grey" dark to="/">
+      <v-btn right="50em" rounded color="grey" dark to="/">
         <v-icon color="grey">mdi-clipboard-text-search</v-icon>
-        chercher
+        Recherche Offre
       </v-btn>
     </v-li>
     <v-li class="nav-item" v-if="loggedIn">

@@ -73,20 +73,6 @@
                 >CV's sauvgardés</v-btn
               >
               <br /><br />
-              <v-col>
-                <p class="font-weight-bold">En savoir Plus!</p>
-              </v-col>
-              <v-btn
-                flat
-                rounded
-                prepend-icon="mdi-email-open-outline"
-                title="Nous contacter"
-                value="Nous contacter"
-                to="/ContactCompany"
-              >
-                Nous contacter!
-              </v-btn>
-              <br />
             </v-list>
           </v-navigation-drawer>
           <v-main style="height: 750px"></v-main>
@@ -97,29 +83,48 @@
           <v-col cols="12" md="12">
             <br /><br />
             <v-icon color="green" size="40">mdi-signal-cellular-outline</v-icon>
-            <h5 class="font-weight-bold">Statistiques Candidatures</h5>
+            <h5 class="font-weight-bold">Statistiques Postes</h5>
           </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="12" md="12">
-            <v-table fixed-header height="300px">
-              <thead>
-                <tr>
-                  <th class="text-left">Name</th>
-                  <th class="text-left">Calories</th>
-                  <th class="text-left">Calories1</th>
-                  <th class="text-left">Calories2</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="item in desserts" :key="item.name">
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.calories }}</td>
-                  <td>{{ item.calories }}</td>
-                  <td>{{ item.calories }}</td>
-                </tr>
-              </tbody>
-            </v-table>
+          <v-col cols="12" md="4">
+            <v-card class="mx-auto" max-width="344" variant="outlined">
+              <v-card-header>
+                <div>
+                  <div>
+                    <v-icon color="green" size="55">mdi-file-compare</v-icon>
+                  </div>
+                  <div class="text-h4 mb-1">0</div>
+                  <div class="text-h5 mb-1">All Postes</div>
+                </div>
+              </v-card-header>
+            </v-card>
+          </v-col>
+          <v-col cols="12" md="4">
+            <v-card class="mx-auto" max-width="344" variant="outlined">
+              <v-card-header>
+                <div>
+                  <div>
+                    <v-icon color="green" size="55">mdi-timer-sand</v-icon>
+                  </div>
+                  <div class="text-h4 mb-1">0</div>
+                  <div class="text-h5 mb-1">EN attente</div>
+                </div>
+              </v-card-header>
+            </v-card>
+          </v-col>
+          <v-col cols="12" md="4">
+            <v-card class="mx-auto" max-width="344" variant="outlined">
+              <v-card-header>
+                <div>
+                  <div>
+                    <v-icon color="green" size="55"
+                      >mdi-content-save-all</v-icon
+                    >
+                  </div>
+                  <div class="text-h4 mb-1">0</div>
+                  <div class="text-h5 mb-1">Posts sauvgardés</div>
+                </div>
+              </v-card-header>
+            </v-card>
           </v-col>
         </v-row>
       </v-col>

@@ -1,6 +1,5 @@
 <template>
   <navbar-view />
-  <v-divider></v-divider>
   <div>
     <v-row>
       <v-col cols="12" md="4">
@@ -13,7 +12,7 @@
               <v-btn
                 flat
                 rounded
-                prepend-icon=" mdi-download"
+                prepend-icon=" mdi-publish"
                 title="  Publiez vos offres"
                 value="  Publiez vos offres"
                 to="PosteCompany"
@@ -23,7 +22,7 @@
               <v-btn
                 flat
                 rounded
-                prepend-icon="mdi-view-dashboard"
+                prepend-icon="mdi-content-paste"
                 title=" gérer vos offres"
                 value=" gérer vos offres"
                 to="GerePoste"
@@ -33,7 +32,7 @@
               <v-btn
                 flat
                 rounded
-                prepend-icon="mdi-align-vertical-bottom"
+                prepend-icon="mdi-forum"
                 title="Statistiques"
                 value="Statistiques"
                 to="StatistCompany"
@@ -73,22 +72,6 @@
                 >CV's sauvgardés</v-btn
               >
               <br /><br />
-              <v-col>
-                <p class="font-weight-bold">En savoir Plus!</p>
-              </v-col>
-              <v-btn
-                outlined
-                fab
-                flat
-                rounded
-                prepend-icon="mdi-email-open-outline"
-                title="Nous contacter"
-                value="Nous contacter"
-                to="/ContactCompany"
-              >
-                Nous contacter!
-              </v-btn>
-              <br />
             </v-list>
           </v-navigation-drawer>
           <v-main style="height: 750px"></v-main>
@@ -105,26 +88,6 @@
             variant="outlined"
           ></v-text-field>
         </v-col>
-        <v-row>
-          <v-col cols="12" md="6">
-            <p>Nom</p>
-            <v-text-field
-              label="Nom"
-              placeholder="Placeholder"
-              variant="outlined"
-              prepend-inner-icon="mdi-account-question-outline"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" md="6">
-            <p>Prénom</p>
-            <v-text-field
-              label="Prénom"
-              placeholder="Placeholder"
-              variant="outlined"
-              prepend-inner-icon="mdi-account-question-outline"
-            ></v-text-field>
-          </v-col>
-        </v-row>
         <v-row>
           <v-col cols="12" md="6">
             <p>Lieu de Travail</p>
@@ -195,6 +158,17 @@
           </v-col>
         </v-row>
         <v-row>
+          <p>Description de l'offre d'emploi</p>
+          <v-col cols="12" md="12">
+            <v-textarea
+              prepend-inner-icon="mdi-file-document-edit-outline"
+              background-color="grey lighten-2"
+              color="cyan"
+              label="Votre message"
+            ></v-textarea>
+          </v-col>
+        </v-row>
+        <v-row>
           <v-col cols="12" md="8">
             <p>À propos de la société</p>
           </v-col>
@@ -246,6 +220,17 @@
               variant="outlined"
               prepend-inner-icon="mdi-account"
             ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <p>Descriptif de la société</p>
+          <v-col cols="12" md="12">
+            <v-textarea
+              prepend-inner-icon="mdi-file-document-edit-outline"
+              background-color="grey lighten-2"
+              color="cyan"
+              label="Votre message"
+            ></v-textarea>
           </v-col>
         </v-row>
         <v-row>

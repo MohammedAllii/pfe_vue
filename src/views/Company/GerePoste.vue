@@ -73,20 +73,6 @@
                 >CV's sauvgardés</v-btn
               >
               <br /><br />
-              <v-col>
-                <p class="font-weight-bold">En savoir Plus!</p>
-              </v-col>
-              <v-btn
-                flat
-                rounded
-                prepend-icon="mdi-email-open-outline"
-                title="Nous contacter"
-                value="Nous contacter"
-                to="/ContactCompany"
-              >
-                Nous contacter!
-              </v-btn>
-              <br />
             </v-list>
           </v-navigation-drawer>
           <v-main style="height: 750px"></v-main>
@@ -112,59 +98,62 @@
         <v-row>
           <v-col cols="12" md="12">
             <v-tabs v-model="tab">
-              <v-tab value="one">Actif[0]</v-tab>
-              <v-tab value="two">Suspendu[0]</v-tab>
-              <v-tab value="three">Expiré[0]</v-tab>
-              <v-tab value="four">Ebauchés[1]</v-tab>
+              <v-tab @click.prevent="alloffres" value="one">All Posts</v-tab>
+              <v-tab value="two">En attente</v-tab>
+              <v-tab value="three">sauvgardés</v-tab>
             </v-tabs>
 
             <v-card-text>
               <v-window v-model="tab">
-                <v-window-item value="one"> One </v-window-item>
+                <v-window-item
+                  v-for="offre in offres"
+                  :key="offre.id"
+                  value="one"
+                >
+                  <v-row>
+                    <v-col cols="12" md="12">
+                      <v-row>
+                        <v-col cols="12" md="12">
+                          <h5 class="font-italic" style="color: blue">
+                            {{ offre.poste }}
+                          </h5>
+                          <v-col cols="12">
+                            <v-icon color="blue" size="25"
+                              >mdi-map-marker</v-icon
+                            ><strong style="font-size: 20px">{{
+                              offre.lieu_travail
+                            }}</strong
+                            ><br />
+                            <v-icon color="blue" size="25"
+                              >mdi-currency-usd</v-icon
+                            ><strong style="font-size: 20px">{{
+                              offre.salaire
+                            }}</strong>
+                            <p>
+                              {{ offre.description }}
+                            </p>
+                            <v-chip
+                              class="ma-2"
+                              color="success"
+                              variant="outlined"
+                            >
+                              <v-icon start icon="mdi-progress-clock"></v-icon>
+                              {{ offre.added }}
+                            </v-chip>
 
-                <v-window-item value="two"> Two </v-window-item>
-
-                <v-window-item value="three"> Three </v-window-item>
-
-                <v-window-item value="four">
-                  <v-banner lines="two" color="deep-purple-accent-4">
-                    <template v-slot:prepend> </template>
-                    <v-col>
-                      <v-banner-text class="text-h5 font-weight-bold">
-                        Designer
-                      </v-banner-text>
-                      <br />
-                      <v-banner-text class="text-h6 font-weight-bold">
-                        siliana
-                      </v-banner-text>
+                            <v-chip
+                              class="ma-2"
+                              color="primary"
+                              variant="outlined"
+                            >
+                              postuler facilement
+                              <v-icon end icon="mdi-face"></v-icon>
+                            </v-chip>
+                          </v-col>
+                        </v-col>
+                      </v-row>
                     </v-col>
-                    <v-col>
-                      <v-banner-actions>
-                        <v-btn rounded flat color="blue">Publier</v-btn>
-                      </v-banner-actions>
-                      <v-banner-actions>
-                        <v-menu transition="fab-transition">
-                          <template v-slot:activator="{ props }">
-                            <v-btn dark color="blue" v-bind="props">
-                              <v-icon>mdi-format-list-bulleted-type</v-icon>
-                            </v-btn>
-                          </template>
-                          <v-list>
-                            <v-list-item>
-                              <v-list-item-title
-                                v-text="'modifier'"
-                              ></v-list-item-title>
-                            </v-list-item>
-                            <v-list-item>
-                              <v-list-item-title
-                                v-text="'supprimer'"
-                              ></v-list-item-title>
-                            </v-list-item>
-                          </v-list>
-                        </v-menu>
-                      </v-banner-actions>
-                    </v-col>
-                  </v-banner>
+                  </v-row>
                 </v-window-item>
               </v-window>
             </v-card-text>
@@ -179,11 +168,24 @@
 <script>
 import NavbarView from "@/components/NavbarView.vue";
 import FooterView from "@/components/FooterView.vue";
+import axios from "axios";
 export default {
   components: { NavbarView, FooterView },
   data: () => ({
+    offres: {},
     tab: null,
   }),
+  mounted() {
+    this.alloffres();
+  },
+  methods: {
+    async alloffres() {
+      let url = "http://localhost:8000/api/auth/alloffres";
+      await axios.get(url).then((response) => {
+        this.offres = response.data;
+      });
+    },
+  },
 };
 </script>
 <style></style>

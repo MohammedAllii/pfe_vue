@@ -8,8 +8,10 @@ import SideBar from "../components/SideBar";
 import DashbordView from "@/views/Admin/DashbordView.vue";
 import GestionUser from "@/views/Admin/GestionUser";
 import PostuleCv from "../views/Candidat/PostuleCv";
+import PostuleLettre from "../views/Candidat/PostuleLettre";
 import HomeView from "../views/Home/HomeView";
 import CVView from "../views/Candidat/CVView";
+import CvForm from "../views/Candidat/CvForm";
 import ProfilCandidat from "../views/ProfilCandidat";
 import ModifierExperience from "../views/Candidat/ModiferExperience";
 import ModifierDiplome from "../views/Candidat/ModifierDiplome";
@@ -136,6 +138,22 @@ const routes = [
     path: "/PostuleCv",
     name: "PostuleCv",
     component: PostuleCv,
+    meta: {
+      secure: true,
+    },
+  },
+  {
+    path: "/postulelettre",
+    name: "postulelettre",
+    component: PostuleLettre,
+    meta: {
+      secure: true,
+    },
+  },
+  {
+    path: "/cvform/:id?",
+    name: "cvform",
+    component: CvForm,
     meta: {
       secure: true,
     },
