@@ -8,10 +8,12 @@ import SideBar from "../components/SideBar";
 import DashbordView from "@/views/Admin/DashbordView.vue";
 import GestionUser from "@/views/Admin/GestionUser";
 import PostuleCv from "../views/Candidat/PostuleCv";
+import RechercheCv from "../views/Company/RechercheCv";
 import PostuleLettre from "../views/Candidat/PostuleLettre";
 import HomeView from "../views/Home/HomeView";
 import CVView from "../views/Candidat/CVView";
 import CvForm from "../views/Candidat/CvForm";
+import LettreForm from "../views/Candidat/LettreForm";
 import ProfilCandidat from "../views/ProfilCandidat";
 import ModifierExperience from "../views/Candidat/ModiferExperience";
 import ModifierDiplome from "../views/Candidat/ModifierDiplome";
@@ -104,6 +106,14 @@ const routes = [
     },
   },
   {
+    path: "/RechercheCv",
+    name: "RechercheCv",
+    component: RechercheCv,
+    meta: {
+      secure: true,
+    },
+  },
+  {
     path: "/SignIn",
     name: "SignIn",
     component: SignIn,
@@ -154,6 +164,14 @@ const routes = [
     path: "/cvform/:id?",
     name: "cvform",
     component: CvForm,
+    meta: {
+      secure: true,
+    },
+  },
+  {
+    path: "/lettreform/:id?",
+    name: "lettreform",
+    component: LettreForm,
     meta: {
       secure: true,
     },

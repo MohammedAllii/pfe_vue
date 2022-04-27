@@ -30,7 +30,8 @@
               required
             />
           </div>
-          <div style="color: red" v-if="error">{{ error }}</div>
+          <v-alert type="error" v-if="error">{{ error }}</v-alert>
+          <br /><br />
           <v-spacer></v-spacer>
           <v-hover>
             <v-btn

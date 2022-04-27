@@ -44,49 +44,74 @@
               </template>
               <template v-slot:default="{ isActive }">
                 <v-card>
-                  <v-row>
-                    <v-col cols="12" md="12">
-                      <p class="text-h6">
-                        <v-img
-                          src=" https://www.hloom.com/images/cle-banner.svg "
-                          style="width: 80px; height: 80px"
-                        ></v-img
-                        >Télécharger votre lettre
-                      </p>
-                      <p>
-                        Téléchargez votre lettre de motivation au format de
-                        votre choix et soyez fin prêt pour postuler.
-                      </p>
-                    </v-col>
-                  </v-row>
-                  <v-card-text>
-                    <v-row>
-                      <v-col cols="12" md="12">
-                        <v-file-input
-                          accept="image/*"
-                          label="File input"
-                        ></v-file-input>
-                      </v-col>
-                    </v-row>
-                  </v-card-text>
-                  <v-card-actions class="justify-end">
-                    <v-btn
-                      text
-                      rounded
-                      flat
-                      color="red"
-                      @click="isActive.value = false"
-                      >Annuler</v-btn
-                    >
-                    <v-btn
-                      text
-                      rounded
-                      flat
-                      color="green"
-                      @click="isActive.value = false"
-                      >Enregistrer</v-btn
-                    >
-                  </v-card-actions>
+                  <div>
+                    <center>
+                      <form
+                        style="
+                          max-width: 350px;
+                          max-height: 390px;
+                          margin: 100px;
+                        "
+                      >
+                        <div>
+                          <v-img
+                            src=" https://www.hloom.com/images/cle-banner.svg "
+                            style="width: 100px; height: 50px"
+                          >
+                          </v-img>
+                          <p>
+                            Téléchargez votre lettre de motivation au format de
+                            votre choix.
+                          </p>
+                        </div>
+                        <form @submit.prevent="submit">
+                          <div class="input-icons">
+                            <v-file-input
+                              label="File input"
+                              outlined
+                              dense
+                              @change="onChange"
+                            ></v-file-input>
+                          </div>
+                          <div class="input-icons">
+                            <v-icon>mdi-account</v-icon>
+                            <input
+                              class="input-field"
+                              type="text"
+                              v-model="titre1"
+                              placeholder="Entrer Titre"
+                            />
+                          </div>
+                          <br />
+                          <v-spacer></v-spacer>
+                          <v-hover>
+                            <v-btn
+                              color="blue"
+                              rounded
+                              flat
+                              block
+                              tile
+                              type="submit"
+                              >go!</v-btn
+                            >
+                          </v-hover>
+                          <br />
+                          <v-hover>
+                            <v-btn
+                              color="blue"
+                              rounded
+                              flat
+                              block
+                              tile
+                              @click="isActive.value = false"
+                              >cancel</v-btn
+                            >
+                          </v-hover>
+                          <br />
+                        </form>
+                      </form>
+                    </center>
+                  </div>
                 </v-card>
               </template>
             </v-dialog>
@@ -139,7 +164,7 @@
                   <v-toolbar-title>Close</v-toolbar-title>
                   <v-spacer></v-spacer>
                 </v-toolbar>
-                <v-list lines="15" subheader>
+                <v-container fluid align="center">
                   <v-row>
                     <v-col cols="12" md="12">
                       <p class="text-h6">
@@ -155,18 +180,21 @@
                       </p>
                     </v-col>
                     <v-row>
-                      <v-col cols="12" md="4">
+                      <v-col cols="12" md="6">
                         <v-text-field
-                          label="Enter your name"
+                          label="Enter your title"
+                          v-model="titre"
+                          type="text"
                           variant="outlined"
                           clearable
                           clear-icon="mdi-cancel"
                           prepend-inner-icon="mdi-emoticon-excited-outline"
                         ></v-text-field>
                       </v-col>
-                      <v-col cols="12" md="4">
+                      <v-col cols="12" md="6">
                         <v-text-field
                           label="Enter your profession"
+                          v-model="poste"
                           variant="outlined"
                           clearable
                           clear-icon="mdi-cancel"
@@ -176,18 +204,21 @@
                     </v-row>
                   </v-row>
                   <v-row>
-                    <v-col cols="12" md="4">
+                    <v-col cols="12" md="6">
                       <v-text-field
                         label="Enter your phone Number"
+                        v-model="phone"
                         variant="outlined"
                         clearable
                         clear-icon="mdi-cancel"
                         prepend-inner-icon="mdi-cellphone-android"
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="12" md="4">
+                    <v-col cols="12" md="6">
                       <v-text-field
                         label="Enter your Email"
+                        v-model="email"
+                        type="email"
                         variant="outlined"
                         clearable
                         clear-icon="mdi-cancel"
@@ -201,6 +232,7 @@
                     </v-col>
                     <v-col cols="12" md="6">
                       <v-textarea
+                        v-model="contenu"
                         auto-grow
                         filled
                         color="blue"
@@ -210,12 +242,16 @@
                     </v-col>
                     <v-col cols="12" md="4">
                       <v-btn rounded flat>Annuler</v-btn>
-                      <v-btn rounded flat color="green"
+                      <v-btn
+                        rounded
+                        flat
+                        color="green"
+                        @click.prevent="lettreRegister"
                         >Enregistrer</v-btn
                       ></v-col
                     >
                   </v-row>
-                </v-list>
+                </v-container>
               </v-card>
             </v-dialog>
           </v-row>
@@ -224,21 +260,292 @@
     </v-container>
   </div>
   <v-divider></v-divider>
+  <v-container>
+    <v-banner
+      lines="six"
+      icon="mdi-account-tie"
+      color="grey"
+      class="my-4"
+      v-for="lettre in lettres"
+      :key="lettre.id"
+    >
+      <v-banner-text>
+        <div v-if="lettre.pdf == null">
+          <router-link
+            :to="{ name: 'lettreform', params: { id: lettre.id } }"
+            style="text-decoration: none"
+            ><h5>{{ lettre.titre }}</h5>
+          </router-link>
+        </div>
+        <div v-if="lettre.pdf != null">
+          <h5>{{ lettre.titre }}</h5>
+        </div>
+        <div v-if="lettre.pdf == null">
+          <h6>
+            <v-icon icon="mdi-file-check-outline"></v-icon>CATCH IT LETTRE
+          </h6>
+        </div>
+        <div v-if="lettre.pdf != null">
+          <h6>
+            <a
+              v-bind:href="'../lettres/' + lettre.pdf"
+              style="text-decoration: none"
+              target="blank"
+              ><v-icon icon="mdi-file-pdf-box"></v-icon
+              >{{ user.name }} Lettre</a
+            >
+          </h6>
+        </div>
+        <v-chip class="ma-2" color="black" variant="outlined">
+          {{ lettre.added }}
+          <v-icon end icon="mdi-clock"></v-icon>
+        </v-chip>
+      </v-banner-text>
+      <template v-slot:actions>
+        <div class="text-center">
+          <v-menu transition="fab-transition">
+            <template v-slot:activator="{ props }">
+              <v-btn dark color="primary" v-bind="props">
+                <v-icon>mdi-format-list-bulleted-type</v-icon>
+              </v-btn>
+            </template>
+            <div v-if="lettre.pdf == null">
+              <v-list>
+                <v-list-item>
+                  <router-link
+                    :to="{ name: 'lettreform', params: { id: lettre.id } }"
+                    style="text-decoration: none"
+                    ><v-btn v-text="'afficher'"></v-btn
+                  ></router-link>
+                </v-list-item>
+                <v-list-item>
+                  <router-link
+                    :to="{ name: 'cvview', params: { id: lettre.id } }"
+                    style="text-decoration: none"
+                    ><v-btn v-text="'modifier'"></v-btn
+                  ></router-link>
+                </v-list-item>
+                <v-list-item>
+                  <v-row justify="center">
+                    <v-dialog v-model="dialog2" persistent>
+                      <template v-slot:activator="{ props }">
+                        <v-hover>
+                          <v-btn v-bind="props" v-text="'supprimer'"></v-btn>
+                        </v-hover>
+                      </template>
+                      <v-card>
+                        <v-card-title
+                          ><v-icon size="50">mdi-emoticon-cry-outline </v-icon>
+                        </v-card-title>
+                        <v-card-text
+                          >Êtes-vous certain de vouloir supprimer cette lettre
+                          ?</v-card-text
+                        >
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn
+                            rounded
+                            flat
+                            style="
+                              background-color: green;
+                              padding-left: 40px;
+                              padding-right: 50px;
+                            "
+                            color="white"
+                            text
+                            @click="dialog2 = false"
+                          >
+                            Annuler
+                          </v-btn>
+                          <v-btn
+                            rounded
+                            flat
+                            style="
+                              background-color: red;
+                              padding-left: 40px;
+                              padding-right: 50px;
+                            "
+                            color="white"
+                            text
+                            @click.prevent="deletelettre(lettre.id)"
+                          >
+                            Delete
+                          </v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                  </v-row>
+                </v-list-item>
+              </v-list>
+            </div>
+            <div v-if="lettre.pdf != null">
+              <v-list>
+                <v-list-item>
+                  <a
+                    v-bind:href="'../lettres/' + lettre.pdf"
+                    style="text-decoration: none"
+                    target="blank"
+                    ><v-btn v-text="'afficher'"></v-btn
+                  ></a>
+                </v-list-item>
+                <v-list-item>
+                  <v-row justify="center">
+                    <v-dialog v-model="dialog2" persistent>
+                      <template v-slot:activator="{ props }">
+                        <v-hover>
+                          <v-btn v-bind="props" v-text="'supprimer'"></v-btn>
+                        </v-hover>
+                      </template>
+                      <v-card>
+                        <v-card-title
+                          ><v-icon size="50">mdi-emoticon-cry-outline </v-icon>
+                        </v-card-title>
+                        <v-card-text
+                          >Êtes-vous certain de vouloir supprimer ce cv
+                          ?</v-card-text
+                        >
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn
+                            rounded
+                            flat
+                            style="
+                              background-color: green;
+                              padding-left: 40px;
+                              padding-right: 50px;
+                            "
+                            color="white"
+                            text
+                            @click="dialog2 = false"
+                          >
+                            Annuler
+                          </v-btn>
+                          <v-btn
+                            rounded
+                            flat
+                            style="
+                              background-color: red;
+                              padding-left: 40px;
+                              padding-right: 50px;
+                            "
+                            color="white"
+                            text
+                            @click.prevent="deletelettre(lettre.id)"
+                          >
+                            Delete
+                          </v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                  </v-row>
+                </v-list-item>
+                <v-list-item>
+                  <a
+                    v-bind:href="'../lettres/' + lettre.pdf"
+                    style="text-decoration: none"
+                    target="blank"
+                    v-bind:download="lettre.pdf"
+                    ><v-btn v-text="'Télécharger'"></v-btn
+                  ></a>
+                </v-list-item>
+              </v-list>
+            </div>
+          </v-menu>
+        </div>
+      </template>
+    </v-banner>
+  </v-container>
   <footer-view />
 </template>
 <script>
+import axios from "axios";
 import NavbarView from "@/components/NavbarView.vue";
-import FooterView from "@/components/FooterView";
 export default {
+  name: "AddLettre",
+  computed: {
+    user() {
+      return this.$store.getters.get_user;
+    },
+  },
+  components: { NavbarView },
   data() {
     return {
+      name: "",
+      email: "",
+      poste: "",
+      titre: "",
+      titre1: "",
+      id_user: "",
+      error: "",
       dialog: false,
-      notifications: false,
-      sound: true,
-      widgets: false,
+      dialog2: false,
+      lettres: {},
+      image: null,
+      contenu: "",
+      phone: "",
+      imgs: {},
     };
   },
-  components: { NavbarView, FooterView },
+  mounted() {
+    this.allLettres();
+  },
+  methods: {
+    lettreRegister() {
+      this.$store
+        .dispatch("lettreRegisterAction", {
+          name: this.user.name,
+          titre: this.titre,
+          email: this.email,
+          poste: this.poste,
+          contenu: this.contenu,
+          phone: this.phone,
+          id_user: this.user.id,
+        })
+        .then((result) => {
+          console.log(result);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = " Registration faild";
+          console.log(err.message);
+        });
+    },
+    async allLettres() {
+      axios
+        .get("http://localhost:8000/api/auth/allLettres/" + this.user.id)
+        .then((response) => {
+          this.lettres = response.data;
+        });
+    },
+    onChange(e) {
+      console.log("selected file", e.target.files[0]);
+      this.image = e.target.files[0];
+    },
+    submit() {
+      let fd = new FormData();
+      fd.append("img", this.image);
+      fd.append("titre", this.titre1);
+      fd.append("id_user", this.user.id);
+      axios
+        .post("http://localhost:8000/api/auth/downloadlettre", fd, {})
+        .then((res) => {
+          console.log("response", res.data);
+          this.$router.go(0);
+        })
+        .catch((err) => console.log(err));
+    },
+    async deletelettre($id) {
+      axios
+        .delete("http://localhost:8000/api/auth/deletelettre/" + $id, {})
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+  },
 };
 </script>
 <style>

@@ -2,7 +2,7 @@
   <v-toolbar dense app color="transparent">
     <v-toolbar-title class="text-uppercase-title"
       ><router-link to="/"
-        ><img src="../favicon.ico" style="width: 130px; height: 85px" />
+        ><img src="../favicon.ico" style="width: 130px; height: 75px" />
       </router-link>
     </v-toolbar-title>
     <v-spacer></v-spacer>
@@ -22,40 +22,74 @@
     <v-li class="nav-item" v-if="loggedCompany">
       <v-btn right="62em" rounded color="grey" dark to="/">
         <v-icon color="grey">mdi-clipboard-text-search</v-icon>
-        chercher
-      </v-btn>
-    </v-li>
-    <v-li class="nav-item" v-if="loggedUser">
-      <v-btn right="50em" rounded color="grey" dark to="/">
-        <v-icon color="grey">mdi-clipboard-text-search</v-icon>
         Recherche Offre
       </v-btn>
     </v-li>
-    <v-li class="nav-item" v-if="loggedIn">
-      <v-btn rounded color="green" dark @click.prevent="performLogout">
-        Logout
-      </v-btn>
-    </v-li>
-    <v-li class="nav-item" v-if="!loggedCompany">
-      <v-btn rounded color="grey" dark to="/PostuleCv">
-        <v-icon color="grey">mdi-tab-plus</v-icon>
-        Postuler votre CV
+    <v-li class="nav-item" v-if="loggedUser">
+      <v-btn right="75em" rounded color="grey" dark to="/">
+        <v-icon color="grey">mdi-clipboard-text-search</v-icon>
+        Recherche Offre
       </v-btn>
     </v-li>
     <v-li class="nav-item" v-if="!loggedIn">
       <v-btn rounded color="green" dark to="/SignIn"> Sign In </v-btn>
     </v-li>
     <v-li class="nav-item" v-if="loggedIn">
-      <v-btn
-        rounded
-        color="grey"
-        dark
-        :to="{ name: 'profilcandidat', params: { id: users.id } }"
-      >
-        <v-avatar size="30" style="border-radius: 100%">
-          <v-img v-bind:src="'../images/' + users.avatar"></v-img> </v-avatar
-        >{{ users.name }}
-      </v-btn>
+      <v-container>
+        <v-row>
+          <v-menu>
+            <template v-slot:activator="{ props }">
+              <v-btn right="8em" v-bind="props" rounded color="grey" dark>
+                <v-avatar size="30" style="border-radius: 100%">
+                  <v-img
+                    v-bind:src="'../images/' + users.avatar"
+                  ></v-img> </v-avatar
+                >{{ users.name }}
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card-text>
+                <div class="text-center">
+                  <v-avatar size="30" style="border-radius: 100%">
+                    <v-img v-bind:src="'../images/' + users.avatar"></v-img>
+                  </v-avatar>
+                  <p class="text-caption mt-1">
+                    {{ users.email }}
+                  </p>
+                </div>
+                <div class="text-left">
+                  <v-divider class="my-3"></v-divider>
+                  <v-btn
+                    rounded
+                    variant="text"
+                    :to="{ name: 'profilcandidat', params: { id: users.id } }"
+                  >
+                    Mon Compte </v-btn
+                  ><br />
+                  <v-btn rounded variant="text" to="/PostuleCv"> Cv </v-btn
+                  ><br />
+                  <v-btn rounded variant="text" to="/postulelettre"
+                    ><br />
+                    Lettre de motivation </v-btn
+                  ><br /><br />
+                  <v-btn rounded variant="text" to="/PostuleCv">
+                    Offres Sauvegarder </v-btn
+                  ><br />
+                  <v-divider class="my-3"></v-divider>
+                  <v-btn
+                    rounded
+                    variant="text"
+                    color="red"
+                    @click.prevent="performLogout"
+                  >
+                    Se déconnecter </v-btn
+                  ><br />
+                </div>
+              </v-card-text>
+            </v-card>
+          </v-menu>
+        </v-row>
+      </v-container>
     </v-li>
     <v-li class="nav-item" v-if="!loggedIn">
       <v-btn class="v-btn-signIn" rounded color="white" dark to="/SignUp">

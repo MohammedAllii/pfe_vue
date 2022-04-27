@@ -30,6 +30,9 @@ const store = createStore({
     SET_cv(state, payload) {
       state.cvRegisterAction = payload;
     },
+    SET_lettre(state, payload) {
+      state.lettreRegisterAction = payload;
+    },
   },
   actions: {
     performLoginAction({ commit }, payload) {
@@ -132,6 +135,27 @@ const store = createStore({
           })
           .then((res) => {
             commit("SET_cv", res.data.user);
+            resolve(res);
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      });
+    },
+    lettreRegisterAction({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post("http://localhost:8000/api/auth/registerlettre", {
+            name: payload.name,
+            email: payload.email,
+            poste: payload.poste,
+            titre: payload.titre,
+            contenu: payload.contenu,
+            phone: payload.phone,
+            id_user: payload.id_user,
+          })
+          .then((res) => {
+            commit("SET_lettre", res.data.user);
             resolve(res);
           })
           .catch((err) => {

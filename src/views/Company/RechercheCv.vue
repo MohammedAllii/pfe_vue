@@ -409,15 +409,11 @@
         </v-row>
       </v-col>
 
-      <v-container fluid style="height: 300px">
-        <v-row justify="center">
-          <v-menu bottom min-width="200px" rounded offset-y>
+      <v-container>
+        <v-row>
+          <v-menu>
             <template v-slot:activator="{ props }">
-              <v-btn icon v-bind="props">
-                <v-avatar color="green" size="large">
-                  <span class="white--text text-h5">{{ user.initials }}</span>
-                </v-avatar>
-              </v-btn>
+              <v-btn v-bind="props">oui </v-btn>
             </template>
             <v-card>
               <v-card-text>
