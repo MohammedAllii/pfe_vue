@@ -229,7 +229,6 @@
                         </div>
 
                         <div class="input-icons">
-                          <v-icon>mdi-map-marker-radius</v-icon>
                           <v-select
                             v-model="localite"
                             label="Votre localite actuel"
@@ -524,7 +523,6 @@ export default {
       localite1: "",
       id_user: "",
       error: "",
-      isLoading: false,
       dialog: false,
       dialog2: false,
       cvs: {},
@@ -538,7 +536,6 @@ export default {
   },
   methods: {
     cvRegister() {
-      this.isLoading = true;
       this.$store
         .dispatch("cvRegisterAction", {
           name: this.user.name,
@@ -549,11 +546,12 @@ export default {
         })
         .then((result) => {
           console.log(result);
-          this.isLoading = false;
           this.$router.go(0);
+          this.$toast.success(" Cv Ajouter avec succés.", {
+            position: "top-right",
+          });
         })
         .catch((err) => {
-          this.isLoading = false;
           this.error = " Registration faild";
           console.log(err.message);
         });
@@ -581,6 +579,9 @@ export default {
         .post("http://localhost:8000/api/auth/downloadcv", fd, {})
         .then((res) => {
           console.log("response", res.data);
+          this.$toast.success(" Cv Télecharger avec success.", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => console.log(err));
@@ -590,6 +591,9 @@ export default {
         .delete("http://localhost:8000/api/auth/deletecv/" + $id, {})
         .then((response) => {
           console.log(response);
+          this.$toast.error(" Cv Deleted.", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {

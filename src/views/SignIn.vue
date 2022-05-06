@@ -30,7 +30,6 @@
               required
             />
           </div>
-          <v-alert type="error" v-if="error">{{ error }}</v-alert>
           <br /><br />
           <v-spacer></v-spacer>
           <v-hover>
@@ -84,7 +83,6 @@ export default {
   },
   methods: {
     performLogin() {
-      this.isLoading = true;
       this.$store
         .dispatch("performLoginAction", {
           email: this.email,
@@ -92,7 +90,9 @@ export default {
         })
         .then((res) => {
           console.log(res);
-          this.isLoading = false;
+          this.$toast.success(" Welcome  ." + res.data.user.name, {
+            position: "top-right",
+          });
           if (res.data.user.role == "user") {
             this.$router.push("/");
           } else {
@@ -100,8 +100,9 @@ export default {
           }
         })
         .catch((err) => {
-          this.isLoading = false;
-          this.error = " Password or email incorrect";
+          this.$toast.error(" Password or email incorrect  .", {
+            position: "top-right",
+          });
           console.log(err.message);
         });
     },

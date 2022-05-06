@@ -3,21 +3,25 @@ import { createRouter, createWebHistory } from "vue-router";
 import SignUp from "../views/SignUp";
 import CandidateView from "../views/CandidateView";
 import CompanyView from "../views/CompanyView";
+import DetailsPost from "../views/DetailsPost";
+import RechercheOffre from "../views/RechercheOffre";
+import AproposPage from "../views/AproposPage";
 import SignIn from "../views/SignIn";
 import SideBar from "../components/SideBar";
 import DashbordView from "@/views/Admin/DashbordView.vue";
 import GestionUser from "@/views/Admin/GestionUser";
 import PostuleCv from "../views/Candidat/PostuleCv";
 import RechercheCv from "../views/Company/RechercheCv";
+import InfoCandidat from "../views/Company/InfoCandidat";
 import PostuleLettre from "../views/Candidat/PostuleLettre";
 import HomeView from "../views/Home/HomeView";
 import CVView from "../views/Candidat/CVView";
 import CvForm from "../views/Candidat/CvForm";
 import LettreForm from "../views/Candidat/LettreForm";
+import OffreSave from "../views/Candidat/OffreSave";
 import ProfilCandidat from "../views/ProfilCandidat";
 import ModifierExperience from "../views/Candidat/ModiferExperience";
 import ModifierDiplome from "../views/Candidat/ModifierDiplome";
-import CompanyDashboard from "../views/Company/CompanyDashboard";
 import PosteCompany from "../views/Company/PosteCompany";
 import GerePoste from "../views/Company/GerePoste";
 import StatistCompany from "../views/Company/StatistCompany";
@@ -58,14 +62,6 @@ const routes = [
     },
   },
   {
-    path: "/companydash",
-    name: "companydash",
-    component: CompanyDashboard,
-    meta: {
-      secure: true,
-    },
-  },
-  {
     path: "/PosteCompany",
     name: "PosteCompany",
     component: PosteCompany,
@@ -90,7 +86,7 @@ const routes = [
     },
   },
   {
-    path: "/CandidatureCompany",
+    path: "/CandidatureCompany/:id?",
     name: "CandidatureCompany",
     component: CandidatureCompany,
     meta: {
@@ -132,9 +128,35 @@ const routes = [
     component: DashbordView,
   },
   {
+    path: "/detailpost/:id?",
+    name: "detailpost",
+    component: DetailsPost,
+    meta: {
+      secure: true,
+    },
+  },
+  {
     path: "/GestionUser",
     name: "GestionUser",
     component: GestionUser,
+  },
+  {
+    path: "/rechercheoffre",
+    name: "rechercheoffre",
+    component: RechercheOffre,
+  },
+  {
+    path: "/Apropos",
+    name: "Apropos",
+    component: AproposPage,
+  },
+  {
+    path: "/offresave",
+    name: "offresave",
+    component: OffreSave,
+    meta: {
+      secure: true,
+    },
   },
   {
     path: "/profilcandidat/:id?",
@@ -156,6 +178,14 @@ const routes = [
     path: "/postulelettre",
     name: "postulelettre",
     component: PostuleLettre,
+    meta: {
+      secure: true,
+    },
+  },
+  {
+    path: "/infocandidat/:3?/:8?",
+    name: "infocandidat",
+    component: InfoCandidat,
     meta: {
       secure: true,
     },

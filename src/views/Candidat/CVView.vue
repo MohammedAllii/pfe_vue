@@ -407,7 +407,7 @@
       </v-container>
     </div>
     <br />
-    <div v-if="experiences != null">
+    <div v-if="experiences != ''">
       <h5 align="left">Expérience Professionnelles</h5>
       <v-container v-for="experience in experiences" :key="experience.id">
         <v-banner lines="six" icon="mdi-file-compare" color="grey" class="my-4">
@@ -455,7 +455,7 @@
       </v-container>
     </div>
     <br />
-    <div v-if="diplomes != null">
+    <div v-if="diplomes != ''">
       <h5 align="left">Formations et Diplômes</h5>
       <v-container v-for="diplome in diplomes" :key="diplome.id">
         <v-banner lines="six" icon="mdi-file-compare" color="grey" class="my-4">
@@ -536,7 +536,7 @@
       </v-container>
     </div>
     <br />
-    <div v-if="competences != null">
+    <div v-if="competences != ''">
       <h5 align="left">Compétences</h5>
       <v-container v-for="competence in competences" :key="competence.id">
         <v-banner lines="six" icon="mdi-file-compare" color="grey" class="my-4">
@@ -644,7 +644,7 @@
       </v-container>
     </div>
     <br />
-    <div v-if="liens != null">
+    <div v-if="liens != ''">
       <h5 align="left">Liens</h5>
       <v-container v-for="lien in liens" :key="lien.id">
         <v-banner lines="six" icon="mdi-file-compare" color="grey" class="my-4">
@@ -733,7 +733,7 @@
       </v-container>
     </div>
     <br />
-    <div v-if="langues != null">
+    <div v-if="langues != ''">
       <h5 align="left">Langues</h5>
       <v-container v-for="langue in langues" :key="langue.id">
         <v-banner lines="six" icon="mdi-file-compare" color="grey" class="my-4">

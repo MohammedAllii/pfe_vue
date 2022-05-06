@@ -40,16 +40,6 @@
                 >Statistiques</v-btn
               >
               <br /><br />
-              <v-btn
-                flat
-                rounded
-                prepend-icon="mdi-card-text-outline"
-                title="Candidatures"
-                value=" Candidatures"
-                to="CandidatureCompany"
-                >Candidatures</v-btn
-              >
-              <br /><br />
               <v-col>
                 <p class="font-weight-bold">Accès à la CVthèque</p>
               </v-col>
@@ -92,8 +82,8 @@
                   <div>
                     <v-icon color="green" size="55">mdi-file-compare</v-icon>
                   </div>
-                  <div class="text-h4 mb-1">0</div>
-                  <div class="text-h5 mb-1">All Postes</div>
+                  <div class="text-h4 mb-1">{{ statall }}</div>
+                  <div class="text-h5 mb-1">Tous les Postes</div>
                 </div>
               </v-card-header>
             </v-card>
@@ -105,8 +95,8 @@
                   <div>
                     <v-icon color="green" size="55">mdi-timer-sand</v-icon>
                   </div>
-                  <div class="text-h4 mb-1">0</div>
-                  <div class="text-h5 mb-1">EN attente</div>
+                  <div class="text-h4 mb-1">{{ statattent }}</div>
+                  <div class="text-h5 mb-1">En attente</div>
                 </div>
               </v-card-header>
             </v-card>
@@ -120,8 +110,8 @@
                       >mdi-content-save-all</v-icon
                     >
                   </div>
-                  <div class="text-h4 mb-1">0</div>
-                  <div class="text-h5 mb-1">Posts sauvgardés</div>
+                  <div class="text-h4 mb-1">{{ stataccepte }}</div>
+                  <div class="text-h5 mb-1">Posts Accepter</div>
                 </div>
               </v-card-header>
             </v-card>
@@ -136,53 +126,43 @@
 <script>
 import NavbarView from "@/components/NavbarView.vue";
 import FooterView from "@/components/FooterView.vue";
+import axios from "axios";
 export default {
   components: { NavbarView, FooterView },
   data() {
     return {
-      desserts: [
-        {
-          name: "Frozen Yogurt",
-          calories: 159,
-        },
-        {
-          name: "Ice cream sandwich",
-          calories: 237,
-        },
-        {
-          name: "Eclair",
-          calories: 262,
-        },
-        {
-          name: "Cupcake",
-          calories: 305,
-        },
-        {
-          name: "Gingerbread",
-          calories: 356,
-        },
-        {
-          name: "Jelly bean",
-          calories: 375,
-        },
-        {
-          name: "Lollipop",
-          calories: 392,
-        },
-        {
-          name: "Honeycomb",
-          calories: 408,
-        },
-        {
-          name: "Donut",
-          calories: 452,
-        },
-        {
-          name: "KitKat",
-          calories: 518,
-        },
-      ],
+      statall: "",
+      statattent: "",
+      stataccepte: "",
     };
+  },
+  mounted() {
+    this.statalls(), this.statattente(), this.stataccepter();
+  },
+  computed: {
+    user() {
+      return this.$store.getters.get_user;
+    },
+  },
+  methods: {
+    async statalls() {
+      let url = "http://localhost:8000/api/auth/statall/" + this.user.id;
+      await axios.get(url).then((response) => {
+        this.statall = response.data;
+      });
+    },
+    async statattente() {
+      let url = "http://localhost:8000/api/auth/statattente/" + this.user.id;
+      await axios.get(url).then((response) => {
+        this.statattent = response.data;
+      });
+    },
+    async stataccepter() {
+      let url = "http://localhost:8000/api/auth/stataccepter/" + this.user.id;
+      await axios.get(url).then((response) => {
+        this.stataccepte = response.data;
+      });
+    },
   },
 };
 </script>

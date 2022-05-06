@@ -1,40 +1,40 @@
 <template>
-  <v-footer dark padless style="background-color: #2e2e2e">
-    <v-card
-      flat
-      tile
-      style="background-color: #2e2e2e"
-      class="indigo lighten-2 white--text text-center"
-    >
-      <v-card-text style="margin-left: 500px; color: white">
-        <p>© 2021 - 2022 CATCH IT® Global Inc.</p>
-      </v-card-text>
-      <v-card-text
-        class="white--text pt-0"
-        style="margin-left: 500px; color: white"
-      >
+  <v-container>
+    <v-footer padless>
+      <v-card flat class="text-center">
         <v-card-text>
-          <v-btn
-            v-for="icon in icons"
-            :key="icon"
-            class="mx-4 white--text"
-            icon
-          >
-            <v-icon size="24px">
-              {{ icon }}
-            </v-icon>
+          <v-btn v-for="icon in icons" :key="icon" class="mx-4" icon>
+            <v-icon size="24px">{{ icon }}</v-icon>
           </v-btn>
         </v-card-text>
-      </v-card-text>
-      <v-divider></v-divider>
-    </v-card>
-  </v-footer>
+        <v-card-text class="pt-0"
+          >Publiez une offre d'emploi ou un stage sur notre site Web de
+          recherche d'emploi et connectez-vous avec les meilleurs talents de
+          développement à travers le monde 🌎. Laissez-nous vous aider à trouver
+          les meilleures correspondances de talents pour vos ouvertures et à les
+          faire atteindre la plupart des développeurs !</v-card-text
+        >
+        <v-divider></v-divider>
+        <v-card-text>
+          {{ new Date().getFullYear() }} —
+          <strong>search job & internship Project</strong>
+        </v-card-text>
+      </v-card>
+    </v-footer>
+  </v-container>
 </template>
 
 <script>
 export default {
   data: () => ({
-    icons: ["mdi-facebook", "mdi-twitter", "mdi-linkedin", "mdi-github"],
+    icons: [
+      "mdi-facebook",
+      "mdi-twitter",
+      "mdi-linkedin",
+      "mdi-github",
+      "mdi-google-plus",
+      "mdi-instagram",
+    ],
   }),
 };
 </script>

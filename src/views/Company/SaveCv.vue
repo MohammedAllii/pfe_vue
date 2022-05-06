@@ -40,16 +40,6 @@
                 >Statistiques</v-btn
               >
               <br /><br />
-              <v-btn
-                flat
-                rounded
-                prepend-icon="mdi-card-text-outline"
-                title="Candidatures"
-                value=" Candidatures"
-                to="CandidatureCompany"
-                >Candidatures</v-btn
-              >
-              <br /><br />
               <v-col>
                 <p class="font-weight-bold">Accès à la CVthèque</p>
               </v-col>

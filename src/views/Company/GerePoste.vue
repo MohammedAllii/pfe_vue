@@ -40,16 +40,6 @@
                 >Statistiques</v-btn
               >
               <br /><br />
-              <v-btn
-                flat
-                rounded
-                prepend-icon="mdi-card-text-outline"
-                title="Candidatures"
-                value=" Candidatures"
-                to="CandidatureCompany"
-                >Candidatures</v-btn
-              >
-              <br /><br />
               <v-col>
                 <p class="font-weight-bold">Accès à la CVthèque</p>
               </v-col>
@@ -97,65 +87,112 @@
         </v-row>
         <v-row>
           <v-col cols="12" md="12">
-            <v-tabs v-model="tab">
-              <v-tab @click.prevent="alloffres" value="one">All Posts</v-tab>
-              <v-tab value="two">En attente</v-tab>
-              <v-tab value="three">sauvgardés</v-tab>
+            <v-tabs>
+              <v-tab @click.prevent="alloffres"> All postes </v-tab>
+              <v-tab @click.prevent="enattente"> En Attente </v-tab>
+              <v-tab @click.prevent="accepter"> Accepter </v-tab>
             </v-tabs>
 
-            <v-card-text>
-              <v-window v-model="tab">
-                <v-window-item
+            <v-card-text cols="10" md="10">
+              <v-container cols="10" md="10">
+                <v-banner
+                  lines="six"
+                  icon="mdi-text"
+                  color="grey"
                   v-for="offre in offres"
                   :key="offre.id"
-                  value="one"
+                  cols="10"
+                  md="10"
                 >
-                  <v-row>
-                    <v-col cols="12" md="12">
+                  <v-banner-text>
+                    <router-link
+                      :to="{ name: 'cvview', params: { id: offre.id } }"
+                      style="text-decoration: none; color: blue"
+                      ><h5>{{ offre.poste }}</h5>
+                    </router-link>
+                    <v-col cols="12">
                       <v-row>
-                        <v-col cols="12" md="12">
-                          <h5 class="font-italic" style="color: blue">
-                            {{ offre.poste }}
-                          </h5>
-                          <v-col cols="12">
-                            <v-icon color="blue" size="25"
-                              >mdi-map-marker</v-icon
-                            ><strong style="font-size: 20px">{{
-                              offre.lieu_travail
+                        <v-col cols="10"></v-col>
+                        <p>
+                          <v-icon color="blue">mdi-map-marker</v-icon>
+                          <strong>{{ offre.lieu_travail }}</strong>
+                        </p>
+                        &nbsp;&nbsp;&nbsp;
+                        <p>
+                          <v-icon color="blue"
+                            >mdi-file-document-outline</v-icon
+                          >
+                          <strong>{{ offre.contrat }}</strong>
+                        </p>
+                        &nbsp;&nbsp;&nbsp;
+                        <p>
+                          <v-icon color="blue">mdi-clock-outline</v-icon>
+                          <strong>{{ offre.temps_travail }}</strong>
+                        </p>
+                        <p>
+                          <v-icon color="blue">mdi-currency-usd</v-icon>
+                          <strong
+                            >{{ offre.salaire }}&nbsp;{{
+                              offre.monnaie
                             }}</strong
-                            ><br />
-                            <v-icon color="blue" size="25"
-                              >mdi-currency-usd</v-icon
-                            ><strong style="font-size: 20px">{{
-                              offre.salaire
-                            }}</strong>
-                            <p>
-                              {{ offre.description }}
-                            </p>
-                            <v-chip
-                              class="ma-2"
-                              color="success"
-                              variant="outlined"
-                            >
-                              <v-icon start icon="mdi-progress-clock"></v-icon>
-                              {{ offre.added }}
-                            </v-chip>
-
-                            <v-chip
-                              class="ma-2"
-                              color="primary"
-                              variant="outlined"
-                            >
-                              postuler facilement
-                              <v-icon end icon="mdi-face"></v-icon>
-                            </v-chip>
-                          </v-col>
-                        </v-col>
+                          >
+                        </p>
+                        &nbsp;&nbsp;&nbsp;
                       </v-row>
+                      <p v-if="offre.description.length > 5">
+                        {{
+                          showAll
+                            ? offre.description
+                            : offre.description.slice(0, 60) + "..."
+                        }}
+                      </p>
+                      <v-chip class="ma-2" color="success" variant="outlined">
+                        <v-icon start icon="mdi-progress-clock"></v-icon>
+                        {{ offre.added }}
+                      </v-chip>
+
+                      <v-chip class="ma-2" color="primary" variant="outlined">
+                        postuler facilement
+                        <v-icon end icon="mdi-face"></v-icon>
+                      </v-chip>
                     </v-col>
-                  </v-row>
-                </v-window-item>
-              </v-window>
+                  </v-banner-text>
+                  <template v-slot:actions>
+                    <div cols="6">
+                      <v-menu>
+                        <template v-slot:activator="{ props }">
+                          <v-btn dark color="primary" v-bind="props">
+                            <v-icon>mdi-format-list-bulleted-type</v-icon>
+                          </v-btn>
+                        </template>
+                        <v-list>
+                          <v-list-item>
+                            <router-link
+                              :to="{
+                                name: 'CandidatureCompany',
+                                params: { id: offre.id },
+                              }"
+                              style="text-decoration: none"
+                              ><v-btn v-text="'Gérer Candidatures'"></v-btn
+                            ></router-link>
+                          </v-list-item>
+                          <v-list-item>
+                            <v-list-item-title
+                              v-text="'modifier'"
+                            ></v-list-item-title>
+                          </v-list-item>
+                          <v-list-item>
+                            <v-list-item-title
+                              v-text="'supprimer'"
+                            ></v-list-item-title>
+                          </v-list-item>
+                        </v-list>
+                      </v-menu>
+                    </div>
+                  </template>
+                </v-banner>
+              </v-container>
+              <v-divider></v-divider>
             </v-card-text>
           </v-col>
         </v-row>
@@ -174,13 +211,34 @@ export default {
   data: () => ({
     offres: {},
     tab: null,
+    showAll: false,
   }),
   mounted() {
+    this.alloffres(), this.enattente(), this.accepter();
+  },
+  computed: {
+    user() {
+      return this.$store.getters.get_user;
+    },
+  },
+  created() {
     this.alloffres();
   },
   methods: {
     async alloffres() {
-      let url = "http://localhost:8000/api/auth/alloffres";
+      let url = "http://localhost:8000/api/auth/alloffres/" + this.user.id;
+      await axios.get(url).then((response) => {
+        this.offres = response.data;
+      });
+    },
+    async enattente() {
+      let url = "http://localhost:8000/api/auth/enattente/" + this.user.id;
+      await axios.get(url).then((response) => {
+        this.offres = response.data;
+      });
+    },
+    async accepter() {
+      let url = "http://localhost:8000/api/auth/accepter/" + this.user.id;
       await axios.get(url).then((response) => {
         this.offres = response.data;
       });

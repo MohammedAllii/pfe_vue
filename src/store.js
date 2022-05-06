@@ -48,6 +48,7 @@ const store = createStore({
             commit("SET_loggedIn", true);
             if (res.data.user.role == "company") {
               commit("SET_loggedCompany", true);
+              commit("SET_loggedUser", false);
             }
             if (res.data.user.role == "user") {
               commit("SET_loggedCompany", false);
@@ -74,6 +75,7 @@ const store = createStore({
             commit("SET_user", res.data.user);
             commit("SET_loggedIn", true);
             commit("SET_loggedUser", true);
+            commit("SET_loggedCompany", false);
             resolve(res);
           })
           .catch((err) => {

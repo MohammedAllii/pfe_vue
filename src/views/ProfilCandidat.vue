@@ -7,9 +7,11 @@
     </v-container>
     <v-container>
       <div align="center">
-        <v-avatar size="200" style="border-radius: 100%">
-          <v-img v-bind:src="'../images/' + users.avatar"></v-img>
-        </v-avatar>
+        <v-img
+          rounded
+          style="border-radius: 90%; width: 25%; height: 10%"
+          v-bind:src="'../images/' + users.avatar"
+        ></v-img>
         <v-col cols="auto">
           <v-dialog transition="dialog-top-transition">
             <template v-slot:activator="{ props }">
@@ -276,7 +278,6 @@ export default {
       idc: this.$route.params.id,
       dialog: false,
       show1: false,
-      message4: "Hey!",
       rules: {
         required: (value) => !!value || "Required.",
         min: (v) => v.length >= 8 || "Min 8 characters",
@@ -377,21 +378,6 @@ export default {
           this.$router.go(0);
         })
         .catch((err) => console.log(err));
-    },
-    async addexperience() {
-      axios
-        .post("http://localhost:8000/api/auth/addexperience", {
-          email: this.email,
-        })
-        .then((response) => {
-          console.log(response);
-          this.$router.go(0);
-        })
-        .catch((err) => {
-          this.isLoading = false;
-          this.error = " Email existe déja";
-          console.log(err.message);
-        });
     },
   },
   mounted() {},

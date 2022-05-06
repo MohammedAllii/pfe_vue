@@ -61,265 +61,63 @@
   <br />
   <br />
   <v-divider></v-divider>
-  <v-row>
+  <v-row v-for="offre in offres" :key="offre.id">
     <v-col cols="12" md="2"></v-col>
     <v-col cols="12" md="10">
       <v-row>
         <v-col cols="12" md="10">
-          <router-link to="DetailsPost" style="text-decoration: none">
-            <h5 class="font-italic">
-              Développeur web Full Stack / Développeur web React
-            </h5></router-link
-          >
-        </v-col>
-        <v-col cols="12" md="2">
-          <v-tooltip v-model="show" top>
-            <template v-slot:activator="{ props }">
-              <v-btn flat rounded v-bind="props"
-                ><v-icon size="30">mdi-content-save-outline</v-icon></v-btn
-              >
-            </template>
-            <span>Ajout Favoris!</span>
-          </v-tooltip>
-        </v-col>
-      </v-row>
-      <br />
-      <v-row>
-        <v-col cols="12" md="6">
-          <v-icon color="yellow" size="30">mdi-flag-variant-outline</v-icon>
-          <h6 class="font-weight-bold">Tunis</h6>
-        </v-col>
-        <br />
-        <p>
-          On recrute un Développeur web Full Stack / Développeur web React.js -
-          Français Vous êtes aussi à l’aise dans le Frontend que le Backend?<br />
-          Vous aimez travailler avec les plus récentes technologies telles que
-          ASP.NET Core, React.js, Typescript,...
-        </p>
-        <v-row>
-          <v-chip class="ma-2" color="success" variant="outlined">
-            <v-icon start icon="mdi-progress-clock"></v-icon>
-            il y'a 14heures
-          </v-chip>
+          <v-col cols="12">
+            <h5 class="font-italic" style="color: blue">
+              <router-link
+                :to="{ name: 'detailpost', params: { id: offre.id } }"
+                style="text-decoration: none"
+                ><h5>{{ offre.poste }}</h5>
+              </router-link>
+            </h5>
+            <v-icon color="blue" size="25">mdi-home-city-outline</v-icon>
+            &nbsp;<strong style="font-size: 20px">{{
+              offre.name_company
+            }}</strong
+            ><br />
+            <v-icon color="blue" size="25">mdi-map-marker-outline</v-icon
+            ><strong style="font-size: 20px">{{ offre.lieu_travail }}</strong
+            ><br />
+            <v-icon color="blue" size="25">mdi-currency-usd</v-icon
+            ><strong style="font-size: 20px">{{ offre.salaire }}</strong
+            >&nbsp;&nbsp;<strong style="font-size: 20px">{{
+              offre.monnaie
+            }}</strong
+            >&nbsp;&nbsp;<strong style="font-size: 20px">{{
+              offre.periode
+            }}</strong>
+            <p v-if="offre.description.length > 100">
+              {{
+                showAll
+                  ? offre.description
+                  : offre.description.slice(0, 120) + "..."
+              }}
+            </p>
+            <p v-else>{{ text }}</p>
+            <v-chip class="ma-2" color="success" variant="outlined">
+              <v-icon start icon="mdi-progress-clock"></v-icon>
+              {{ offre.added }}
+            </v-chip>
 
-          <v-chip class="ma-2" color="primary" variant="outlined">
-            postuler facilement
-            <v-icon end icon="mdi-face"></v-icon>
-          </v-chip>
-        </v-row>
+            <v-chip class="ma-2" color="primary" variant="outlined">
+              postuler facilement
+              <v-icon end icon="mdi-face"></v-icon>
+            </v-chip>
+          </v-col>
+        </v-col>
       </v-row>
     </v-col>
+    <br />
+    <v-divider></v-divider>
   </v-row>
-  <br />
-  <v-divider></v-divider>
-  <v-row>
-    <v-col cols="12" md="2"></v-col>
-    <v-col cols="12" md="10">
-      <v-row>
-        <v-col cols="12" md="10">
-          <router-link to="DetailsPost">
-            <h5 class="font-italic">
-              Développeur web Full Stack / Développeur web React
-            </h5></router-link
-          >
-        </v-col>
-        <v-col cols="12" md="2">
-          <v-tooltip v-model="show1" top>
-            <template v-slot:activator="{ props }">
-              <v-btn flat rounded v-bind="props"
-                ><v-icon size="30">mdi-content-save-outline</v-icon></v-btn
-              >
-            </template>
-            <span>Ajout Favoris!</span>
-          </v-tooltip>
-        </v-col>
-      </v-row>
-      <br />
-      <v-row>
-        <v-col cols="12" md="6">
-          <v-icon color="yellow" size="30">mdi-flag-variant-outline</v-icon>
-          <h6 class="font-weight-bold">Tunis</h6>
-        </v-col>
-        <br />
-        <p>
-          On recrute un Développeur web Full Stack / Développeur web React.js -
-          Français Vous êtes aussi à l’aise dans le Frontend que le Backend?<br />
-          Vous aimez travailler avec les plus récentes technologies telles que
-          ASP.NET Core, React.js, Typescript,...
-        </p>
-        <v-row>
-          <v-chip class="ma-2" color="success" variant="outlined">
-            <v-icon start icon="mdi-progress-clock"></v-icon>
-            il y'a 14heures
-          </v-chip>
-
-          <v-chip class="ma-2" color="primary" variant="outlined">
-            postuler facilement
-            <v-icon end icon="mdi-face"></v-icon>
-          </v-chip>
-        </v-row>
-      </v-row>
-    </v-col>
-  </v-row>
-  <br />
-  <v-divider></v-divider>
-  <v-row>
-    <v-col cols="12" md="2"></v-col>
-    <v-col cols="12" md="10">
-      <v-row>
-        <v-col cols="12" md="10">
-          <router-link to="DetailsPost">
-            <h5 class="font-italic">
-              Développeur web Full Stack / Développeur web React
-            </h5></router-link
-          >
-        </v-col>
-        <v-col cols="12" md="2">
-          <v-tooltip v-model="show2" top>
-            <template v-slot:activator="{ props }">
-              <v-btn flat rounded v-bind="props"
-                ><v-icon size="30">mdi-content-save-outline</v-icon></v-btn
-              >
-            </template>
-            <span>Ajout Favoris!</span>
-          </v-tooltip>
-        </v-col>
-      </v-row>
-      <br />
-      <v-row>
-        <v-col cols="12" md="6">
-          <v-icon color="yellow" size="30">mdi-flag-variant-outline</v-icon>
-          <h6 class="font-weight-bold">Tunis</h6>
-        </v-col>
-        <br />
-        <p>
-          On recrute un Développeur web Full Stack / Développeur web React.js -
-          Français Vous êtes aussi à l’aise dans le Frontend que le Backend?<br />
-          Vous aimez travailler avec les plus récentes technologies telles que
-          ASP.NET Core, React.js, Typescript,...
-        </p>
-        <v-row>
-          <v-chip class="ma-2" color="success" variant="outlined">
-            <v-icon start icon="mdi-progress-clock"></v-icon>
-            il y'a 14heures
-          </v-chip>
-
-          <v-chip class="ma-2" color="primary" variant="outlined">
-            postuler facilement
-            <v-icon end icon="mdi-face"></v-icon>
-          </v-chip>
-        </v-row>
-      </v-row>
-    </v-col>
-  </v-row>
-  <br />
-  <v-divider></v-divider>
-  <v-row>
-    <v-col cols="12" md="2"></v-col>
-    <v-col cols="12" md="10">
-      <v-row>
-        <v-col cols="12" md="10">
-          <router-link to="DetailsPost">
-            <h5 class="font-italic">
-              Développeur web Full Stack / Développeur web React
-            </h5></router-link
-          >
-        </v-col>
-        <v-col cols="12" md="2">
-          <v-tooltip v-model="show3" top>
-            <template v-slot:activator="{ props }">
-              <v-btn flat rounded v-bind="props"
-                ><v-icon size="30">mdi-content-save-outline</v-icon></v-btn
-              >
-            </template>
-            <span>Ajout Favoris!</span>
-          </v-tooltip>
-        </v-col>
-      </v-row>
-      <br />
-      <v-row>
-        <v-col cols="12" md="6">
-          <v-icon color="yellow" size="30">mdi-flag-variant-outline</v-icon>
-          <h6 class="font-weight-bold">Tunis</h6>
-        </v-col>
-        <br />
-        <p>
-          On recrute un Développeur web Full Stack / Développeur web React.js -
-          Français Vous êtes aussi à l’aise dans le Frontend que le Backend?<br />
-          Vous aimez travailler avec les plus récentes technologies telles que
-          ASP.NET Core, React.js, Typescript,...
-        </p>
-        <v-row>
-          <v-chip class="ma-2" color="success" variant="outlined">
-            <v-icon start icon="mdi-progress-clock"></v-icon>
-            il y'a 14heures
-          </v-chip>
-
-          <v-chip class="ma-2" color="primary" variant="outlined">
-            postuler facilement
-            <v-icon end icon="mdi-face"></v-icon>
-          </v-chip>
-        </v-row>
-      </v-row>
-    </v-col>
-  </v-row>
-  <br />
-  <v-divider></v-divider>
-  <v-row>
-    <v-col cols="12" md="2"></v-col>
-    <v-col cols="12" md="10">
-      <v-row>
-        <v-col cols="12" md="10">
-          <router-link to="DetailsPost">
-            <h5 class="font-italic">
-              Développeur web Full Stack / Développeur web React
-            </h5></router-link
-          >
-        </v-col>
-        <v-col cols="12" md="2">
-          <v-tooltip v-model="show" top>
-            <template v-slot:activator="{ props }">
-              <v-btn flat rounded v-bind="props"
-                ><v-icon size="30">mdi-heart-outline</v-icon></v-btn
-              >
-            </template>
-            <span>Ajout Favoris!</span>
-          </v-tooltip>
-        </v-col>
-      </v-row>
-      <br />
-      <v-row>
-        <v-col cols="12" md="6">
-          <v-icon color="yellow" size="30">mdi-flag-variant-outline</v-icon>
-          <h6 class="font-weight-bold">Tunis</h6>
-        </v-col>
-        <br />
-        <p>
-          On recrute un Développeur web Full Stack / Développeur web React.js -
-          Français Vous êtes aussi à l’aise dans le Frontend que le Backend?<br />
-          Vous aimez travailler avec les plus récentes technologies telles que
-          ASP.NET Core, React.js, Typescript,...
-        </p>
-        <v-row>
-          <v-chip class="ma-2" color="success" variant="outlined">
-            <v-icon start icon="mdi-progress-clock"></v-icon>
-            il y'a 14heures
-          </v-chip>
-
-          <v-chip class="ma-2" color="primary" variant="outlined">
-            postuler facilement
-            <v-icon end icon="mdi-face"></v-icon>
-          </v-chip>
-        </v-row>
-      </v-row>
-    </v-col>
-  </v-row>
-  <br />
-  <v-divider></v-divider>
   <v-container>
     <v-row>
-      <v-col cols="12" md="4"> </v-col>
-      <v-col cols="12" md="8">
+      <v-col cols="12" md="10"> </v-col>
+      <v-col cols="12" md="10">
         <v-btn
           variant="outlined"
           color="green"
@@ -410,10 +208,15 @@
 <script>
 import NavbarView from "@/components/NavbarView.vue";
 import FooterView from "@/components/FooterView.vue";
+import axios from "axios";
 export default {
   data() {
     return {
+      offres: {},
+      id_offre: "",
+      id_user: "",
       cycle: false,
+      showAll: false,
       show: false,
       show1: false,
       show2: false,
@@ -458,6 +261,24 @@ export default {
         },
       ],
     };
+  },
+  computed: {
+    user() {
+      return this.$store.getters.get_user;
+    },
+  },
+  mounted() {
+    this.toutoffres();
+  },
+  methods: {
+    async toutoffres() {
+      axios
+        .get("http://localhost:8000/api/auth/toutoffres")
+        .then((response) => {
+          this.offres = response.data;
+          console.log(response.data);
+        });
+    },
   },
   components: { NavbarView, FooterView },
 };
