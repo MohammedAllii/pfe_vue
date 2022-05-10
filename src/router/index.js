@@ -7,6 +7,7 @@ import DetailsPost from "../views/DetailsPost";
 import RechercheOffre from "../views/RechercheOffre";
 import AproposPage from "../views/AproposPage";
 import SignIn from "../views/SignIn";
+import CompanyPage from "../views/CompanyPage";
 import SideBar from "../components/SideBar";
 import DashbordView from "@/views/Admin/DashbordView.vue";
 import GestionUser from "@/views/Admin/GestionUser";
@@ -18,6 +19,7 @@ import HomeView from "../views/Home/HomeView";
 import CVView from "../views/Candidat/CVView";
 import CvForm from "../views/Candidat/CvForm";
 import LettreForm from "../views/Candidat/LettreForm";
+import ModifierLettre from "../views/Candidat/ModifierLettre";
 import OffreSave from "../views/Candidat/OffreSave";
 import ProfilCandidat from "../views/ProfilCandidat";
 import ModifierExperience from "../views/Candidat/ModiferExperience";
@@ -25,6 +27,7 @@ import ModifierDiplome from "../views/Candidat/ModifierDiplome";
 import PosteCompany from "../views/Company/PosteCompany";
 import GerePoste from "../views/Company/GerePoste";
 import StatistCompany from "../views/Company/StatistCompany";
+import ModifierPost from "../views/Company/ModifierPost";
 import CandidatureCompany from "../views/Company/CandidatureCompany";
 import SaveCv from "../views/Company/SaveCv";
 import store from "@/store";
@@ -110,6 +113,19 @@ const routes = [
     },
   },
   {
+    path: "/modifierlettre/:id?",
+    name: "modifierlettre",
+    component: ModifierLettre,
+    meta: {
+      secure: true,
+    },
+  },
+  {
+    path: "/companypage/:id?",
+    name: "companypage",
+    component: CompanyPage,
+  },
+  {
     path: "/SignIn",
     name: "SignIn",
     component: SignIn,
@@ -131,9 +147,6 @@ const routes = [
     path: "/detailpost/:id?",
     name: "detailpost",
     component: DetailsPost,
-    meta: {
-      secure: true,
-    },
   },
   {
     path: "/GestionUser",
@@ -154,6 +167,14 @@ const routes = [
     path: "/offresave",
     name: "offresave",
     component: OffreSave,
+    meta: {
+      secure: true,
+    },
+  },
+  {
+    path: "/modifierpost/:id?",
+    name: "modifierpost",
+    component: ModifierPost,
     meta: {
       secure: true,
     },
@@ -183,7 +204,7 @@ const routes = [
     },
   },
   {
-    path: "/infocandidat/:3?/:8?",
+    path: "/infocandidat/:id_user?/:id_offre?",
     name: "infocandidat",
     component: InfoCandidat,
     meta: {
@@ -232,6 +253,7 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+  mode: "history",
 });
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.secure)) {

@@ -103,7 +103,7 @@
                           <v-text-field
                             color="success"
                             label="Nom"
-                            v-model="namee"
+                            v-model="name_candidat"
                             placeholder="Placeholder"
                             variant="outlined"
                           ></v-text-field>
@@ -113,7 +113,7 @@
                           <v-text-field
                             color="success"
                             label="Prénom"
-                            v-model="last_name"
+                            v-model="last_name_candidat"
                             placeholder="Placeholder"
                             variant="outlined"
                           ></v-text-field>
@@ -342,8 +342,8 @@ export default {
       offree: {},
       id_offre: "",
       id_user: "",
-      namee: "",
-      last_name: "",
+      name_candidat: "",
+      last_name_candidat: "",
       email: "",
       reponse1: "",
       reponse2: "",
@@ -419,9 +419,9 @@ export default {
     submit() {
       let fd = new FormData();
       fd.append("img", this.image);
-      fd.append("name", this.namee);
+      fd.append("name_candidat", this.name_candidat);
       fd.append("email", this.email);
-      fd.append("last_name", this.last_name);
+      fd.append("last_name_candidat", this.last_name_candidat);
       fd.append("reponse1", this.reponse1);
       fd.append("reponse2", this.reponse2);
       fd.append("reponse3", this.reponse3);

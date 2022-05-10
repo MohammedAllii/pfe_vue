@@ -3,7 +3,7 @@
     <v-dialog v-model="dialog" fullscreen>
       <v-card>
         <v-toolbar dark color="green">
-          <v-btn icon dark @click="dialog = false">
+          <v-btn icon dark @click.prevent="retour">
             <v-icon>mdi-close</v-icon>
           </v-btn>
           <v-toolbar-title>close</v-toolbar-title>
@@ -160,6 +160,9 @@ export default {
           this.error = " impossible de changer info personnels";
           console.log(err.message);
         });
+    },
+    retour() {
+      this.$router.back();
     },
   },
 };

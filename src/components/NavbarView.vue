@@ -188,7 +188,6 @@
       </v-btn>
     </v-li>
   </v-toolbar>
-  <v-img src="#" style="width: 100px"></v-img>
 </template>
 <script>
 import axios from "axios";

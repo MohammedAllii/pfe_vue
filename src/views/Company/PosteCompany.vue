@@ -1,5 +1,6 @@
 <template>
   <navbar-view />
+  <v-divider></v-divider>
   <div>
     <v-row>
       <v-col cols="12" md="4">

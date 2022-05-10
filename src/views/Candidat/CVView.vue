@@ -577,7 +577,7 @@
                               <v-col cols="12" sm="12">
                                 <v-text-field
                                   v-model="comp"
-                                  label="compétences"
+                                  v-bind:label="competence.competence"
                                   variant="outlined"
                                   clearable
                                   clear-icon="mdi-cancel"
@@ -590,7 +590,7 @@
 
                               <v-select
                                 v-model="exper"
-                                label="Experience"
+                                v-bind:label="competence.experience"
                                 :items="[
                                   '0.5 ans',
                                   '1 ans',
@@ -1570,6 +1570,9 @@ export default {
         })
         .catch((err) => {
           this.error = err;
+          this.$toast.error(" Ajout les champ obligatoire sont vide.", {
+            position: "top-right",
+          });
         });
     },
     async addresume() {
@@ -1579,10 +1582,16 @@ export default {
         })
         .then((response) => {
           console.log(response);
+          this.$toast.success(" Ajout resumé avec success.", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {
           this.error = err;
+          this.$toast.error(" Ajout resumé échoué.", {
+            position: "top-right",
+          });
         });
     },
     async deleteresume() {

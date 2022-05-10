@@ -301,6 +301,158 @@
           <v-icon end icon="mdi-clock"></v-icon>
         </v-chip>
       </v-banner-text>
+      <template v-slot:actions>
+        <div class="text-center">
+          <v-menu transition="fab-transition">
+            <template v-slot:activator="{ props }">
+              <v-btn dark color="primary" v-bind="props">
+                <v-icon>mdi-format-list-bulleted-type</v-icon>
+              </v-btn>
+            </template>
+            <div v-if="lettre.pdf == null">
+              <v-list>
+                <v-list-item>
+                  <router-link
+                    :to="{ name: 'lettreform', params: { id: lettre.id } }"
+                    style="text-decoration: none"
+                    ><v-btn v-text="'afficher'"></v-btn
+                  ></router-link>
+                </v-list-item>
+                <v-list-item>
+                  <router-link
+                    :to="{ name: 'modifierlettre', params: { id: lettre.id } }"
+                    style="text-decoration: none"
+                    ><v-btn v-text="'modifier'"></v-btn
+                  ></router-link>
+                </v-list-item>
+                <v-list-item>
+                  <v-row justify="center">
+                    <v-dialog v-model="dialog2" persistent>
+                      <template v-slot:activator="{ props }">
+                        <v-hover>
+                          <v-btn v-bind="props" v-text="'supprimer'"></v-btn>
+                        </v-hover>
+                      </template>
+                      <v-card>
+                        <v-card-title
+                          ><v-icon size="50">mdi-emoticon-cry-outline </v-icon>
+                        </v-card-title>
+                        <v-card-text
+                          >Êtes-vous certain de vouloir supprimer ce cv
+                          ?</v-card-text
+                        >
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn
+                            rounded
+                            flat
+                            style="
+                              background-color: green;
+                              padding-left: 40px;
+                              padding-right: 50px;
+                            "
+                            color="white"
+                            text
+                            @click="dialog2 = false"
+                          >
+                            Annuler
+                          </v-btn>
+                          <v-btn
+                            rounded
+                            flat
+                            style="
+                              background-color: red;
+                              padding-left: 40px;
+                              padding-right: 50px;
+                            "
+                            color="white"
+                            text
+                            @click.prevent="deletelettre(lettre.id)"
+                          >
+                            Delete
+                          </v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                  </v-row>
+                </v-list-item>
+              </v-list>
+            </div>
+            <div v-if="lettre.pdf != null">
+              <v-list>
+                <v-list-item>
+                  <a
+                    v-bind:href="'../lettres/' + lettre.pdf"
+                    style="text-decoration: none"
+                    target="blank"
+                    ><v-btn v-text="'afficher'"></v-btn
+                  ></a>
+                </v-list-item>
+                <v-list-item>
+                  <v-row justify="center">
+                    <v-dialog v-model="dialog2" persistent>
+                      <template v-slot:activator="{ props }">
+                        <v-hover>
+                          <v-btn v-bind="props" v-text="'supprimer'"></v-btn>
+                        </v-hover>
+                      </template>
+                      <v-card>
+                        <v-card-title
+                          ><v-icon size="50">mdi-emoticon-cry-outline </v-icon>
+                        </v-card-title>
+                        <v-card-text
+                          >Êtes-vous certain de vouloir supprimer ce cv
+                          ?</v-card-text
+                        >
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn
+                            rounded
+                            flat
+                            style="
+                              background-color: green;
+                              padding-left: 40px;
+                              padding-right: 50px;
+                            "
+                            color="white"
+                            text
+                            @click="dialog2 = false"
+                          >
+                            Annuler
+                          </v-btn>
+                          <v-btn
+                            rounded
+                            flat
+                            style="
+                              background-color: red;
+                              padding-left: 40px;
+                              padding-right: 50px;
+                            "
+                            color="white"
+                            text
+                            @click.prevent="deletelettre(lettre.id)"
+                          >
+                            Delete
+                          </v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                  </v-row>
+                </v-list-item>
+                <v-list-item>
+                  <a
+                    v-bind:href="'../lettres/' + lettre.pdf"
+                    style="text-decoration: none"
+                    target="blank"
+                    v-bind:download="lettre.pdf"
+                    ><v-btn v-text="'Télécharger'"></v-btn
+                  ></a>
+                </v-list-item>
+              </v-list>
+            </div>
+          </v-menu>
+        </div>
+      </template>
     </v-banner>
   </v-container>
   <footer-view />

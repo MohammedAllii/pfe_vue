@@ -68,7 +68,7 @@
           <v-main style="height: 750px"></v-main>
         </v-layout>
       </v-col>
-      <v-col cols="12" md="8">
+      <v-col>
         <br />
         <v-row>
           <v-col cols="12" md="6">
@@ -86,27 +86,19 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="12" md="12">
+          <v-col>
             <v-tabs>
               <v-tab @click.prevent="alloffres"> All postes </v-tab>
               <v-tab @click.prevent="enattente"> En Attente </v-tab>
               <v-tab @click.prevent="accepter"> Accepter </v-tab>
             </v-tabs>
 
-            <v-card-text cols="10" md="10">
-              <v-container cols="10" md="10">
-                <v-banner
-                  lines="six"
-                  icon="mdi-text"
-                  color="grey"
-                  v-for="offre in offres"
-                  :key="offre.id"
-                  cols="10"
-                  md="10"
-                >
+            <v-card-text>
+              <v-container>
+                <v-banner color="grey" v-for="offre in offres" :key="offre.id">
                   <v-banner-text>
                     <router-link
-                      :to="{ name: 'cvview', params: { id: offre.id } }"
+                      :to="{ name: 'modifierpost', params: { id: offre.id } }"
                       style="text-decoration: none; color: blue"
                       ><h5>{{ offre.poste }}</h5>
                     </router-link>
@@ -132,9 +124,8 @@
                         <p>
                           <v-icon color="blue">mdi-currency-usd</v-icon>
                           <strong
-                            >{{ offre.salaire }}&nbsp;{{
-                              offre.monnaie
-                            }}</strong
+                            >{{ offre.salaire }}&nbsp;{{ offre.monnaie }}
+                            {{ offre.periode }}</strong
                           >
                         </p>
                         &nbsp;&nbsp;&nbsp;
@@ -155,10 +146,28 @@
                         postuler facilement
                         <v-icon end icon="mdi-face"></v-icon>
                       </v-chip>
+                      <v-chip
+                        class="ma-2"
+                        color="orange"
+                        variant="outlined"
+                        v-if="offre.etat == 0"
+                      >
+                        <v-icon start icon="mdi-progress-clock"></v-icon>
+                        En attente
+                      </v-chip>
+                      <v-chip
+                        class="ma-2"
+                        color="green"
+                        variant="outlined"
+                        v-if="offre.etat == 1"
+                      >
+                        <v-icon start icon="mdi-progress-clock"></v-icon>
+                        Accepter
+                      </v-chip>
                     </v-col>
                   </v-banner-text>
                   <template v-slot:actions>
-                    <div cols="6">
+                    <v-col cols="12" class="ma-2">
                       <v-menu>
                         <template v-slot:activator="{ props }">
                           <v-btn dark color="primary" v-bind="props">
@@ -177,18 +186,26 @@
                             ></router-link>
                           </v-list-item>
                           <v-list-item>
-                            <v-list-item-title
-                              v-text="'modifier'"
-                            ></v-list-item-title>
+                            <router-link
+                              :to="{
+                                name: 'modifierpost',
+                                params: { id: offre.id },
+                              }"
+                              style="text-decoration: none"
+                              ><v-btn v-text="'Modifier Offre'"></v-btn
+                            ></router-link>
                           </v-list-item>
                           <v-list-item>
                             <v-list-item-title
-                              v-text="'supprimer'"
+                              ><v-btn
+                                v-text="'supprimer'"
+                                @click.prevent="deleteoffre(offre.id)"
+                              ></v-btn
                             ></v-list-item-title>
                           </v-list-item>
                         </v-list>
                       </v-menu>
-                    </div>
+                    </v-col>
                   </template>
                 </v-banner>
               </v-container>
@@ -242,6 +259,17 @@ export default {
       await axios.get(url).then((response) => {
         this.offres = response.data;
       });
+    },
+    async deleteoffre($id) {
+      axios
+        .delete("http://localhost:8000/api/auth/deleteoffre/" + $id, {})
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
     },
   },
 };

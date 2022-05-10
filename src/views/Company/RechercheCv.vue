@@ -82,6 +82,8 @@
             <v-toolbar dense floating>
               <v-text-field
                 hide-details
+                @keyup="recherchecv"
+                v-model="recherche"
                 prepend-icon="mdi-magnify"
                 single-line
                 style="width: 600px"
@@ -91,25 +93,12 @@
           <v-row>
             <v-col cols="12" md="10">
               <v-expansion-panels variant="popout" class="pa-4">
-                <v-expansion-panel
-                  v-for="(message, i) in messages"
-                  :key="i"
-                  hide-actions
-                >
+                <v-expansion-panel v-for="cv in cvs" :key="cv.id">
                   <v-expansion-panel-title>
                     <v-row align="center" class="spacer" no-gutters>
                       <v-col cols="4" sm="2" md="1">
-                        <v-avatar size="40px">
-                          <v-img
-                            v-if="message.avatar"
-                            alt="Avatar"
-                            src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
-                          ></v-img>
-                          <v-icon
-                            v-else
-                            :color="message.color"
-                            :icon="message.icon"
-                          ></v-icon>
+                        <v-avatar size="50px">
+                          <v-img v-bind:src="'../cvs/' + cv.avatar"></v-img>
                         </v-avatar>
                       </v-col>
 
@@ -118,85 +107,49 @@
                         sm="5"
                         md="3"
                       >
-                        <strong v-html="message.name"></strong>
-                        <span v-if="message.total" class="text-grey">
-                          &nbsp;({{ message.total }})
+                        <span v-if="cv.name" class="text-green">
+                          &nbsp;{{ cv.name }} {{ cv.last_name }}
                         </span>
                       </v-col>
-
-                      <v-col class="text-no-wrap text-left" cols="5" sm="3">
-                        <v-chip
-                          v-if="message.new"
-                          :color="`${message.color}-lighten-1`"
-                          class="ml-0 mr-2 text-black"
-                          label
-                          small
-                        >
-                          {{ message.new }} new
-                        </v-chip>
-                        <strong v-html="message.title"></strong>
-                      </v-col>
-
-                      <v-col
-                        v-if="message.excerpt"
-                        class="text-grey text-truncate hidden-sm-and-down"
-                      >
-                        &mdash;
-                      </v-col>
+                      <strong v-html="cv.poste"></strong>
                     </v-row>
                   </v-expansion-panel-title>
 
                   <v-expansion-panel-text>
-                    <v-card-text
-                      class="text-body-1 font-italic"
-                      v-text="parag"
-                    ></v-card-text>
-                    <v-card-text
-                      class="font-weight-bold"
-                      v-text="parag1"
-                    ></v-card-text>
-                    <v-card-text
-                      class="font-weight-bold"
-                      v-text="parag2"
-                    ></v-card-text>
-                    <v-card-text
-                      class="font-weight-bold"
-                      v-text="parag3"
-                    ></v-card-text>
+                    <p>
+                      <v-icon color="blue">mdi-clipboard-text</v-icon>
+                      {{ cv.resume }}
+                    </p>
+                    <p>
+                      <v-icon color="blue">mdi-cake-layered</v-icon>
+                      {{ cv.date_naissance }}
+                    </p>
+                    <p>
+                      <v-icon color="green">mdi-phone</v-icon>
+                      {{ cv.phone }}
+                    </p>
+                    <p>
+                      <v-icon color="blue">mdi-email-open-multiple</v-icon>
+                      {{ cv.email }}
+                    </p>
+                    <p>
+                      <v-icon color="blue">mdi-gamepad-variant</v-icon>
+                      {{ cv.interet }}
+                    </p>
+                    <p>
+                      <v-icon color="blue">mdi-format-textbox</v-icon>
+                      {{ cv.skills }}
+                    </p>
                   </v-expansion-panel-text>
+                  <br />
                 </v-expansion-panel>
+                <br /><br />
               </v-expansion-panels>
+              <br /><br />
             </v-col>
           </v-row>
         </v-row>
       </v-col>
-
-      <v-container>
-        <v-row>
-          <v-menu>
-            <template v-slot:activator="{ props }">
-              <v-btn v-bind="props">oui </v-btn>
-            </template>
-            <v-card>
-              <v-card-text>
-                <div class="mx-auto text-center">
-                  <v-avatar color="green">
-                    <span class="white--text text-h5">{{ user.initials }}</span>
-                  </v-avatar>
-                  <h5>{{ user.fullName }}</h5>
-                  <p class="text-caption mt-1">
-                    {{ user.email }}
-                  </p>
-                  <v-divider class="my-3"></v-divider>
-                  <v-btn rounded variant="text"> Edit Account </v-btn>
-                  <v-divider class="my-3"></v-divider>
-                  <v-btn rounded variant="text"> Disconnect </v-btn>
-                </div>
-              </v-card-text>
-            </v-card>
-          </v-menu>
-        </v-row>
-      </v-container>
     </v-row>
   </div>
   <v-divider></v-divider>
@@ -205,28 +158,38 @@
 <script>
 import NavbarView from "@/components/NavbarView.vue";
 import FooterView from "@/components/FooterView.vue";
+import axios from "axios";
 export default {
   components: { NavbarView, FooterView },
   data: () => ({
-    messages: [
-      {
-        avatar:
-          "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png",
-        name: "Farah weslati",
-        title: "Vue js developer",
-      },
-    ],
-    parag:
-      "je suis un developer vue js j ai 5 ans d expéerience .J ai un diplome en informatique.Je souhaite me spécialiser dans le domaine de Développement Web .Je suis assidue ,ambitieuse et Prête a mettre mes compétences et ma passion en pratique ",
-    parag1: "Contact: Télephone:52214491 ",
-    parag2: "Email:farahweslati@gmail.com ",
-    parag3: "linkedin :https://www.linkedin.com/in/farah-weslati-52a5571bb/",
-    user: {
-      initials: "FW",
-      fullName: "Farah weslati",
-      email: "Farahweslati1919@gmail.com",
-    },
+    cvs: {},
+    recherche: "",
   }),
+  mounted() {
+    this.allCvs();
+  },
+  methods: {
+    async allCvs() {
+      axios.get("http://localhost:8000/api/auth/allCvs").then((response) => {
+        this.cvs = response.data;
+        console.log(response.data);
+      });
+    },
+    recherchecv() {
+      if (this.recherche.length > 1) {
+        axios
+          .get("http://localhost:8000/api/auth/recherchecv/" + this.recherche)
+          .then((response) => {
+            this.cvs = response.data;
+          });
+      } else {
+        axios.get("http://localhost:8000/api/auth/allCvs").then((response) => {
+          this.cvs = response.data;
+          console.log(response.data);
+        });
+      }
+    },
+  },
 };
 </script>
 <style></style>

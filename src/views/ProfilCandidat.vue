@@ -9,14 +9,14 @@
       <div align="center">
         <v-img
           rounded
-          style="border-radius: 90%; width: 25%; height: 10%"
+          style="border-radius: 190px; width: 15%"
           v-bind:src="'../images/' + users.avatar"
         ></v-img>
         <v-col cols="auto">
           <v-dialog transition="dialog-top-transition">
             <template v-slot:activator="{ props }">
               <v-btn flat rounded v-bind="props"
-                ><v-icon>mdi-marker</v-icon></v-btn
+                ><v-icon>mdi-image-edit</v-icon></v-btn
               >
             </template>
             <template v-slot:default="{ isActive }">
@@ -41,6 +41,259 @@
       </div>
     </v-container>
     <v-container align="center">
+      <v-row justify="center" v-if="user.role == 'company'">
+        <v-dialog
+          v-model="dialog1"
+          fullscreen
+          :scrim="false"
+          transition="dialog-bottom-transition"
+        >
+          <template v-slot:activator="{ props }">
+            <v-btn flat rounded v-bind="props"><v-icon>mdi-cog</v-icon></v-btn>
+          </template>
+          <v-card>
+            <v-toolbar dark color="primary">
+              <v-btn icon dark @click="dialog1 = false">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+              <v-toolbar-title>Close</v-toolbar-title>
+              <v-spacer></v-spacer>
+            </v-toolbar>
+            <v-container fluid align="center">
+              <h5 class="font-italic" style="color: cornflowerblue">
+                <v-icon>mdi-account-group-outline</v-icon> Les Données
+                personnelles
+              </h5>
+              <br />
+              <v-row>
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                    label="ex:https://www.company.com"
+                    v-model="users.site_web"
+                    prepend-inner-icon="mdi-web"
+                    placeholder="Placeholder"
+                    variant="outlined"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                    label="ex:1680 "
+                    v-model="users.annee_fondation"
+                    placeholder="Placeholder"
+                    variant="outlined"
+                    prepend-inner-icon="mdi-account"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                    label="Le nombre des Employees "
+                    v-model="users.nb_employee"
+                    placeholder="Placeholder"
+                    variant="outlined"
+                    prepend-inner-icon="mdi-account"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                    label="Location "
+                    v-model="users.gouvernorat"
+                    placeholder="Placeholder"
+                    variant="outlined"
+                    prepend-inner-icon="mdi-map-marker"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                    label="Le Headquarts "
+                    placeholder="Placeholder"
+                    v-model="users.adresse"
+                    variant="outlined"
+                    prepend-inner-icon="mdi-garage"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-textarea
+                    auto-grow
+                    filled
+                    v-model="users.description_entreprise"
+                    color="deep-purple"
+                    label="Description de la Société"
+                    rows="1"
+                    type="textarea"
+                  ></v-textarea>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" md="2">
+                  <v-text-field
+                    color="success"
+                    label="LinkedIn"
+                    v-model="users.linkedin"
+                    prepend-inner-icon="mdi-linkedin"
+                    placeholder="Placeholder"
+                    variant="outlined"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" md="2">
+                  <v-text-field
+                    color="success"
+                    v-model="users.facebook"
+                    label="Facebook"
+                    prepend-inner-icon="mdi-facebook"
+                    placeholder="Placeholder"
+                    variant="outlined"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" md="2">
+                  <v-text-field
+                    color="success"
+                    v-model="users.twitter"
+                    label="Twitter"
+                    prepend-inner-icon="mdi-twitter"
+                    placeholder="Placeholder"
+                    variant="outlined"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-btn
+                  color="blue"
+                  variant="outlined"
+                  text
+                  class="m-2"
+                  rounded
+                  flat
+                  prepend-icon="mdi-floppy"
+                  @click.prevent="updatecompany"
+                  style="padding-left: 50px; padding-right: 50px"
+                  >Save</v-btn
+                >
+                <v-btn
+                  variant="outlined"
+                  color="red"
+                  class="m-2"
+                  rounded
+                  flat
+                  prepend-icon="mdi-close-outline"
+                  @click="retour"
+                  style="padding-left: 50px; padding-right: 50px"
+                  >Annuler
+                </v-btn>
+              </v-row>
+            </v-container>
+          </v-card>
+        </v-dialog>
+      </v-row>
+
+      <v-row justify="center" v-if="user.role == 'user'">
+        <v-dialog
+          v-model="dialog1"
+          fullscreen
+          :scrim="false"
+          transition="dialog-bottom-transition"
+        >
+          <template v-slot:activator="{ props }">
+            <v-btn flat rounded v-bind="props"><v-icon>mdi-cog</v-icon></v-btn>
+          </template>
+          <v-card>
+            <v-toolbar dark color="primary">
+              <v-btn icon dark @click="dialog1 = false">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+              <v-toolbar-title>Close</v-toolbar-title>
+              <v-spacer></v-spacer>
+            </v-toolbar>
+            <v-container fluid align="center">
+              <h5 class="font-italic" style="color: cornflowerblue">
+                <v-icon>mdi-account-group-outline</v-icon> Les Données
+                personnelles
+              </h5>
+              <br />
+              <v-row>
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                    label="Adresse "
+                    placeholder="Placeholder"
+                    v-model="users.adresse"
+                    variant="outlined"
+                    prepend-inner-icon="mdi-garage"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                    label="Gouvernorat "
+                    v-model="users.gouvernorat"
+                    placeholder="Placeholder"
+                    variant="outlined"
+                    prepend-inner-icon="mdi-map-marker"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" md="2">
+                  <v-text-field
+                    color="success"
+                    type="date"
+                    label="Date de naissance"
+                    v-model="users.date_naissance"
+                    prepend-inner-icon="mdi-cake-variant"
+                    placeholder="Placeholder"
+                    variant="outlined"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" md="2">
+                  <v-select
+                    label="Civilité"
+                    v-model="users.civilite"
+                    :items="['Homme', 'Femme', 'Autre']"
+                    required
+                  ></v-select>
+                </v-col>
+                <v-col cols="12" md="2">
+                  <v-text-field
+                    color="success"
+                    v-model="users.phone"
+                    label="Phone"
+                    prepend-inner-icon="mdi-phone"
+                    placeholder="Placeholder"
+                    variant="outlined"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-btn
+                  color="blue"
+                  variant="outlined"
+                  text
+                  class="m-2"
+                  rounded
+                  flat
+                  prepend-icon="mdi-floppy"
+                  @click.prevent="updatecompany"
+                  style="padding-left: 50px; padding-right: 50px"
+                  >Save</v-btn
+                >
+                <v-btn
+                  variant="outlined"
+                  color="red"
+                  class="m-2"
+                  rounded
+                  flat
+                  prepend-icon="mdi-close-outline"
+                  @click="retour"
+                  style="padding-left: 50px; padding-right: 50px"
+                  >Annuler
+                </v-btn>
+              </v-row>
+            </v-container>
+          </v-card>
+        </v-dialog>
+      </v-row>
+
       <v-col>
         <h5>Informations professionnelles</h5>
       </v-col>
@@ -273,10 +526,20 @@ export default {
       name: "",
       email: "",
       password: "",
+      site_web: "",
+      annee_fondation: "",
+      description_entreprise: "",
+      nb_employee: "",
+      adresse: "",
+      gouvernorat: "",
+      facebook: "",
+      linkedin: "",
+      twitter: "",
       users: {},
       error: "",
       idc: this.$route.params.id,
       dialog: false,
+      dialog1: false,
       show1: false,
       rules: {
         required: (value) => !!value || "Required.",
@@ -317,6 +580,9 @@ export default {
         .delete("http://localhost:8000/api/auth/deleteuser/" + this.user.id)
         .then((response) => {
           console.log(response);
+          this.$toast.warning(" User deleted.", {
+            position: "top-right",
+          });
           this.$store.commit("SET_token", null);
           this.$store.commit("SET_user", null);
           this.$store.commit("SET_loggedIn", false);
@@ -331,6 +597,9 @@ export default {
         })
         .then((response) => {
           console.log(response);
+          this.$toast.success(" Name updated.", {
+            position: "top-right",
+          });
           this.$router.go(0);
         });
     },
@@ -341,10 +610,12 @@ export default {
         })
         .then((response) => {
           console.log(response);
+          this.$toast.success(" Email updated.", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {
-          this.isLoading = false;
           this.error = " Email existe déja";
           console.log(err.message);
         });
@@ -356,6 +627,9 @@ export default {
         })
         .then((response) => {
           console.log(response);
+          this.$toast.success(" Password updated.", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {
@@ -375,9 +649,36 @@ export default {
         .post("http://localhost:8000/api/auth/upload/" + this.user.id, fd)
         .then((res) => {
           console.log("response", res.data);
+          this.$toast.success(" image updated.", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => console.log(err));
+    },
+    async updatecompany() {
+      axios
+        .post("http://localhost:8000/api/auth/updatecompany/" + this.user.id, {
+          site_web: this.users.site_web,
+          annee_fondation: this.users.annee_fondation,
+          nb_employee: this.users.nb_employee,
+          gouvernorat: this.users.gouvernorat,
+          adresse: this.users.adresse,
+          description_entreprise: this.users.description_entreprise,
+          linkedin: this.users.linkedin,
+          facebook: this.users.facebook,
+          twitter: this.users.twitter,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$toast.success(" Profil updated.", {
+            position: "top-right",
+          });
+          this.$router.go(0);
+        });
+    },
+    retour() {
+      this.$router.go(0);
     },
   },
   mounted() {},

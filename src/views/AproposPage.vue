@@ -27,7 +27,7 @@
           <v-card class="mx-auto" max-width="344">
             <v-img
               src="https://media-exp1.licdn.com/dms/image/C4E03AQEK9l8Tm3ZS8A/profile-displayphoto-shrink_800_800/0/1616934438146?e=1656547200&v=beta&t=6dGvVKqot-dNjGVjzwjFtnsOxcRwm3Lq4MnfR7QhZvE"
-              height="250px"
+              height="280px"
               cover
             ></v-img>
 
@@ -70,7 +70,7 @@
         <v-col cols="12" md="6">
           <v-card class="mx-auto" max-width="344">
             <v-img
-              src="https://scontent.ftun15-1.fna.fbcdn.net/v/t39.30808-6/277557695_1903909926471236_8967778533381054765_n.jpg?_nc_cat=106&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=XXs8fG6aRikAX-32OPL&_nc_ht=scontent.ftun15-1.fna&oh=00_AT_IGw5_0rv6ArYm5bt8tjwI3M1vRZGhaYv0oAf7LnC6DQ&oe=627251E7"
+              v-bind:src="'./images/hamouda.jpg'"
               height="280px"
               cover
             ></v-img>

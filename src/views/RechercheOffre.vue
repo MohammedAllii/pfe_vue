@@ -155,7 +155,14 @@
               </h5>
               <p>
                 <v-icon color="blue">mdi-home-city-outline</v-icon>
-                {{ offre.name_company }}
+                <router-link
+                  :to="{
+                    name: 'companypage',
+                    params: { id: offre.id_company },
+                  }"
+                  style="text-decoration: none"
+                  >{{ offre.name_company }}
+                </router-link>
               </p>
               <v-row>
                 <v-row>
@@ -190,7 +197,6 @@
                     mdi-content-save-outline</v-icon
                   >
                 </template>
-                <span>Sauvegarder</span>
               </v-tooltip>
             </v-col>
             <v-col cols="12">
@@ -210,6 +216,10 @@
                 postuler facilement
                 <v-icon end icon="mdi-face"></v-icon>
               </v-chip>
+              <v-chip class="ma-2" color="orange" variant="outlined">
+                <v-icon start icon="mdi-progress-clock"></v-icon>
+                En attente
+              </v-chip>
             </v-col>
             <v-divider></v-divider>
           </v-row>
@@ -221,10 +231,10 @@
           ></v-pagination>
           <v-container align="center" v-if="offres == ''">
             <img
-              src="https://us.123rf.com/450wm/gmast3r/gmast3r1705/gmast3r170501109/79018658-dessin-anim%C3%A9-visage-triste-personnes-n%C3%A9gatives-emotion-ic%C3%B4ne-vector-illustration.jpg?ver=6"
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/No-Symbol.png/240px-No-Symbol.png"
               style="width: 200px; height: 200px"
             />
-            <h5 class="text-h4 font-italic" style="color: blue">
+            <h5 class="text-h4 font-italic" style="color: black">
               Désolé Aucune Offre
             </h5>
           </v-container>
@@ -422,7 +432,7 @@ export default {
         });
     },
     rechercheoffre() {
-      if (this.recherche.length > 2) {
+      if (this.recherche.length > 1) {
         axios
           .get(
             "http://localhost:8000/api/auth/rechercheposte/" + this.recherche
@@ -444,7 +454,7 @@ export default {
       }
     },
     rechercheoffrelocalite() {
-      if (this.rechercheloc.length > 2) {
+      if (this.rechercheloc.length > 1) {
         axios
           .get(
             "http://localhost:8000/api/auth/rechercheposteloc/" +

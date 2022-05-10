@@ -10,57 +10,82 @@
         <v-layout>
           <v-navigation-drawer floating permanent>
             <v-list density="compact" nav>
-              <v-btn
-                flat
-                rounded
-                prepend-icon=" mdi-publish"
-                title="  Publiez vos offres"
-                value="  Publiez vos offres"
-                to="PosteCompany"
-                >Publiez vos offres</v-btn
+              <router-link
+                :to="{
+                  name: 'PosteCompany',
+                }"
+                style="text-decoration: none; color: black"
+                ><v-btn
+                  flat
+                  rounded
+                  prepend-icon=" mdi-publish"
+                  title="  Publiez vos offres"
+                  value="  Publiez vos offres"
+                  >Publiez vos offres</v-btn
+                ></router-link
               >
               <br /><br />
-              <v-btn
-                flat
-                rounded
-                prepend-icon="mdi-content-paste"
-                title=" gérer vos offres"
-                value=" gérer vos offres"
-                to="GerePoste"
-                >gérer vos offres</v-btn
+              <router-link
+                :to="{
+                  name: 'GerePoste',
+                }"
+                style="text-decoration: none; color: black"
+                ><v-btn
+                  flat
+                  rounded
+                  prepend-icon="mdi-content-paste"
+                  title=" gérer vos offres"
+                  value=" gérer vos offres"
+                  >gérer vos offres</v-btn
+                ></router-link
               >
               <br /><br />
-              <v-btn
-                flat
-                rounded
-                prepend-icon="mdi-forum"
-                title="Statistiques"
-                value="Statistiques"
-                to="StatistCompany"
-                >Statistiques</v-btn
+              <router-link
+                :to="{
+                  name: 'StatistCompany',
+                }"
+                style="text-decoration: none; color: black"
+                ><v-btn
+                  flat
+                  rounded
+                  prepend-icon="mdi-forum"
+                  title="Statistiques"
+                  value="Statistiques"
+                  >Statistiques</v-btn
+                ></router-link
               >
               <br /><br />
               <v-col>
                 <p class="font-weight-bold">Accès à la CVthèque</p>
               </v-col>
-              <v-btn
-                flat
-                rounded
-                prepend-icon="mdi-magnify"
-                title=" Rechercher des CV's"
-                value="Rechercher des CV's"
-                to="RechercheCv"
-                >Rechercher des CV's</v-btn
+              <router-link
+                :to="{
+                  name: 'RechercheCv',
+                }"
+                style="text-decoration: none; color: black"
+                ><v-btn
+                  flat
+                  rounded
+                  prepend-icon="mdi-magnify"
+                  title=" Rechercher des CV's"
+                  value="Rechercher des CV's"
+                  >Rechercher des CV's</v-btn
+                ></router-link
               >
               <br /><br />
-              <v-btn
-                flat
-                rounded
-                prepend-icon=" mdi-briefcase-download-outline"
-                title="CV's sauvgardés"
-                value="CV's sauvgardés"
-                to="SaveCv"
-                >CV's sauvgardés</v-btn
+              <router-link
+                :to="{
+                  name: 'SaveCv',
+                }"
+                style="text-decoration: none; color: black"
+                ><v-btn
+                  flat
+                  rounded
+                  prepend-icon=" mdi-briefcase-download-outline"
+                  title="CV's sauvgardés"
+                  value="CV's sauvgardés"
+                  >CV's sauvgardés</v-btn
+                ></router-link
               >
               <br /><br />
             </v-list>
@@ -131,192 +156,13 @@
         </v-row>
         <br />
         <v-row>
-          <v-dialog v-model="dialog1" scrollable>
-            <template v-slot:activator="{ props }">
-              <v-btn
-                prepend-icon="mdi-filter-outline"
-                color="#E3F2FD"
-                v-bind="props"
-                rounded
-                flat
-                tranparant
-                class="ma-2"
-              >
-                Sort by
-              </v-btn>
-            </template>
-            <v-card>
-              <v-card-title>Sort By</v-card-title>
-              <v-divider></v-divider>
-              <v-card-text style="height: 200px">
-                <v-radio-group v-model="dialogm1" column>
-                  <v-radio label="Relevance" value="Relevance"></v-radio>
-                  <v-radio label="Date Apply" value="Date Apply"></v-radio>
-                  <v-radio label="First Name" value="First Name"></v-radio>
-                  <v-radio label="Last Name" value="Last Name"></v-radio>
-                </v-radio-group>
-              </v-card-text>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-btn color="blue-darken-1" text @click="dialog1 = false">
-                  Close
-                </v-btn>
-                <v-btn color="blue-darken-1" text @click="dialog1 = false">
-                  Show results
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-          <v-dialog v-model="dialog2" scrollable>
-            <template v-slot:activator="{ props }">
-              <v-btn
-                prepend-icon="mdi-star-outline"
-                color="#E3F2FD"
-                v-bind="props"
-                rounded
-                flat
-                tranparant
-                class="ma-2"
-              >
-                Ratings
-              </v-btn>
-            </template>
-            <v-card>
-              <v-card-title>Ratings</v-card-title>
-              <v-divider></v-divider>
-              <v-card-text style="height: 250px">
-                <v-checkbox
-                  label="Unrated"
-                  color="success"
-                  value="success"
-                  hide-details
-                ></v-checkbox>
-                <v-checkbox
-                  label="Good Fit"
-                  color="success"
-                  value="success"
-                  hide-details
-                ></v-checkbox>
-                <v-checkbox
-                  label="Not a Fit"
-                  color="success"
-                  value="success"
-                  hide-details
-                ></v-checkbox>
-                <v-checkbox
-                  label="Maybe"
-                  color="success"
-                  value="success"
-                  hide-details
-                ></v-checkbox>
-              </v-card-text>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-btn color="blue-darken-1" text @click="dialog2 = false">
-                  Close
-                </v-btn>
-                <v-btn color="blue-darken-1" text @click="dialog2 = false">
-                  Show results
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-          <v-dialog v-model="dialog3" scrollable>
-            <template v-slot:activator="{ props }">
-              <v-btn
-                prepend-icon="mdi-map-marker-radius"
-                color="#E3F2FD"
-                v-bind="props"
-                rounded
-                flat
-                tranparant
-                class="ma-2"
-              >
-                Location
-              </v-btn>
-            </template>
-            <v-card>
-              <v-card-title>Show me Only</v-card-title>
-              <v-divider></v-divider>
-              <v-card-text style="height: 200px">
-                <v-checkbox
-                  label="Tunisia"
-                  color="success"
-                  value="success"
-                  hide-details
-                ></v-checkbox>
-              </v-card-text>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-btn color="blue-darken-1" text @click="dialog3 = false">
-                  Close
-                </v-btn>
-                <v-btn color="blue-darken-1" text @click="dialog3 = false">
-                  Show results
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-          <v-dialog v-model="dialog4" scrollable>
-            <template v-slot:activator="{ props }">
-              <v-btn
-                prepend-icon="mdi-account-tie"
-                color="#E3F2FD"
-                v-bind="props"
-                rounded
-                flat
-                tranparant
-                class="ma-2"
-              >
-                Years Of experience
-              </v-btn>
-            </template>
-            <v-card>
-              <v-card-title>Years Of experience</v-card-title>
-              <v-divider></v-divider>
-              <v-card-text style="height: 300px">
-                <v-checkbox
-                  label="Less than 1 year"
-                  color="success"
-                  value="success"
-                  hide-details
-                ></v-checkbox>
-                <v-checkbox
-                  label="2 to 3 years"
-                  color="success"
-                  value="success"
-                  hide-details
-                ></v-checkbox>
-                <v-checkbox
-                  label="3 to 5 years"
-                  color="success"
-                  value="success"
-                  hide-details
-                ></v-checkbox>
-                <v-checkbox
-                  label="5 to 10 years"
-                  color="success"
-                  value="success"
-                  hide-details
-                ></v-checkbox>
-                <v-checkbox
-                  label="More than 10 years"
-                  color="success"
-                  value="success"
-                  hide-details
-                ></v-checkbox>
-              </v-card-text>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-btn color="blue-darken-1" text @click="dialog4 = false">
-                  Close
-                </v-btn>
-                <v-btn color="blue-darken-1" text @click="dialog4 = false">
-                  Show results
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+          <v-col cols="12" md="6">
+            <v-text-field
+              label="Your Locality"
+              prepend-inner-icon="mdi-map-marker-check"
+              variant="outlined"
+            ></v-text-field>
+          </v-col>
         </v-row>
         <v-row>
           <v-col cols="12" md="12">
@@ -338,13 +184,14 @@
                       :to="{
                         name: 'infocandidat',
                         query: {
-                          id_user: 3,
-                          id_offre: 8,
+                          id_user: applic.id_user,
+                          id_offre: applic.id_offre,
                         },
                       }"
                       style="text-decoration: none"
                       class="text-h6 mb-1"
-                      >{{ applic.namee }} {{ applic.last_name }}</router-link
+                      >{{ applic.name_candidat }}
+                      {{ applic.last_name_candidat }}</router-link
                     >
                     <div class="text-caption">{{ applic.adresse }}</div>
                     <div class="text-caption">
@@ -361,19 +208,51 @@
                       Applied {{ applic.created_att }}
                     </v-chip>
 
-                    <v-chip class="ma-2" color="primary" variant="outlined">
+                    <v-chip
+                      class="ma-2"
+                      color="primary"
+                      variant="outlined"
+                      v-if="
+                        applic.reponse1 != null &&
+                        applic.reponse2 != null &&
+                        applic.reponse3 != null
+                      "
+                    >
+                      3/3 qualified
+                      <v-icon end icon="mdi-shield-check-outline"></v-icon>
+                    </v-chip>
+                    <v-chip
+                      class="ma-2"
+                      color="primary"
+                      variant="outlined"
+                      v-if="applic.reponse1 != null && applic.reponse2 != null"
+                    >
+                      2/3 qualified
+                      <v-icon end icon="mdi-shield-check-outline"></v-icon>
+                    </v-chip>
+                    <v-chip
+                      class="ma-2"
+                      color="primary"
+                      variant="outlined"
+                      v-if="applic.reponse1 != null && applic.reponse2 == null"
+                    >
                       1/3 qualified
                       <v-icon end icon="mdi-shield-check-outline"></v-icon>
                     </v-chip>
                     <v-chip class="ma-2" color="primary" variant="outlined">
-                      <v-btn
-                        to="InfoTest"
-                        rounded
-                        flat
-                        prepend-icon="mdi-marker"
+                      <router-link
+                        :to="{
+                          name: 'infocandidat',
+                          query: {
+                            id_user: applic.id_user,
+                            id_offre: applic.id_offre,
+                          },
+                        }"
+                        style="text-decoration: none"
+                        ><v-btn rounded flat prepend-icon="mdi-marker">
+                          More Details
+                        </v-btn></router-link
                       >
-                        More Details
-                      </v-btn>
                       <v-icon end icon="mdi-shield-check-outline"></v-icon>
                     </v-chip>
                   </div>
@@ -386,13 +265,19 @@
         <v-row>
           <v-col cols="12" md="6"></v-col>
           <v-col cols="12" md="6">
-            <v-btn
-              prepend-icon="mdi-file-download-outline"
-              rounded
-              flat
-              color="blue"
-              to="PosteCompany"
-              >Publier une nouvelle Poste</v-btn
+            <router-link
+              :to="{
+                name: 'PosteCompany',
+              }"
+              style="text-decoration: none"
+              class="text-h6 mb-1"
+              ><v-btn
+                prepend-icon="mdi-file-download-outline"
+                rounded
+                flat
+                color="blue"
+                >Publier une nouvelle Poste</v-btn
+              ></router-link
             >
           </v-col>
         </v-row>
@@ -417,6 +302,7 @@ export default {
       sound: true,
       widgets: false,
       dialogm1: "",
+      nb: 0,
       dialog1: false,
       dialogm2: "",
       dialog2: false,

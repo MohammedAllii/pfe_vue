@@ -80,7 +80,7 @@
                 <v-expansion-panel-title>
                   <v-row align="center" class="spacer" no-gutters>
                     <v-col cols="4" sm="2" md="1">
-                      <v-avatar size="40px">
+                      <v-avatar size="50px">
                         <v-img v-bind:src="'../cvs/' + cv.avatar"></v-img>
                       </v-avatar>
                     </v-col>
