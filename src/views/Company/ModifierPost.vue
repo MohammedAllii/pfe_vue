@@ -162,76 +162,6 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12" md="8">
-          <p>À propos de la société</p>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" md="12">
-          <p>Nom de la société</p>
-          <v-text-field
-            v-model="offre.name_company"
-            label="Nom de la société"
-            prepend-inner-icon="mdi-bullhorn"
-            placeholder="Placeholder"
-            variant="outlined"
-            disabled="disabled"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-col cols="12" md="12">
-        <p>Site Web de la société</p>
-        <v-text-field
-          v-model="offre.site_web"
-          label="ex:https://www.company.com"
-          prepend-inner-icon="mdi-web"
-          placeholder="Placeholder"
-          variant="outlined"
-        ></v-text-field>
-      </v-col>
-      <v-row>
-        <v-col cols="12" md="6">
-          <p>Le nombre des Employees</p>
-          <v-select
-            v-model="offre.employes"
-            label="Nombre d'employées "
-            :items="[
-              'Travailleur indépendant',
-              'De 1 a 10',
-              'De 11 a 50',
-              'De 51 a 200',
-              'De 201 a 500',
-              'De 501 a 1000',
-              'De 1001 a 5000',
-              'De 5001 a 10000',
-              '10000+',
-            ]"
-          ></v-select>
-        </v-col>
-        <v-col cols="12" md="6">
-          <p>Année de fondation</p>
-          <v-text-field
-            v-model="offre.annee"
-            label="ex:1680 "
-            placeholder="Placeholder"
-            variant="outlined"
-            prepend-inner-icon="mdi-account"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row>
-        <p>Descriptif de la société</p>
-        <v-col cols="12" md="12">
-          <v-textarea
-            v-model="offre.description_company"
-            prepend-inner-icon="mdi-file-document-edit-outline"
-            background-color="grey lighten-2"
-            color="cyan"
-            label="Votre message"
-          ></v-textarea>
-        </v-col>
-      </v-row>
-      <v-row>
         <v-col cols="12" md="12">
           <p>Allez-nous a la partie questionnaires?</p>
           <v-col cols="12" sm="12">
@@ -311,11 +241,6 @@ export default {
       monnaie: "",
       periode: "",
       description: "",
-      name_company: "",
-      site_web: "",
-      annee: "",
-      employes: "",
-      description_company: "",
       question1: "",
       question2: "",
       question3: "",
@@ -352,11 +277,6 @@ export default {
             monnaie: this.offre.monnaie,
             periode: this.offre.periode,
             description: this.offre.description,
-            name_company: this.user.name,
-            site_web: this.offre.site_web,
-            annee: this.offre.annee,
-            employes: this.offre.employes,
-            description_company: this.offre.description_company,
             question1: this.offre.question1,
             question2: this.offre.question2,
             question3: this.offre.question3,

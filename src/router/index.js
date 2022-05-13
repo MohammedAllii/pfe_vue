@@ -142,6 +142,9 @@ const routes = [
     path: "/DashbordView",
     name: "DashbordView",
     component: DashbordView,
+    meta: {
+      secure: true,
+    },
   },
   {
     path: "/detailpost/:id?",

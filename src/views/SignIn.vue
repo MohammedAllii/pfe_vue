@@ -95,8 +95,10 @@ export default {
           });
           if (res.data.user.role == "user") {
             this.$router.push("/");
+          } else if (res.data.user.role == "admin") {
+            this.$router.push("/DashbordView");
           } else {
-            this.$router.push("/");
+            this.$router.push("/postecompany");
           }
         })
         .catch((err) => {

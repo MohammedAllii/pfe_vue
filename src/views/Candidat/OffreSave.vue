@@ -16,7 +16,7 @@
             <v-col cols="12">
               <h5 class="font-italic" style="color: blue">
                 <router-link
-                  :to="{ name: 'detailpost', params: { id: offre.id } }"
+                  :to="{ name: 'detailpost', params: { id: offre.id_offre } }"
                   style="text-decoration: none"
                   ><h5>{{ offre.poste }}</h5>
                 </router-link>

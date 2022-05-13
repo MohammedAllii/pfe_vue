@@ -182,6 +182,61 @@
         </v-row>
       </v-container>
     </v-li>
+    <v-li class="nav-item" v-if="loggedAdmin">
+      <v-container>
+        <v-row>
+          <v-menu>
+            <template v-slot:activator="{ props }">
+              <v-btn right="12em" v-bind="props" rounded color="grey" dark>
+                <v-avatar size="30" style="border-radius: 100%">
+                  <v-img
+                    v-bind:src="'../images/' + users.avatar"
+                  ></v-img> </v-avatar
+                >{{ users.name }}
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card-text>
+                <div class="text-center">
+                  <v-avatar size="30" style="border-radius: 100%">
+                    <v-img v-bind:src="'../images/' + users.avatar"></v-img>
+                  </v-avatar>
+                  <p class="text-caption mt-1">
+                    {{ users.email }}
+                  </p>
+                </div>
+                <div class="text-left">
+                  <v-divider class="my-3"></v-divider>
+                  <v-btn
+                    rounded
+                    variant="text"
+                    :to="{ name: 'profilcandidat', params: { id: users.id } }"
+                    ><v-icon color="grey">mdi-home</v-icon> Mon Compte </v-btn
+                  ><br />
+                  <v-btn rounded variant="text" to="/offresave"
+                    ><v-icon color="grey">mdi-content-save-outline</v-icon>
+                    Offres Sauvegarder </v-btn
+                  ><br />
+                  <v-btn rounded to="/PosteCompany">
+                    <v-icon color="grey">mdi-pen-plus</v-icon>
+                    Publier Poste
+                  </v-btn>
+                  <v-divider class="my-3"></v-divider>
+                  <v-btn
+                    rounded
+                    variant="text"
+                    color="red"
+                    @click.prevent="performLogout"
+                  >
+                    Se déconnecter </v-btn
+                  ><br />
+                </div>
+              </v-card-text>
+            </v-card>
+          </v-menu>
+        </v-row>
+      </v-container>
+    </v-li>
     <v-li class="nav-item" v-if="!loggedIn">
       <v-btn class="v-btn-signIn" rounded color="white" dark to="/SignUp">
         Sign Up
@@ -214,6 +269,9 @@ export default {
     },
     loggedUser() {
       return this.$store.getters.get_loggedUser;
+    },
+    loggedAdmin() {
+      return this.$store.getters.get_loggedAdmin;
     },
   },
   methods: {

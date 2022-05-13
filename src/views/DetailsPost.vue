@@ -245,16 +245,6 @@
         Sauvgarder
       </v-btn>
       <br /><br />
-      <v-btn
-        style="padding-left: 100px; padding-right: 100px"
-        prepend-icon="mdi-share-outline"
-        rounded
-        flat
-        variant="outlined"
-        color="blue"
-      >
-        Partager
-      </v-btn>
     </v-col>
   </v-row>
   <v-divider></v-divider>

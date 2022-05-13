@@ -107,7 +107,7 @@
               <router-link
                 to="#"
                 style="text-decoration: none"
-                @click.prevent="getoffrebycompany(company.name)"
+                @click.prevent="getoffrebycompany(company.id)"
               >
                 <v-icon color="blue">mdi-home-city-outline</v-icon>
                 {{ company.name }}</router-link
@@ -155,13 +155,14 @@
               </h5>
               <p>
                 <v-icon color="blue">mdi-home-city-outline</v-icon>
+                &nbsp;
                 <router-link
                   :to="{
                     name: 'companypage',
                     params: { id: offre.id_company },
                   }"
                   style="text-decoration: none"
-                  >{{ offre.name_company }}
+                  >{{ offre.name }}
                 </router-link>
               </p>
               <v-row>
@@ -215,10 +216,6 @@
               <v-chip class="ma-2" color="primary" variant="outlined">
                 postuler facilement
                 <v-icon end icon="mdi-face"></v-icon>
-              </v-chip>
-              <v-chip class="ma-2" color="orange" variant="outlined">
-                <v-icon start icon="mdi-progress-clock"></v-icon>
-                En attente
               </v-chip>
             </v-col>
             <v-divider></v-divider>
@@ -336,9 +333,9 @@ export default {
           console.log(response.data);
         });
     },
-    async getoffrebycompany($name) {
+    async getoffrebycompany($id) {
       axios
-        .get("http://localhost:8000/api/auth/getoffrebycompany/" + $name)
+        .get("http://localhost:8000/api/auth/getoffrebycompany/" + $id)
         .then((response) => {
           this.offres = response.data;
         });
