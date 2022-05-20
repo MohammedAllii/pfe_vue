@@ -22,9 +22,7 @@
                 </router-link>
               </h5>
               <v-icon color="blue" size="25">mdi-home-city-outline</v-icon>
-              &nbsp;<strong style="font-size: 20px">{{
-                offre.name_company
-              }}</strong>
+              &nbsp;<strong style="font-size: 20px">{{ offre.name }}</strong>
               <v-row>
                 <v-col cols="12" md="8"> </v-col>
                 <v-col cols="12" md="4">

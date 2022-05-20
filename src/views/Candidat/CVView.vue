@@ -23,7 +23,7 @@
   <v-container>
     <div align="center" style="border-style: ridge">
       <v-avatar size="150" style="border-radius: 100%">
-        <v-img v-bind:src="'../cvs/' + cvs.avatar"></v-img>
+        <v-img v-bind:src="'../cvs/' + cvs.avatar_cv"></v-img>
       </v-avatar>
       <v-col cols="auto">
         <v-dialog transition="dialog-top-transition">
@@ -1288,22 +1288,6 @@
                     <v-card-text>
                       <v-col cols="12" sm="12">
                         <v-textarea
-                          :items="[
-                            'Coding',
-                            'Creativity',
-                            'Persuasion',
-                            'Collaboration',
-                            'Adaptability',
-                            'Time Management',
-                            'Effective communication',
-                            'Emotional intelligence',
-                            'Conflict management',
-                            'Teamwork skills',
-                            'Stress management',
-                            'Problem-solving',
-                            'Productivity & organization',
-                            'Critical thinking',
-                          ]"
                           label="Your skills"
                           style="width: 400px"
                           v-model="cvs.skills"

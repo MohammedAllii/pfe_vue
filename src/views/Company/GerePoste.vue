@@ -102,34 +102,40 @@
                       style="text-decoration: none; color: blue"
                       ><h5>{{ offre.poste }}</h5>
                     </router-link>
+                    <br />
                     <v-col cols="12">
                       <v-row>
-                        <v-col cols="10"></v-col>
-                        <p>
-                          <v-icon color="blue">mdi-map-marker</v-icon>
-                          <strong>{{ offre.lieu_travail }}</strong>
-                        </p>
-                        &nbsp;&nbsp;&nbsp;
-                        <p>
-                          <v-icon color="blue"
-                            >mdi-file-document-outline</v-icon
-                          >
-                          <strong>{{ offre.contrat }}</strong>
-                        </p>
-                        &nbsp;&nbsp;&nbsp;
-                        <p>
-                          <v-icon color="blue">mdi-clock-outline</v-icon>
-                          <strong>{{ offre.temps_travail }}</strong>
-                        </p>
-                        <p>
-                          <v-icon color="blue">mdi-currency-usd</v-icon>
-                          <strong
-                            >{{ offre.salaire }}&nbsp;{{ offre.monnaie }}
-                            {{ offre.periode }}</strong
-                          >
-                        </p>
+                        <v-row>
+                          <v-row>
+                            <v-col cols="10" md="2"></v-col>
+                            <p>
+                              <v-icon color="blue">mdi-map-marker</v-icon>
+                              <strong>{{ offre.lieu_travail }}</strong>
+                            </p>
+                            &nbsp;&nbsp;&nbsp;
+                            <p>
+                              <v-icon color="blue"
+                                >mdi-file-document-outline</v-icon
+                              >
+                              <strong>{{ offre.contrat }}</strong>
+                            </p>
+                            &nbsp;&nbsp;&nbsp;
+                            <p>
+                              <v-icon color="blue">mdi-clock-outline</v-icon>
+                              <strong>{{ offre.temps_travail }}</strong>
+                            </p>
+                            &nbsp;&nbsp;&nbsp;
+                            <p>
+                              <v-icon color="blue">mdi-currency-usd</v-icon>
+                              <strong>{{ offre.salaire }}</strong
+                              >&nbsp;<strong>{{ offre.monnaie }}</strong>
+                            </p>
+                            &nbsp;&nbsp;&nbsp;
+                          </v-row>
+                        </v-row>
                         &nbsp;&nbsp;&nbsp;
                       </v-row>
+                      <br />
                       <p v-if="offre.description.length > 5">
                         {{
                           showAll

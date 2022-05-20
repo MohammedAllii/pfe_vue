@@ -90,7 +90,7 @@ export default {
         })
         .then((res) => {
           console.log(res);
-          this.$toast.success(" Welcome  ." + res.data.user.name, {
+          this.$toast.success(" Welcome  " + res.data.user.name, {
             position: "top-right",
           });
           if (res.data.user.role == "user") {

@@ -4,14 +4,19 @@
   <br />
   <v-container>
     <v-row>
-      <v-col cols="12" md="2"></v-col>
       <v-col cols="12" md="10">
         <h5 class="text-h5 font-weight-bold">
           {{ offres.poste }}
         </h5>
       </v-col>
       <v-row>
-        <v-col cols="12" md="2"></v-col>
+        <v-col cols="12" md="2">
+          <p>
+            <v-icon color="blue">mdi-home</v-icon>
+            {{ offres.name }}
+          </p>
+        </v-col>
+
         <v-col cols="12" md="2">
           <p>
             <v-icon color="blue">mdi-map-marker</v-icon>
@@ -69,6 +74,10 @@
             variant="outlined"
             color="blue"
             v-bind="props"
+            v-if="
+              this.$store.state.loggedCompany == false &&
+              this.$store.state.loggedAdmin == false
+            "
           >
             postuler
           </v-btn>
@@ -103,7 +112,7 @@
                           <v-text-field
                             color="success"
                             label="Nom"
-                            v-model="name_candidat"
+                            v-model="user.name"
                             placeholder="Placeholder"
                             variant="outlined"
                           ></v-text-field>
@@ -113,7 +122,7 @@
                           <v-text-field
                             color="success"
                             label="Prénom"
-                            v-model="last_name_candidat"
+                            v-model="user.last_name"
                             placeholder="Placeholder"
                             variant="outlined"
                           ></v-text-field>
@@ -124,7 +133,7 @@
                           <v-icon>mdi-email</v-icon>
                           <v-text-field
                             color="success"
-                            v-model="email"
+                            v-model="user.email"
                             label="Email"
                             placeholder="Placeholder"
                             variant="outlined"
@@ -135,10 +144,21 @@
                         <v-col cols="12" sm="12">
                           <v-icon>mdi-emoticon-outline</v-icon>
                           <v-file-input
-                            label="File input"
+                            label="Put your cv"
                             outlined
                             dense
                             @change="onChange"
+                          ></v-file-input>
+                        </v-col>
+                      </v-row>
+                      <v-row>
+                        <v-col cols="12" sm="12">
+                          <v-icon>mdi-emoticon-outline</v-icon>
+                          <v-file-input
+                            label="Put your lettre"
+                            outlined
+                            dense
+                            @change="onChange2"
                           ></v-file-input>
                         </v-col>
                       </v-row>
@@ -156,6 +176,7 @@
                           <p>{{ offres.question1 }}</p>
                           <v-text-field
                             v-model="reponse1"
+                            type="number"
                             color="success"
                             label="Entrer la première réponse:"
                             placeholder="Here"
@@ -170,6 +191,7 @@
                           <p>{{ offres.question2 }}</p>
                           <v-text-field
                             v-model="reponse2"
+                            type="number"
                             color="success"
                             label="Entrer le deuxiéme réponse :"
                             placeholder="Here"
@@ -184,6 +206,7 @@
                           <p>{{ offres.question3 }}</p>
                           <v-text-field
                             v-model="reponse3"
+                            type="number"
                             color="success"
                             label="Entrer la troisiéme réponse :"
                             placeholder="Here"
@@ -241,6 +264,10 @@
         variant="outlined"
         color="blue"
         @click.prevent="addfavoris"
+        v-if="
+          this.$store.state.loggedCompany == false &&
+          this.$store.state.loggedAdmin == false
+        "
       >
         Sauvgarder
       </v-btn>
@@ -257,17 +284,22 @@
         </p>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="offree != ''">
       <v-col cols="12" md="2"></v-col>
       <v-col cols="12" md="10">
         <v-row>
           <v-col cols="12" md="10">
             <h5 class="font-italic" style="color: blue">
-              <router-link
-                :to="{ name: 'detailpost', params: { id: offree.id } }"
+              <a
+                :href="
+                  $router.resolve({
+                    name: 'detailpost',
+                    params: { id: offree.id },
+                  }).href
+                "
                 style="text-decoration: none"
-                ><h5>{{ offree.poste }}</h5>
-              </router-link>
+                >{{ offree.poste }}</a
+              >
             </h5>
           </v-col>
         </v-row>
@@ -338,7 +370,9 @@ export default {
       reponse1: "",
       reponse2: "",
       reponse3: "",
+      similaire: "",
       image: null,
+      image1: null,
       imgs: {},
     };
   },
@@ -365,15 +399,18 @@ export default {
         "http://localhost:8000/api/auth/afficheoffre/" + this.$route.params.id;
       await axios.get(url).then((response) => {
         this.offres = response.data;
+        this.similaire = this.offres.lieu_travail;
+        console.log(this.similaire);
       });
     },
     getSimilaire() {
       if (this.offres.poste != "") {
         axios
-          .get("http://localhost:8000/api/auth/afficheoffresimilaire/" + "web")
+          .get(
+            "http://localhost:8000/api/auth/afficheoffresimilaire/" + "Ariana"
+          )
           .then((response) => {
             this.offree = response.data;
-            console.log(response.data);
           });
       }
     },
@@ -406,12 +443,17 @@ export default {
       console.log("selected file", e.target.files[0]);
       this.image = e.target.files[0];
     },
+    onChange2(e) {
+      console.log("selected file", e.target.files[0]);
+      this.image1 = e.target.files[0];
+    },
     submit() {
       let fd = new FormData();
       fd.append("img", this.image);
-      fd.append("name_candidat", this.name_candidat);
-      fd.append("email", this.email);
-      fd.append("last_name_candidat", this.last_name_candidat);
+      fd.append("lettre", this.image1);
+      fd.append("name_candidat", this.user.name);
+      fd.append("email", this.user.email);
+      fd.append("last_name_candidat", this.user.last_name);
       fd.append("reponse1", this.reponse1);
       fd.append("reponse2", this.reponse2);
       fd.append("reponse3", this.reponse3);
@@ -439,6 +481,9 @@ export default {
           });
           console.log(err);
         });
+    },
+    refresh() {
+      this.$router.go(0);
     },
   },
   mounted() {

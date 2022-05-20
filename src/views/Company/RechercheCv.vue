@@ -98,7 +98,7 @@
                     <v-row align="center" class="spacer" no-gutters>
                       <v-col cols="4" sm="2" md="1">
                         <v-avatar size="50px">
-                          <v-img v-bind:src="'../cvs/' + cv.avatar"></v-img>
+                          <v-img v-bind:src="'../cvs/' + cv.avatar_cv"></v-img>
                         </v-avatar>
                       </v-col>
 
@@ -140,6 +140,20 @@
                       <v-icon color="blue">mdi-format-textbox</v-icon>
                       {{ cv.skills }}
                     </p>
+                    <v-col>
+                      <v-hover v-slot="{ isHovering, props }" open-delay="200">
+                        <v-btn
+                          :elevation="isHovering ? 16 : 2"
+                          :class="{ 'on-hover': isHovering }"
+                          v-bind="props"
+                          variant="outlined"
+                          @click.prevent="addfavoriscv(cv.id)"
+                          rounded
+                          prepend-icon="mdi-content-save"
+                          >Save Cv</v-btn
+                        >
+                      </v-hover>
+                    </v-col>
                   </v-expansion-panel-text>
                   <br />
                 </v-expansion-panel>
@@ -164,9 +178,16 @@ export default {
   data: () => ({
     cvs: {},
     recherche: "",
+    id_cv: "",
+    id_user: "",
   }),
   mounted() {
     this.allCvs();
+  },
+  computed: {
+    user() {
+      return this.$store.getters.get_user;
+    },
   },
   methods: {
     async allCvs() {
@@ -188,6 +209,31 @@ export default {
           console.log(response.data);
         });
       }
+    },
+    async addfavoriscv($id) {
+      axios
+        .post(
+          "http://localhost:8000/api/auth/addfavoriscv/" +
+            this.user.id +
+            "/" +
+            $id,
+          {
+            id_cv: $id,
+            id_user: this.user.id,
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          this.$toast.success(" Cv Sauvegarder avec success.", {
+            position: "top-right",
+          });
+        })
+        .catch((err) => {
+          this.$toast.error(" Cv Sauvegarder déja.", {
+            position: "top-right",
+          });
+          console.log(err);
+        });
     },
   },
 };

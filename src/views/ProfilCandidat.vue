@@ -263,7 +263,24 @@
                     variant="outlined"
                   ></v-text-field>
                 </v-col>
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                    label="Last Name "
+                    placeholder="Placeholder"
+                    v-model="users.last_name"
+                    variant="outlined"
+                    prepend-inner-icon="mdi-garage"
+                  ></v-text-field>
+                  <v-text-field
+                    label="Specialite "
+                    placeholder="Placeholder"
+                    v-model="users.specialite"
+                    variant="outlined"
+                    prepend-inner-icon="mdi-garage"
+                  ></v-text-field>
+                </v-col>
               </v-row>
+
               <v-row>
                 <v-btn
                   color="blue"
@@ -273,7 +290,7 @@
                   rounded
                   flat
                   prepend-icon="mdi-floppy"
-                  @click.prevent="updatecompany"
+                  @click.prevent="updateuser"
                   style="padding-left: 50px; padding-right: 50px"
                   >Save</v-btn
                 >
@@ -526,6 +543,7 @@ export default {
       name: "",
       email: "",
       password: "",
+      last_name: "",
       site_web: "",
       annee_fondation: "",
       description_entreprise: "",
@@ -533,6 +551,10 @@ export default {
       adresse: "",
       gouvernorat: "",
       facebook: "",
+      phone: "",
+      date_naissance: "",
+      specialite: "",
+      civilite: "",
       linkedin: "",
       twitter: "",
       users: {},
@@ -668,6 +690,25 @@ export default {
           linkedin: this.users.linkedin,
           facebook: this.users.facebook,
           twitter: this.users.twitter,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$toast.success(" Profil updated.", {
+            position: "top-right",
+          });
+          this.$router.go(0);
+        });
+    },
+    async updateuser() {
+      axios
+        .post("http://localhost:8000/api/auth/updateuser/" + this.user.id, {
+          name: this.users.name,
+          last_name: this.users.last_name,
+          email: this.users.email,
+          specialite: this.users.specialite,
+          civilite: this.users.civilite,
+          role: this.users.role,
+          adresse: this.users.adresse,
         })
         .then((response) => {
           console.log(response);

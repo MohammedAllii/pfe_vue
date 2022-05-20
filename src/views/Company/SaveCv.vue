@@ -81,7 +81,7 @@
                   <v-row align="center" class="spacer" no-gutters>
                     <v-col cols="4" sm="2" md="1">
                       <v-avatar size="50px">
-                        <v-img v-bind:src="'../cvs/' + cv.avatar"></v-img>
+                        <v-img v-bind:src="'../cvs/' + cv.avatar_cv"></v-img>
                       </v-avatar>
                     </v-col>
 
@@ -123,6 +123,20 @@
                     class="font-weight-bold"
                     v-text="parag3"
                   ></v-card-text>
+                  <v-col>
+                    <v-hover v-slot="{ isHovering, props }" open-delay="200">
+                      <v-btn
+                        :elevation="isHovering ? 16 : 2"
+                        :class="{ 'on-hover': isHovering }"
+                        v-bind="props"
+                        variant="outlined"
+                        @click.prevent="deletecvsave(cv.id)"
+                        rounded
+                        prepend-icon="mdi-content-save"
+                        >Delete Cv</v-btn
+                      >
+                    </v-hover>
+                  </v-col>
                 </v-expansion-panel-text>
               </v-expansion-panel>
               <br />
@@ -132,14 +146,31 @@
         </v-row>
         <v-row>
           <v-col cols="12" md="4"></v-col>
-          <v-col cols="12" md="8">
+          <v-col cols="12" md="6">
             <v-btn
               flat
               rounded
               color="#B2FF59"
               style="padding-left: 100px; padding-right: 100px"
-              >Supprimer</v-btn
+              @click="snackbar = true"
+              ><v-icon>mdi-delete-circle-outline</v-icon> tous les CV</v-btn
             >
+            <v-snackbar v-model="snackbar" multi-line>
+              {{ text }}
+
+              <template v-slot:actions>
+                <v-btn
+                  color="red"
+                  variant="text"
+                  @click.prevent="deleteallcvsave"
+                >
+                  Supprimer
+                </v-btn>
+                <v-btn color="red" variant="text" @click="snackbar = false">
+                  Annuler
+                </v-btn>
+              </template>
+            </v-snackbar>
           </v-col>
         </v-row>
       </v-col>
@@ -156,6 +187,8 @@ export default {
   components: { NavbarView, FooterView },
   data: () => ({
     cvs: {},
+    snackbar: false,
+    text: "would you like to delete all CVs?",
   }),
   computed: {
     user() {
@@ -163,14 +196,57 @@ export default {
     },
   },
   mounted() {
-    this.allCvs();
+    this.getcvs();
   },
   methods: {
-    async allCvs() {
-      axios.get("http://localhost:8000/api/auth/allCvs").then((response) => {
+    async getcvs() {
+      let url = "http://localhost:8000/api/auth/getcvs/" + this.user.id;
+      await axios.get(url).then((response) => {
         this.cvs = response.data;
-        console.log(response.data);
       });
+    },
+    async deletecvsave($id) {
+      axios
+        .delete(
+          "http://localhost:8000/api/auth/deletecvsave/" +
+            $id +
+            "/" +
+            this.user.id,
+          {}
+        )
+        .then((response) => {
+          console.log(response);
+          this.$toast.success(" Cv Deleted.", {
+            position: "top-right",
+          });
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+          this.$toast.error(" Cv non Deleted.", {
+            position: "top-right",
+          });
+        });
+    },
+    async deleteallcvsave() {
+      axios
+        .delete(
+          "http://localhost:8000/api/auth/deleteallcvsave/" + +this.user.id,
+          {}
+        )
+        .then((response) => {
+          console.log(response);
+          this.$toast.success("All Cvs Deleted.", {
+            position: "top-right",
+          });
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+          this.$toast.error(" Cvs non Deleted.", {
+            position: "top-right",
+          });
+        });
     },
   },
 };

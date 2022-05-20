@@ -90,12 +90,19 @@
                   </p>
                 </div>
                 <div class="text-left">
+                  <v-btn
+                    rounded
+                    variant="text"
+                    :to="{ name: 'ProfilUser', params: { id: users.id } }"
+                    ><v-icon color="grey">mdi-account-circle</v-icon> Mon
+                    Profile </v-btn
+                  ><br />
                   <v-divider class="my-3"></v-divider>
                   <v-btn
                     rounded
                     variant="text"
                     :to="{ name: 'profilcandidat', params: { id: users.id } }"
-                    ><v-icon color="grey">mdi-home</v-icon> Mon Compte </v-btn
+                    ><v-icon color="grey">mdi-cog</v-icon> Paramétres </v-btn
                   ><br />
                   <v-btn rounded variant="text" to="/PostuleCv"
                     ><v-icon color="grey">mdi-file-document-outline</v-icon>
@@ -110,6 +117,11 @@
                     ><br />
                     <v-icon color="grey">mdi-content-save-outline</v-icon>Offres
                     sauvegarder </v-btn
+                  ><br />
+                  <v-btn rounded variant="text" to="/Offrepostuler"
+                    ><br />
+                    <v-icon color="grey">mdi-file-import</v-icon>
+                    Offres Postuler </v-btn
                   ><br />
                   <v-divider class="my-3"></v-divider>
                   <v-btn
@@ -156,15 +168,15 @@
                     rounded
                     variant="text"
                     :to="{ name: 'profilcandidat', params: { id: users.id } }"
-                    ><v-icon color="grey">mdi-home</v-icon> Mon Compte </v-btn
+                    ><v-icon color="grey">mdi-cog</v-icon> Paramétres </v-btn
                   ><br />
-                  <v-btn rounded variant="text" to="/offresave"
-                    ><v-icon color="grey">mdi-content-save-outline</v-icon>
-                    Offres Sauvegarder </v-btn
+                  <v-btn rounded variant="text" to="/SaveCv"
+                    ><v-icon color="grey">mdi-content-save-outline</v-icon> Cv
+                    Sauvegarder </v-btn
                   ><br />
                   <v-btn rounded to="/PosteCompany">
                     <v-icon color="grey">mdi-pen-plus</v-icon>
-                    Publier Poste
+                    Tableau de board
                   </v-btn>
                   <v-divider class="my-3"></v-divider>
                   <v-btn
@@ -211,16 +223,12 @@
                     rounded
                     variant="text"
                     :to="{ name: 'profilcandidat', params: { id: users.id } }"
-                    ><v-icon color="grey">mdi-home</v-icon> Mon Compte </v-btn
+                    ><v-icon color="grey">mdi-cog</v-icon> Paramétres </v-btn
                   ><br />
-                  <v-btn rounded variant="text" to="/offresave"
-                    ><v-icon color="grey">mdi-content-save-outline</v-icon>
-                    Offres Sauvegarder </v-btn
+                  <v-btn rounded variant="text" to="/DashbordView"
+                    ><v-icon color="grey">mdi-application-cog</v-icon> Tableau
+                    de board </v-btn
                   ><br />
-                  <v-btn rounded to="/PosteCompany">
-                    <v-icon color="grey">mdi-pen-plus</v-icon>
-                    Publier Poste
-                  </v-btn>
                   <v-divider class="my-3"></v-divider>
                   <v-btn
                     rounded

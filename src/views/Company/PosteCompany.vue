@@ -187,7 +187,7 @@
             <p>Monnaie *</p>
             <v-select
               v-model="monnaie"
-              label="Votre localite actuel"
+              label="Monnaie"
               :items="[
                 'DT',
                 'EUR',
@@ -241,7 +241,17 @@
                 variant="outlined"
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="12">
+            <v-col cols="12" sm="12" v-if="this.question1 != ''">
+              <v-icon>mdi-account-edit</v-icon>
+              <v-text-field
+                v-model="reponse_attendu1"
+                color="success"
+                label="Entrer Votre Premiére Réponse:"
+                placeholder="Placeholder"
+                variant="outlined"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="12" v-if="this.reponse_attendu1 != ''">
               <v-icon>mdi-account-edit</v-icon>
               <v-text-field
                 v-model="question2"
@@ -251,12 +261,32 @@
                 variant="outlined"
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="12">
+            <v-col cols="12" sm="12" v-if="this.question2 != ''">
+              <v-icon>mdi-account-edit</v-icon>
+              <v-text-field
+                v-model="reponse_attendu2"
+                color="success"
+                label="Entrer Votre Deuxiéme Réponse:"
+                placeholder="Placeholder"
+                variant="outlined"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="12" v-if="this.reponse_attendu2 != ''">
               <v-icon>mdi-account-edit</v-icon>
               <v-text-field
                 v-model="question3"
                 color="success"
                 label="Entrer Votre Troisiéme Question:"
+                placeholder="Placeholder"
+                variant="outlined"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="12" v-if="this.question3 != ''">
+              <v-icon>mdi-account-edit</v-icon>
+              <v-text-field
+                v-model="reponse_attendu3"
+                color="success"
+                label="Entrer Votre Troisiéme Réponse:"
                 placeholder="Placeholder"
                 variant="outlined"
               ></v-text-field>
@@ -309,6 +339,9 @@ export default {
       question1: "",
       question2: "",
       question3: "",
+      reponse_attendu1: "",
+      reponse_attendu2: "",
+      reponse_attendu3: "",
       id_company: "",
       error: "",
       success: "",
@@ -372,6 +405,9 @@ export default {
           question1: this.question1,
           question2: this.question2,
           question3: this.question3,
+          reponse_attendu1: this.reponse_attendu1,
+          reponse_attendu2: this.reponse_attendu2,
+          reponse_attendu3: this.reponse_attendu3,
           id_company: this.user.id,
         })
         .then((response) => {

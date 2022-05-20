@@ -143,10 +143,9 @@ voici le lien de la réunion :
           </v-col>
           <v-col cols="12" md="6">
             <h5 style="color: #0277bd">
-              <v-icon color="#01579B">mdi-account-box-multiple</v-icon>The
-              motivation lettre:
+              <v-icon color="#01579B">mdi-account-box-multiple</v-icon> Lettre:
               <iframe
-                v-bind:src="'../cvs/' + info.cv"
+                v-bind:src="'../lettres/' + info.lettre"
                 height="650"
                 width="550"
               ></iframe>
@@ -173,7 +172,7 @@ voici le lien de la réunion :
             {{ info.question1 }}
           </p>
         </v-col>
-        <v-col cols="12" md="4" v-if="info.reponse != null">
+        <v-col cols="12" md="4" v-if="info.reponse1 != null">
           <strong>Réponses</strong>
           <p>{{ info.reponse1 }}</p>
         </v-col>

@@ -214,8 +214,12 @@
               </v-chip>
 
               <v-chip class="ma-2" color="primary" variant="outlined">
-                postuler facilement
                 <v-icon end icon="mdi-face"></v-icon>
+                <router-link
+                  :to="{ name: 'detailpost', params: { id: offre.id } }"
+                  style="text-decoration: none"
+                  >postuler maintenant
+                </router-link>
               </v-chip>
             </v-col>
             <v-divider></v-divider>

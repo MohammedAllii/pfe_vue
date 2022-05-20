@@ -28,7 +28,15 @@
     <v-row>
       <v-col cols="12" md="3"></v-col>
       <v-col cols="12" md="4">
-        <p><v-icon color="green">mdi-web</v-icon>{{ users.site_web }}</p>
+        <p>
+          <v-icon color="green">mdi-web</v-icon
+          ><a
+            v-bind:href="users.site_web"
+            target="blank"
+            style="text-decoration: none"
+            >{{ users.site_web }}</a
+          >
+        </p>
         <p><v-icon color="green">mdi-teach</v-icon>catchit foundation</p>
       </v-col>
       <v-col cols="12" md="4">

@@ -6,12 +6,19 @@ import CompanyView from "../views/CompanyView";
 import DetailsPost from "../views/DetailsPost";
 import RechercheOffre from "../views/RechercheOffre";
 import AproposPage from "../views/AproposPage";
+import ProfilUser from "../views/ProfilUser";
 import SignIn from "../views/SignIn";
 import CompanyPage from "../views/CompanyPage";
 import SideBar from "../components/SideBar";
 import DashbordView from "@/views/Admin/DashbordView.vue";
 import GestionUser from "@/views/Admin/GestionUser";
+import GestionOffresAdmin from "@/views/Admin/GestionOffresAdmin";
+import AddAdmin from "@/views/Admin/AddAdmin";
+import GestionCompany from "@/views/Admin/GestionCompany";
+import ModifierUser from "@/views/Admin/ModifierUser";
+import ModifierOffreAdmin from "@/views/Admin/ModifierOffreAdmin";
 import PostuleCv from "../views/Candidat/PostuleCv";
+import OffresPostuler from "../views/Candidat/OffresPostuler";
 import RechercheCv from "../views/Company/RechercheCv";
 import InfoCandidat from "../views/Company/InfoCandidat";
 import PostuleLettre from "../views/Candidat/PostuleLettre";
@@ -34,10 +41,18 @@ import store from "@/store";
 const routes = [
   {
     path: "/SignUp",
-    name: "SignUP",
+    name: "SignUp",
     component: SignUp,
     meta: {
       guest: true,
+    },
+  },
+  {
+    path: "/ProfilUser/:id?",
+    name: "ProfilUser",
+    component: ProfilUser,
+    meta: {
+      secure: true,
     },
   },
   {
@@ -84,6 +99,14 @@ const routes = [
     path: "/StatistCompany",
     name: "StatistCompany",
     component: StatistCompany,
+    meta: {
+      secure: true,
+    },
+  },
+  {
+    path: "/offrepostuler",
+    name: "offrepostuler",
+    component: OffresPostuler,
     meta: {
       secure: true,
     },
@@ -143,7 +166,31 @@ const routes = [
     name: "DashbordView",
     component: DashbordView,
     meta: {
-      secure: true,
+      adminLog: true,
+    },
+  },
+  {
+    path: "/ModifierUser/:id?",
+    name: "ModifierUser",
+    component: ModifierUser,
+    meta: {
+      adminLog: true,
+    },
+  },
+  {
+    path: "/ModifierOffre/:id?",
+    name: "ModifierOffre",
+    component: ModifierOffreAdmin,
+    meta: {
+      adminLog: true,
+    },
+  },
+  {
+    path: "/AddAdmin",
+    name: "AddAdmin",
+    component: AddAdmin,
+    meta: {
+      adminLog: true,
     },
   },
   {
@@ -155,6 +202,25 @@ const routes = [
     path: "/GestionUser",
     name: "GestionUser",
     component: GestionUser,
+    meta: {
+      adminLog: true,
+    },
+  },
+  {
+    path: "/GestionOffresAdmin",
+    name: "GestionOffresAdmin",
+    component: GestionOffresAdmin,
+    meta: {
+      adminLog: true,
+    },
+  },
+  {
+    path: "/GestionCompany",
+    name: "GestionCompany",
+    component: GestionCompany,
+    meta: {
+      adminLog: true,
+    },
   },
   {
     path: "/rechercheoffre",
@@ -195,7 +261,7 @@ const routes = [
     name: "PostuleCv",
     component: PostuleCv,
     meta: {
-      secure: true,
+      companyLog: true,
     },
   },
   {
@@ -203,7 +269,7 @@ const routes = [
     name: "postulelettre",
     component: PostuleLettre,
     meta: {
-      secure: true,
+      companyLog: true,
     },
   },
   {
@@ -219,7 +285,7 @@ const routes = [
     name: "cvform",
     component: CvForm,
     meta: {
-      secure: true,
+      companyLog: true,
     },
   },
   {
@@ -227,7 +293,7 @@ const routes = [
     name: "lettreform",
     component: LettreForm,
     meta: {
-      secure: true,
+      companyLog: true,
     },
   },
   {
@@ -278,8 +344,30 @@ router.beforeEach((to, from, next) => {
         path: "/",
       });
     }
+  }
+  if (to.matched.some((record) => record.meta.companyLog)) {
+    // if no token
+    if (!store.state.loggedUser) {
+      //console.log("no token");
+      next({
+        path: "/PosteCompany",
+      });
+    } else {
+      next();
+    }
+  }
+  if (to.matched.some((record) => record.meta.adminLog)) {
+    // if no token
+    if (!store.state.loggedAdmin) {
+      //console.log("no token");
+      next({
+        path: "/",
+      });
+    } else {
+      next();
+    }
   } else {
-    next();
+    next(); // make sure to always call next()!
   }
 });
 export default router;

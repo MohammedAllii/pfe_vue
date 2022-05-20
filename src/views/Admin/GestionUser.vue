@@ -1,181 +1,269 @@
 <template>
-  <side-bar />
+  <navbar-view />
+  <br />
+  <v-container align="center">
+    <h5 class="text-h5 font-italic" style="color: black">
+      <img
+        src="https://i.pinimg.com/originals/58/54/cc/5854ccbf23126f8d56c0347624f9f312.gif"
+        style="width: 100px; height: 100px"
+      />
+      Welcome to The AdminPanel
+    </h5>
+  </v-container>
+  <v-row>
+    <v-col cols="12" md="4">
+      <v-card flat class="mx-auto" max-width="300">
+        <v-list shaped>
+          <router-link to="AdminDashboard" style="text-decoration: none">
+            <v-list-subheader color="green"
+              >ADMIN DASHBOARD</v-list-subheader
+            ></router-link
+          >
+          <v-list-item
+            v-for="(item, i) in items"
+            :key="i"
+            :value="item"
+            router
+            :to="item.route"
+            active-color="#00E676"
+            rounded="shaped"
+          >
+            <v-list-item-avatar start>
+              <v-icon :icon="item.icon"></v-icon>
+            </v-list-item-avatar>
+            <v-list-item-title v-text="item.text"></v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-card>
+    </v-col>
+    <v-col cols="12" md="7">
+      <v-tabs fixed-tabs theme="dark">
+        <v-tab> All Users: </v-tab>
+      </v-tabs>
+      <v-expansion-panels variant="popout" class="pa-4">
+        <v-expansion-panel v-for="user in users" :key="user.id">
+          <v-expansion-panel-title>
+            <v-row align="center" class="spacer" no-gutters>
+              <v-col cols="4" sm="2" md="1">
+                <v-avatar size="40px">
+                  <v-img
+                    alt="Avatar"
+                    v-bind:src="'../images/' + user.avatar"
+                  ></v-img>
+                </v-avatar>
+              </v-col>
 
-  <v-card
-    height="500px"
-    tile
-    flat
-    class="mx-10"
-    style="
-      background: url(https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1);
-    "
-    dark
-  >
-  </v-card>
-  <v-card tile class="mx-16 mt-n10 card1" color="white">
-    <v-row>
-      <v-col cols="12" md="12">
-        <v-toolbar extended color="transparent">
-          <h1>List Utulisateurs</h1>
-          <br />
+              <v-col class="hidden-xs-only text-left ml-2" sm="5" md="3">
+                <strong>{{ user.name }} {{ user.last_name }}</strong>
+                <span class="text-grey"></span>
+              </v-col>
 
-          <v-spacer></v-spacer>
-          <v-row justify="center">
-            <v-dialog
-              v-model="dialog"
-              fullscreen
-              :scrim="false"
-              transition="dialog-bottom-transition"
+              <v-col class="text-no-wrap text-left" cols="5" sm="3">
+                <v-chip
+                  v-if="user.date_naissance"
+                  class="ml-0 mr-2 text-black"
+                  label
+                  small
+                >
+                  {{ user.role }} new
+                </v-chip>
+                <strong>{{ user.specialite }}</strong>
+              </v-col>
+            </v-row>
+          </v-expansion-panel-title>
+
+          <v-expansion-panel-text>
+            <v-card-text
+              class="text-body-1 font-italic"
+              v-if="user.name != null"
+              ><v-icon color="blue">mdi-account-tie</v-icon
+              ><strong>Nom :</strong> {{ user.name }}</v-card-text
             >
-              <template v-slot:activator="{ props }">
-                <v-btn color="primary" dark v-bind="props">
-                  Ajout Utulisateurs
+            <v-card-text
+              class="text-body-1 font-italic"
+              v-if="user.last_name != null"
+              ><v-icon color="blue">mdi-account-tie</v-icon
+              ><strong>Prénom :</strong> {{ user.last_name }}</v-card-text
+            >
+            <v-card-text
+              class="text-body-1 font-italic"
+              v-if="user.civilite != null"
+              ><v-icon color="blue">mdi-islam</v-icon
+              ><strong>Civilité :</strong> {{ user.civilite }}</v-card-text
+            >
+            <v-card-text
+              class="text-body-1 font-italic"
+              v-if="user.adresse != null"
+              ><v-icon color="blue">mdi-map-marker</v-icon
+              ><strong>Adresse :</strong> {{ user.adresse }}</v-card-text
+            >
+            <v-card-text
+              class="text-body-1 font-italic"
+              v-if="user.phone != null"
+              ><v-icon color="blue">mdi-phone</v-icon><strong>Phone :</strong>
+              {{ user.phone }}</v-card-text
+            >
+            <v-card-text
+              class="text-body-1 font-italic"
+              v-if="user.email != null"
+              ><v-icon color="blue">mdi-email</v-icon><strong>Email :</strong>
+              {{ user.email }}</v-card-text
+            >
+            <v-card-text
+              class="text-body-1 font-italic"
+              v-if="user.specialite != null"
+              ><v-icon color="blue">mdi-card-account-details-star</v-icon
+              ><strong>Spécilaité :</strong> {{ user.specialite }}</v-card-text
+            >
+            <v-card-text
+              class="text-body-1 font-italic"
+              v-if="user.facebook != null"
+              ><v-icon color="blue">mdi-facebook</v-icon
+              ><strong>Facebook :</strong> {{ user.facebook }}</v-card-text
+            >
+            <v-card-text
+              class="text-body-1 font-italic"
+              v-if="user.linkedin != null"
+              ><v-icon color="blue">mdi-linkedin</v-icon
+              ><strong>Linkedin :</strong> {{ user.linkedin }}</v-card-text
+            >
+            <v-card-text
+              class="text-body-1 font-italic"
+              v-if="user.twitter != null"
+              ><v-icon color="blue">mdi-twitter</v-icon
+              ><strong>Twitter :</strong> {{ user.twitter }}</v-card-text
+            >
+            <v-spacer></v-spacer>
+            <router-link
+              :to="{ name: 'ModifierUser', params: { id: user.id } }"
+              style="text-decoration: none"
+            >
+              <v-btn
+                class="ma-2"
+                rounded="pill"
+                color="#F1F8E9"
+                prepend-icon="mdi-update"
+              >
+                Modifier User
+              </v-btn>
+            </router-link>
+
+            <v-btn
+              @click="snackbar = true"
+              class="ma-2"
+              rounded="pill"
+              color="#F1F8E9"
+              prepend-icon="mdi-delete-empty"
+            >
+              Supprimer User
+            </v-btn>
+            <v-snackbar v-model="snackbar" multi-line>
+              <template v-slot:actions>
+                <p>{{ this.text }}</p>
+                <v-btn
+                  color="#FF6F00"
+                  variant="text"
+                  @click.prevent="deleteuser(user.id)"
+                >
+                  Supprimer
+                </v-btn>
+                <v-btn color="#FF6F00" variant="text" @click="snackbar = false">
+                  Annuler
                 </v-btn>
               </template>
-              <v-card>
-                <v-toolbar dark color="primary">
-                  <v-btn icon dark @click="dialog = false">
-                    <v-icon>mdi-close</v-icon>
-                  </v-btn>
-
-                  <v-spacer></v-spacer>
-                </v-toolbar>
-                <v-container style="margin-top: 70px">
-                  <v-row align="center" justify="center">
-                    <v-col cols="12" sm="10">
-                      <v-card class="elevation-6 mt-10">
-                        <v-window v-model="step">
-                          <v-window-item :value="1">
-                            <v-row>
-                              <v-col cols="12" md="12">
-                                <v-card-text class="mt-12">
-                                  <h4 class="text-center">
-                                    Ajouter Utulisateur
-                                  </h4>
-
-                                  <v-row align="center" justify="center">
-                                    <v-col cols="12" sm="8">
-                                      <v-row>
-                                        <v-col cols="12" sm="6">
-                                          <v-text-field
-                                            label="First Name"
-                                            outlined
-                                            dense
-                                            color="blue"
-                                            autocomplete="false"
-                                            class="mt-4"
-                                          />
-                                        </v-col>
-                                        <v-col cols="12" sm="6">
-                                          <v-text-field
-                                            label="Last Name"
-                                            outlined
-                                            dense
-                                            color="blue"
-                                            autocomplete="false"
-                                            class="mt-4"
-                                          />
-                                        </v-col>
-                                        <v-col cols="12" sm="6">
-                                          <v-text-field
-                                            label="email"
-                                            outlined
-                                            dense
-                                            color="blue"
-                                            autocomplete="false"
-                                            class="mt-4"
-                                          />
-                                        </v-col>
-                                        <v-col cols="12" sm="6">
-                                          <v-text-field
-                                            label="Password"
-                                            outlined
-                                            dense
-                                            color="blue"
-                                            autocomplete="false"
-                                            class="mt-4"
-                                            type="password"
-                                          />
-                                        </v-col>
-                                      </v-row>
-                                      <v-file-input
-                                        multiple
-                                        label="Image"
-                                      ></v-file-input>
-                                      <v-radio-group v-model="row" row>
-                                        <v-radio
-                                          label="Candidate"
-                                          value="radio-1"
-                                          color="primary"
-                                        ></v-radio>
-                                        <v-radio
-                                          label="Company"
-                                          value="radio-2"
-                                          color="success"
-                                        ></v-radio>
-                                      </v-radio-group>
-
-                                      <v-btn color="blue" dark block tile
-                                        >Ajouter</v-btn
-                                      >
-                                    </v-col>
-                                  </v-row>
-                                </v-card-text>
-                              </v-col>
-                            </v-row>
-                          </v-window-item>
-                          <v-window-item :value="2"> </v-window-item>
-                        </v-window>
-                      </v-card>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card>
-            </v-dialog>
-          </v-row>
-        </v-toolbar>
-      </v-col>
-    </v-row>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">First</th>
-          <th scope="col">Last</th>
-          <th scope="col">Handle</th>
-          <th scope="col">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td colspan="2">Larry the Bird</td>
-          <td>@twitter</td>
-        </tr>
-      </tbody>
-    </table>
-  </v-card>
+            </v-snackbar>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </v-col>
+  </v-row>
+  <footer-view />
 </template>
+
 <script>
-import SideBar from "@/components/SideBar.vue";
+import NavbarView from "@/components/NavbarView.vue";
+import FooterView from "@/components/FooterView.vue";
+import axios from "axios";
 export default {
-  components: { SideBar },
-  data() {
-    return {
-      dialog: false,
-    };
+  components: { NavbarView, FooterView },
+  data: () => ({
+    snackbar: false,
+    users: {},
+    text: ` Would you like to remove this User?`,
+    selectedItem: 1,
+    items: [
+      {
+        text: "Gestion Admins",
+        icon: "mdi-account-check-outline",
+        route: "/DashbordView",
+      },
+      {
+        text: "Gestion users",
+        icon: "mdi-account-check-outline",
+        route: "/GestionUser",
+      },
+      {
+        text: "Gestion Entreprises",
+        icon: "mdi-contacts",
+        route: "/GestionCompany",
+      },
+      {
+        text: "Gestions Offres",
+        icon: "mdi-wallet-membership",
+        route: "/GestionOffresAdmin",
+      },
+      {
+        text: "Les statestiques",
+        icon: "mdi-chart-line",
+        route: "/GestionStatistiqueAdmin",
+      },
+    ],
+  }),
+  mounted() {
+    this.getUsers();
+  },
+  computed: {
+    user() {
+      return this.$store.getters.get_user;
+    },
+  },
+  methods: {
+    async getUsers() {
+      axios.get("http://localhost:8000/api/auth/alluser").then((response) => {
+        this.users = response.data;
+      });
+    },
+    async deleteuser($id) {
+      if ($id == this.user.id) {
+        axios
+          .delete("http://localhost:8000/api/auth/deleteuser/" + $id)
+          .then((response) => {
+            console.log(response);
+            this.$toast.warning(" User deleted.", {
+              position: "top-right",
+            });
+            this.$store.commit("SET_token", null);
+            this.$store.commit("SET_user", null);
+            this.$store.commit("SET_loggedIn", false);
+            this.$store.commit("SET_loggedAdmin", false);
+            this.$router.go(0);
+            this.$router.push("/SignIn");
+          });
+      } else {
+        axios
+          .delete("http://localhost:8000/api/auth/deleteuser/" + $id)
+          .then((response) => {
+            console.log(response);
+            this.$toast.warning(" User deleted.", {
+              position: "top-right",
+            });
+            this.$router.go(0);
+            this.$router.push("/SignIn");
+          });
+      }
+    },
   },
 };
 </script>
+
+<style></style>

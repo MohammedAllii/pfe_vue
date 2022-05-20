@@ -262,11 +262,6 @@ export default {
       ],
     };
   },
-  computed: {
-    user() {
-      return this.$store.getters.get_user;
-    },
-  },
   mounted() {
     this.toutoffres();
   },

@@ -9,7 +9,7 @@
     <v-row>
       <v-col cols="12" md="4" style="background-color: #ede7f6">
         <v-img
-          v-bind:src="'../cvs/' + cvs.avatar"
+          v-bind:src="'../cvs/' + cvs.avatar_cv"
           style="width: 150px; height: 150px"
         ></v-img>
         <p>{{ cvs.name }} {{ cvs.last_name }}</p>
