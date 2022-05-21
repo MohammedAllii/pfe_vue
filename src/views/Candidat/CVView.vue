@@ -687,7 +687,7 @@
                               Titre
                               <v-col cols="12" sm="12">
                                 <v-text-field
-                                  v-model="titr"
+                                  v-model="lien.titre"
                                   label="Titre"
                                   variant="outlined"
                                   clearable
@@ -700,7 +700,7 @@
                               URL
                               <v-col cols="12" sm="12">
                                 <v-text-field
-                                  v-model="urll"
+                                  v-model="lien.url"
                                   label="URL"
                                   variant="outlined"
                                   clearable
@@ -720,7 +720,9 @@
                                 text
                                 rounded
                                 style="background-color: green"
-                                @click.prevent="updatelien(lien.id)"
+                                @click.prevent="
+                                  updatelien(lien.titre, lien.url, lien.id)
+                                "
                                 >Enregistrer</v-btn
                               >
                             </v-card-actions>
@@ -776,8 +778,7 @@
                               Langues
                               <v-col cols="12" sm="12">
                                 <v-text-field
-                                  v-model="lang"
-                                  label="'{{langue.langue}}'"
+                                  v-model="langue.langue"
                                   variant="outlined"
                                   clearable
                                   clear-icon="mdi-cancel"
@@ -790,7 +791,7 @@
                               <v-select
                                 style="border-style: ridge"
                                 label="Niveau"
-                                v-model="niv"
+                                v-model="langue.niveau"
                                 :items="[
                                   'Débutant',
                                   'Courant',
@@ -811,7 +812,13 @@
                                 text
                                 rounded
                                 style="background-color: green"
-                                @click.prevent="updateLangue(langue.id)"
+                                @click.prevent="
+                                  updateLangue(
+                                    langue.langue,
+                                    langue.niveau,
+                                    langue.id
+                                  )
+                                "
                                 >Enregistrer</v-btn
                               >
                             </v-card-actions>
@@ -1459,8 +1466,6 @@ export default {
       experience: "",
       titre: "",
       url: "",
-      titr: "",
-      urll: "",
       langue: "",
       niveau: "",
       lang: "",
@@ -1773,6 +1778,7 @@ export default {
           titre: this.titre,
           url: this.url,
           id_cv: this.idc,
+          id_user: null,
         })
         .then((response) => {
           console.log(response);
@@ -1788,11 +1794,11 @@ export default {
         this.liens = response.data;
       });
     },
-    async updatelien($id) {
+    async updatelien($titre, $url, $id) {
       axios
         .post("http://localhost:8000/api/auth/modifierlien/" + $id, {
-          titre: this.titr,
-          url: this.urll,
+          titre: $titre,
+          url: $url,
         })
         .then((response) => {
           console.log(response);
@@ -1819,6 +1825,7 @@ export default {
           langue: this.langue,
           niveau: this.niveau,
           id_cv: this.idc,
+          id_user: null,
         })
         .then((response) => {
           console.log(response);
@@ -1834,11 +1841,11 @@ export default {
         this.langues = response.data;
       });
     },
-    async updateLangue($id) {
+    async updateLangue($langue, $niveau, $id) {
       axios
         .post("http://localhost:8000/api/auth/modifierlangue/" + $id, {
-          langue: this.lang,
-          titre: this.niv,
+          langue: $langue,
+          niveau: $niveau,
         })
         .then((response) => {
           console.log(response);

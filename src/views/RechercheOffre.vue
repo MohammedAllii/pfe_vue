@@ -30,20 +30,6 @@
         <v-layout>
           <v-col>
             <p>
-              <v-icon color="green">mdi-clipboard-account-outline</v-icon>Poste
-            </p>
-            <router-link to="#" style="text-decoration: none">
-              <p>comptable</p></router-link
-            >
-            <router-link to="#" style="text-decoration: none">
-              <p>Assistance de Direction</p></router-link
-            >
-            <v-spacer></v-spacer>
-            <p><v-icon color="green">mdi-map-marker</v-icon>Localité</p>
-            <router-link to="#" style="text-decoration: none">
-              <p>Tunis</p></router-link
-            >
-            <p>
               <v-icon color="green">mdi-file-document-edit-outline</v-icon>Type
               de contrat
             </p>

@@ -852,7 +852,97 @@
               <p class="font-italic text-h5 text-indigo">
                 <v-icon>mdi-language-c</v-icon>LANGUES
               </p>
-              <p>jgordjgsrjditxhjoxtfjkdfnjkfngwdfngjwd</p>
+              <v-container align="center" v-if="langues == ''">
+                <img
+                  src="https://www.pngall.com/wp-content/uploads/8/Vector-Warning-PNG-Clipart.png"
+                  style="width: 30px; height: 30px"
+                />
+                <h5 class="text-h6 font-italic" style="color: black">
+                  Aucune Langue
+                </h5>
+              </v-container>
+              <v-container v-for="langue in langues" :key="langue.id">
+                <h6>
+                  <strong>{{ langue.langue }}</strong
+                  >({{ langue.niveau }})
+                </h6>
+                <v-dialog class="popup1" transition="dialog-top-transition">
+                  <template v-slot:activator="{ props }">
+                    <v-btn
+                      class="ma-2"
+                      variant="outlined"
+                      icon
+                      color="red"
+                      v-if="langue.id_user == user.id"
+                      v-bind="props"
+                    >
+                      <v-icon>mdi-lead-pencil</v-icon>
+                    </v-btn>
+                  </template>
+                  <template v-slot:default="{ isActive }">
+                    <v-card>
+                      <v-toolbar color="#90CAF9"
+                        >Modifier les langues ecrites</v-toolbar
+                      >
+                      <v-card-text>
+                        <p>
+                          Langues
+                          <v-col cols="12" sm="12">
+                            <v-text-field
+                              v-model="langue.langue"
+                              label="Langue"
+                              variant="outlined"
+                              clearable
+                              clear-icon="mdi-cancel"
+                              style="width: 550px"
+                            ></v-text-field>
+                          </v-col>
+                        </p>
+                        <p>
+                          Niveau
+                          <v-select
+                            label="Niveau"
+                            v-model="langue.niveau"
+                            :items="[
+                              'Débutant',
+                              'Courant',
+                              'Avancé',
+                              'Langue maternelle',
+                            ]"
+                            required
+                          ></v-select>
+                        </p>
+                      </v-card-text>
+                      <v-card-actions class="justify-end">
+                        <v-btn
+                          text
+                          @click.prevent="
+                            updateLangue(
+                              langue.langue,
+                              langue.niveau,
+                              langue.id
+                            )
+                          "
+                          >Modifier</v-btn
+                        >
+                        <v-btn text @click="isActive.value = false"
+                          >Annuler</v-btn
+                        >
+                      </v-card-actions>
+                    </v-card>
+                  </template>
+                </v-dialog>
+                <v-btn
+                  class="ma-2"
+                  variant="outlined"
+                  icon
+                  v-if="langue.id_user == user.id"
+                  color="green"
+                  @click.prevent="deletelangue(langue.id)"
+                >
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </v-container>
             </v-col>
             <v-col cols="12" md="2">
               <v-dialog transition="dialog-top-transition">
@@ -862,6 +952,7 @@
                     variant="outlined"
                     icon
                     color="secondary"
+                    v-if="users.id == user.id"
                     v-bind="props"
                   >
                     <v-icon>mdi-plus-outline</v-icon>
@@ -869,39 +960,38 @@
                 </template>
                 <template v-slot:default="{ isActive }">
                   <v-card>
-                    <v-toolbar color="#90CAF9"
-                      >Modifier les langues ecrites</v-toolbar
-                    >
+                    <v-toolbar color="#90CAF9">Ajouter les langues</v-toolbar>
                     <v-card-text>
                       <p>
                         Langues
                         <v-col cols="12" sm="12">
                           <v-text-field
-                            v-model="message4"
-                            label="compétences"
+                            v-model="langue"
+                            label="Langue"
                             variant="outlined"
                             clearable
                             clear-icon="mdi-cancel"
-                            style="width: 500px"
+                            style="width: 550px"
                           ></v-text-field>
                         </v-col>
                       </p>
                       <p>
                         Niveau
                         <v-select
-                          style="border-style: ridge"
-                          v-model="select3"
-                          :items="items3"
-                          :rules="[(v) => !!v || 'Item is required']"
-                          label="Item"
+                          label="Niveau"
+                          v-model="niveau"
+                          :items="[
+                            'Débutant',
+                            'Courant',
+                            'Avancé',
+                            'Langue maternelle',
+                          ]"
                           required
                         ></v-select>
                       </p>
                     </v-card-text>
                     <v-card-actions class="justify-end">
-                      <v-btn text @click="isActive.value = false"
-                        >Modifier</v-btn
-                      >
+                      <v-btn text @click.prevent="addlangue">Ajouter</v-btn>
                       <v-btn text @click="isActive.value = false"
                         >Annuler</v-btn
                       >
@@ -909,89 +999,6 @@
                   </v-card>
                 </template>
               </v-dialog>
-              <v-dialog transition="dialog-top-transition">
-                <template v-slot:activator="{ props }">
-                  <v-btn
-                    class="ma-2"
-                    variant="outlined"
-                    icon
-                    color="red"
-                    v-bind="props"
-                  >
-                    <v-icon>mdi-lead-pencil</v-icon>
-                  </v-btn>
-                </template>
-                <template v-slot:default="{ isActive }">
-                  <v-card>
-                    <v-toolbar color="#90CAF9"
-                      >Modifier les langues ecrites</v-toolbar
-                    >
-                    <v-card-text>
-                      <p>
-                        Langues
-                        <v-col cols="12" sm="12">
-                          <v-text-field
-                            v-model="message4"
-                            label="compétences"
-                            variant="outlined"
-                            clearable
-                            clear-icon="mdi-cancel"
-                            style="width: 500px"
-                          ></v-text-field>
-                        </v-col>
-                      </p>
-                      <p>
-                        Niveau
-                        <v-select
-                          style="border-style: ridge"
-                          v-model="select1"
-                          :items="items1"
-                          :rules="[(v) => !!v || 'Item is required']"
-                          label="Item"
-                          required
-                        ></v-select>
-                      </p>
-                    </v-card-text>
-                    <v-card-actions class="justify-end">
-                      <v-btn text @click="isActive.value = false"
-                        >Modifier</v-btn
-                      >
-                      <v-btn text @click="isActive.value = false"
-                        >Annuler</v-btn
-                      >
-                    </v-card-actions>
-                  </v-card>
-                </template>
-              </v-dialog>
-              <v-btn
-                class="ma-2"
-                variant="outlined"
-                icon
-                color="green"
-                @click="snackbar4 = true"
-              >
-                <v-icon>mdi-delete</v-icon>
-                <v-snackbar v-model="snackbar4" multi-line>
-                  {{ text4 }}
-
-                  <template v-slot:actions>
-                    <v-btn
-                      color="red"
-                      variant="text"
-                      @click="snackbar4 = false"
-                    >
-                      supprimer
-                    </v-btn>
-                    <v-btn
-                      color="red"
-                      variant="text"
-                      @click="snackbar4 = false"
-                    >
-                      Annuler
-                    </v-btn>
-                  </template>
-                </v-snackbar>
-              </v-btn>
             </v-col>
           </v-row>
           <v-divider></v-divider>
@@ -1134,7 +1141,82 @@
               <p class="font-italic text-h5 text-indigo">
                 <v-icon>mdi-link</v-icon>LIENS
               </p>
-              <p>jgordjgsrjditxhjoxtfjkdfnjkfngwdfngjwd</p>
+              <v-container align="center" v-if="liens == ''">
+                <img
+                  src="https://www.pngall.com/wp-content/uploads/8/Vector-Warning-PNG-Clipart.png"
+                  style="width: 30px; height: 30px"
+                />
+                <h5 class="text-h6 font-italic" style="color: black">
+                  Aucune Lien
+                </h5>
+              </v-container>
+              <v-container v-for="lien in liens" :key="lien.id">
+                <h6>
+                  <strong>{{ lien.titre }}</strong>
+                </h6>
+                <h6>{{ lien.url }}</h6>
+                <v-dialog transition="dialog-bottom-transition">
+                  <template v-slot:activator="{ props }">
+                    <v-btn
+                      class="ma-2"
+                      variant="outlined"
+                      icon
+                      v-if="users.id == user.id && liens != ''"
+                      color="red"
+                      v-bind="props"
+                    >
+                      <v-icon>mdi-lead-pencil</v-icon>
+                    </v-btn>
+                  </template>
+                  <template v-slot:default="{ isActive }">
+                    <v-card>
+                      <v-toolbar color="#90CAF9">Modifier le lien</v-toolbar>
+                      <v-card-text>
+                        <v-row>
+                          <v-col cols="12" md="12">
+                            <v-text-field
+                              label="Modifier Titre"
+                              v-model="lien.titre"
+                              prepend-inner-icon="mdi-subtitles-outline"
+                              variant="outlined"
+                            ></v-text-field>
+                          </v-col>
+                          <v-col cols="12" md="12">
+                            <v-text-field
+                              label="Modifier URL"
+                              v-model="lien.url"
+                              prepend-inner-icon="mdi-link"
+                              variant="outlined"
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+                      </v-card-text>
+                      <v-card-actions class="justify-end">
+                        <v-btn
+                          text
+                          @click.prevent="
+                            updatelien(lien.titre, lien.url, lien.id)
+                          "
+                          >Modifier</v-btn
+                        >
+                        <v-btn text @click="isActive.value = false"
+                          >Annuler</v-btn
+                        >
+                      </v-card-actions>
+                    </v-card>
+                  </template>
+                </v-dialog>
+                <v-btn
+                  class="ma-2"
+                  variant="outlined"
+                  icon
+                  v-if="users.id == user.id && liens != ''"
+                  color="green"
+                  @click.prevent="deletelien(lien.id)"
+                >
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </v-container>
             </v-col>
             <v-col cols="12" md="2">
               <v-dialog transition="dialog-bottom-transition">
@@ -1143,6 +1225,7 @@
                     class="ma-2"
                     variant="outlined"
                     icon
+                    v-if="users.id == user.id"
                     color="secondary"
                     v-bind="props"
                   >
@@ -1157,6 +1240,7 @@
                         <v-col cols="12" md="12">
                           <v-text-field
                             label="Ajouter Titre"
+                            v-model="titre"
                             prepend-inner-icon="mdi-subtitles-outline"
                             variant="outlined"
                           ></v-text-field>
@@ -1164,6 +1248,7 @@
                         <v-col cols="12" md="12">
                           <v-text-field
                             label="Ajouter  URL"
+                            v-model="url"
                             prepend-inner-icon="mdi-link"
                             variant="outlined"
                           ></v-text-field>
@@ -1171,9 +1256,7 @@
                       </v-row>
                     </v-card-text>
                     <v-card-actions class="justify-end">
-                      <v-btn text @click="isActive.value = false"
-                        >Ajouter</v-btn
-                      >
+                      <v-btn text @click.prevent="addlien">Ajouter</v-btn>
                       <v-btn text @click="isActive.value = false"
                         >Annuler</v-btn
                       >
@@ -1181,79 +1264,6 @@
                   </v-card>
                 </template>
               </v-dialog>
-              <v-dialog transition="dialog-bottom-transition">
-                <template v-slot:activator="{ props }">
-                  <v-btn
-                    class="ma-2"
-                    variant="outlined"
-                    icon
-                    color="red"
-                    v-bind="props"
-                  >
-                    <v-icon>mdi-lead-pencil</v-icon>
-                  </v-btn>
-                </template>
-                <template v-slot:default="{ isActive }">
-                  <v-card>
-                    <v-toolbar color="#90CAF9">Modifier le lien</v-toolbar>
-                    <v-card-text>
-                      <v-row>
-                        <v-col cols="12" md="12">
-                          <v-text-field
-                            label="Modifier Titre"
-                            prepend-inner-icon="mdi-subtitles-outline"
-                            variant="outlined"
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="12">
-                          <v-text-field
-                            label="Modifier URL"
-                            prepend-inner-icon="mdi-link"
-                            variant="outlined"
-                          ></v-text-field>
-                        </v-col>
-                      </v-row>
-                    </v-card-text>
-                    <v-card-actions class="justify-end">
-                      <v-btn text @click="isActive.value = false"
-                        >Modifier</v-btn
-                      >
-                      <v-btn text @click="isActive.value = false"
-                        >Annuler</v-btn
-                      >
-                    </v-card-actions>
-                  </v-card>
-                </template>
-              </v-dialog>
-              <v-btn
-                class="ma-2"
-                variant="outlined"
-                icon
-                color="green"
-                @click="snackbar2 = true"
-              >
-                <v-icon>mdi-delete</v-icon>
-                <v-snackbar v-model="snackbar2" multi-line>
-                  {{ text2 }}
-
-                  <template v-slot:actions>
-                    <v-btn
-                      color="red"
-                      variant="text"
-                      @click="snackbar2 = false"
-                    >
-                      Delete
-                    </v-btn>
-                    <v-btn
-                      color="red"
-                      variant="text"
-                      @click="snackbar2 = false"
-                    >
-                      Annuler
-                    </v-btn>
-                  </template>
-                </v-snackbar>
-              </v-btn>
             </v-col>
           </v-row>
           <v-divider></v-divider>
@@ -1418,6 +1428,12 @@ export default {
       competences: {},
       experience: "",
       competence: "",
+      url: "",
+      titre: "",
+      liens: {},
+      niveau: "",
+      langue: "",
+      langues: {},
       ex4: "success",
       items1: ["Débutant", "Courant", "Avancé", "Langue Maternelle"],
       items3: ["Débutant", "Courant", "Avancé", "Langue Maternelle"],
@@ -1453,7 +1469,11 @@ export default {
     this.getUser();
   },
   mounted() {
-    this.getExperience(), this.getDiplome(), this.getCompetence();
+    this.getExperience(),
+      this.getDiplome(),
+      this.getCompetence(),
+      this.getLien(),
+      this.getLangue();
   },
   methods: {
     async getUser() {
@@ -1487,9 +1507,105 @@ export default {
         this.competences = response.data;
       });
     },
+    async getLangue() {
+      let url =
+        "http://localhost:8000/api/auth/getlangueuser/" + this.$route.params.id;
+      await axios.get(url).then((response) => {
+        this.langues = response.data;
+      });
+    },
     async deletediplome($id) {
       axios
         .delete("http://localhost:8000/api/auth/deletediplome/" + $id, {})
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+    async addlien() {
+      axios
+        .post("http://localhost:8000/api/auth/addlien", {
+          titre: this.titre,
+          url: this.url,
+          id_user: this.user.id,
+          id_cv: null,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+    async getLien() {
+      let url =
+        "http://localhost:8000/api/auth/getlienuser/" + this.$route.params.id;
+      await axios.get(url).then((response) => {
+        this.liens = response.data;
+      });
+    },
+    async updatelien($titre, $url, $id) {
+      axios
+        .post("http://localhost:8000/api/auth/modifierlien/" + $id, {
+          titre: $titre,
+          url: $url,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+    async deletelien($id) {
+      axios
+        .delete("http://localhost:8000/api/auth/deletelien/" + $id, {})
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+    async addlangue() {
+      axios
+        .post("http://localhost:8000/api/auth/addlangue", {
+          langue: this.langue,
+          niveau: this.niveau,
+          id_user: this.user.id,
+          id_cv: null,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+    async updateLangue($langue, $niveau, $id) {
+      axios
+        .post("http://localhost:8000/api/auth/modifierlangue/" + $id, {
+          langue: $langue,
+          niveau: $niveau,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+    async deletelangue($id) {
+      axios
+        .delete("http://localhost:8000/api/auth/deletelangue/" + $id, {})
         .then((response) => {
           console.log(response);
           this.$router.go(0);
@@ -1761,5 +1877,10 @@ export default {
 .dialog-bottom-transition-enter-active,
 .dialog-bottom-transition-leave-active {
   transition: transform 0.2s ease-in-out;
+}
+@media only screen and (max-width: 768px) {
+  .popup1 {
+    width: 70%;
+  }
 }
 </style>

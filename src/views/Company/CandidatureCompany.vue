@@ -182,10 +182,9 @@
                     </div>
                     <router-link
                       :to="{
-                        name: 'infocandidat',
-                        query: {
-                          id_user: applic.id_user,
-                          id_offre: applic.id_offre,
+                        name: 'ProfilUser',
+                        params: {
+                          id: applic.id_user,
                         },
                       }"
                       style="text-decoration: none"
@@ -193,19 +192,15 @@
                       >{{ applic.name_candidat }}
                       {{ applic.last_name_candidat }}</router-link
                     >
-                    <div class="text-caption">{{ applic.adresse }}</div>
                     <div class="text-caption">
-                      {{ applic.phone }}
-                    </div>
-                    <div class="text-caption">
-                      {{ applic.civilite }}
+                      <strong>{{ applic.specialite }}</strong>
                     </div>
                     <div class="text-caption">
                       {{ applic.email }}
                     </div>
                     <v-chip class="ma-2" color="success" variant="outlined">
                       <v-icon start icon="mdi-account-check"></v-icon>
-                      Applied {{ applic.created_att }}
+                      Applied {{ applic.created_at }}
                     </v-chip>
 
                     <v-chip
