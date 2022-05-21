@@ -232,7 +232,7 @@
           ></v-pagination>
           <v-container align="center" v-if="offres == ''">
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/No-Symbol.png/240px-No-Symbol.png"
+              src="https://www.pngall.com/wp-content/uploads/8/Vector-Warning-PNG-Clipart.png"
               style="width: 200px; height: 200px"
             />
             <h5 class="text-h4 font-italic" style="color: black">

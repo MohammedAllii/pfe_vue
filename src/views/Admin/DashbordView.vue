@@ -90,36 +90,43 @@
             <v-card-text
               class="text-body-1 font-italic"
               v-if="admin.name != null"
+              ><v-icon color="blue">mdi-account-tie</v-icon
               ><strong>Nom :</strong> {{ admin.name }}</v-card-text
             >
             <v-card-text
               class="text-body-1 font-italic"
               v-if="admin.last_name != null"
+              ><v-icon color="blue">mdi-account-tie</v-icon
               ><strong>Prénom :</strong> {{ admin.last_name }}</v-card-text
             >
             <v-card-text
               class="text-body-1 font-italic"
               v-if="admin.civilite != null"
+              ><v-icon color="blue">mdi-islam</v-icon
               ><strong>Civilité :</strong> {{ admin.civilite }}</v-card-text
             >
             <v-card-text
               class="text-body-1 font-italic"
               v-if="admin.adresse != null"
+              ><v-icon color="blue">mdi-map-marker</v-icon
               ><strong>Adresse :</strong> {{ admin.adresse }}</v-card-text
             >
             <v-card-text
               class="text-body-1 font-italic"
               v-if="admin.phone != null"
-              ><strong>Phone :</strong> {{ admin.phone }}</v-card-text
+              ><v-icon color="blue">mdi-phone</v-icon><strong>Phone :</strong>
+              {{ admin.phone }}</v-card-text
             >
             <v-card-text
               class="text-body-1 font-italic"
               v-if="admin.email != null"
-              ><strong>Email :</strong> {{ admin.email }}</v-card-text
+              ><v-icon color="blue">mdi-email</v-icon><strong>Email :</strong>
+              {{ admin.email }}</v-card-text
             >
             <v-card-text
               class="text-body-1 font-italic"
               v-if="admin.specialite != null"
+              ><v-icon color="blue">mdi-card-account-details-star</v-icon
               ><strong>Spécilaité :</strong> {{ admin.specialite }}</v-card-text
             >
             <v-spacer></v-spacer>

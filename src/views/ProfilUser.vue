@@ -1,6 +1,5 @@
 <template>
   <navbar-view />
-  <br /><br />
   <v-card>
     <v-container fluid>
       <v-row dense>
@@ -10,7 +9,7 @@
               v-bind:src="'../images/' + users.avatar_couverture"
               class="white--text align-end"
               gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-              height="300px"
+              height="400px"
               cover
             >
               <v-toolbar style="background-color: transparent">
@@ -22,30 +21,26 @@
                       icon="mdi-pencil"
                       size="large"
                       color="white"
+                      v-if="user.id == users.id"
                     ></v-btn>
                   </template>
                   <template v-slot:default="{ isActive }">
                     <v-card>
-                      <v-toolbar color="#90CAF9"
-                        >change your cover Photo here
-                      </v-toolbar>
-                      <v-card-text>
-                        <v-row>
-                          <v-col cols="12" md="12">
-                            <v-file-input
-                              show-size
-                              counter
-                              multiple
-                              label="File input"
-                            ></v-file-input>
-                          </v-col>
-                        </v-row>
-                      </v-card-text>
-                      <v-card-actions class="justify-end">
-                        <v-btn text @click="isActive.value = false"
-                          >Close</v-btn
-                        >
-                      </v-card-actions>
+                      <v-toolbar color="primary"
+                        >Télécharger votre photo de couverture</v-toolbar
+                      >
+                      <v-icon style="margin-left: 200px" size="50">
+                        mdi-check-outline
+                      </v-icon>
+                      <form @submit.prevent="submit1">
+                        <input type="file" @change="onChange1" />
+                        <v-card-actions class="justify-end">
+                          <v-btn text rounded @click="isActive.value = false"
+                            >Annuler</v-btn
+                          >
+                          <v-btn text rounded type="submit">ENregistrer</v-btn>
+                        </v-card-actions>
+                      </form>
                     </v-card>
                   </template>
                 </v-dialog>
@@ -65,37 +60,35 @@
                     icon="mdi-pencil"
                     size="small"
                     style="margin-top: 90px"
+                    v-if="user.id == users.id"
                   ></v-btn>
                 </template>
                 <template v-slot:default="{ isActive }">
                   <v-card>
-                    <v-toolbar color="#90CAF9"
-                      >Change your profil photo here
-                    </v-toolbar>
-                    <v-card-text>
-                      <v-row>
-                        <v-col cols="12" md="12">
-                          <v-file-input
-                            show-size
-                            counter
-                            multiple
-                            label="File input"
-                          ></v-file-input>
-                        </v-col>
-                      </v-row>
-                    </v-card-text>
-                    <v-card-actions class="justify-end">
-                      <v-btn text @click="isActive.value = false">Close</v-btn>
-                    </v-card-actions>
+                    <v-toolbar color="primary"
+                      >Télécharger votre photo</v-toolbar
+                    >
+                    <v-icon style="margin-left: 200px" size="50">
+                      mdi-check-outline
+                    </v-icon>
+                    <form @submit.prevent="submit">
+                      <input type="file" @change="onChange" />
+                      <v-card-actions class="justify-end">
+                        <v-btn text rounded @click="isActive.value = false"
+                          >Annuler</v-btn
+                        >
+                        <v-btn text rounded type="submit">ENregistrer</v-btn>
+                      </v-card-actions>
+                    </form>
                   </v-card>
                 </template>
               </v-dialog>
             </v-img>
             <v-row class="mx-4">
               <v-col cols="12" md="12">
-                <p>{{ users.name }} {{ users.last_name }}</p>
+                <h5>{{ users.name }} {{ users.last_name }}</h5>
                 <p>
-                  {{ users.specialite }}
+                  <strong>{{ users.specialite }}</strong>
                 </p>
                 <p>
                   <v-icon>mdi-map-marker</v-icon>{{ users.adresse }},
@@ -117,22 +110,30 @@
                         <v-row>
                           <v-col cols="12" md="12">
                             <p
-                              class="font-italic text-h5 text-red"
+                              class="font-italic text-h5 text-green"
                               align="center"
                             >
                               contact info
                             </p>
-                            <p class="font-weight-bold">
+                            <p
+                              class="font-weight-bold"
+                              v-if="users.linkedin != null"
+                            >
                               <v-icon color="green">mdi-linkedin</v-icon>
-                              YourProfil :<br />{{ users.linkedin }}
+                              Linkedin :{{ users.linkedin }}
                             </p>
                             <p class="font-weight-bold">
                               <v-icon color="green">mdi-email-outline</v-icon>
-                              Your Email :<br />{{ users.email }}
+                              Email :{{ users.email }}
                             </p>
-                            <p class="font-weight-bold">
+                            <p
+                              class="font-weight-bold"
+                              v-if="users.date_naissance != null"
+                            >
                               <v-icon color="green">mdi-cake-variant</v-icon>
-                              YourBirthday :<br />{{ users.date_naissance }}
+                              Date De Naissance :<br />{{
+                                users.date_naissance
+                              }}
                             </p>
                           </v-col>
                         </v-row>
@@ -153,12 +154,53 @@
               <p class="font-italic text-h5 text-indigo">
                 <v-icon>mdi-file-document-edit-outline</v-icon>RESUME
               </p>
-              <p>jgordjgsrjditxhjoxtfjkdfnjkfngwdfngjwd</p>
+              <v-container align="center" v-if="users.resume_user == null">
+                <img
+                  src="https://www.pngall.com/wp-content/uploads/8/Vector-Warning-PNG-Clipart.png"
+                  style="width: 30px; height: 30px"
+                />
+                <h5 class="text-h6 font-italic" style="color: black">
+                  Aucune Résumé
+                </h5>
+              </v-container>
+              <p>{{ users.resume_user }}</p>
             </v-col>
             <v-col cols="12" md="2">
-              <v-btn class="ma-2" variant="outlined" icon color="secondary">
-                <v-icon>mdi-plus-outline</v-icon>
-              </v-btn>
+              <v-dialog transition="dialog-top-transition">
+                <template v-slot:activator="{ props }">
+                  <v-btn
+                    class="ma-2"
+                    variant="outlined"
+                    icon
+                    v-if="users.id == user.id"
+                    color="secondary"
+                    v-bind="props"
+                  >
+                    <v-icon>mdi-plus-outline</v-icon>
+                  </v-btn>
+                </template>
+                <template v-slot:default="{ isActive }">
+                  <v-card>
+                    <v-toolbar color="#90CAF9">Ajouter un Résumé</v-toolbar>
+                    <v-card-text>
+                      <v-col cols="12" sm="12">
+                        <v-textarea
+                          label="Your Résume"
+                          style="width: 400px"
+                          v-model="users.resume_user"
+                          multiple
+                        ></v-textarea>
+                      </v-col>
+                    </v-card-text>
+                    <v-card-actions class="justify-end">
+                      <v-btn text @click.prevent="addresumeUser">Ajouter</v-btn>
+                      <v-btn text @click="isActive.value = false"
+                        >Annuler</v-btn
+                      >
+                    </v-card-actions>
+                  </v-card>
+                </template>
+              </v-dialog>
               <v-dialog transition="dialog-bottom-transition">
                 <template v-slot:activator="{ props }">
                   <v-btn
@@ -166,6 +208,7 @@
                     variant="outlined"
                     icon
                     color="red"
+                    v-if="users.id == user.id && users.resume_user != null"
                     v-bind="props"
                   >
                     <v-icon>mdi-lead-pencil</v-icon>
@@ -180,12 +223,13 @@
                       <v-textarea
                         background-color="grey lighten-2"
                         color="cyan"
+                        v-model="users.resume_user"
                         label="write your résumé "
                         style="border-radius: 30px; width: 400px"
                       ></v-textarea>
                     </v-card-text>
                     <v-card-actions class="justify-end">
-                      <v-btn text @click="isActive.value = false"
+                      <v-btn text @click.prevent="addresumeUser"
                         >Modifier</v-btn
                       >
                       <v-btn text @click="isActive.value = false"
@@ -200,6 +244,7 @@
                 variant="outlined"
                 icon
                 color="green"
+                v-if="users.id == user.id && users.resume_user != null"
                 @click="snackbar = true"
               >
                 <v-icon>mdi-delete</v-icon>
@@ -207,7 +252,11 @@
                   {{ text }}
 
                   <template v-slot:actions>
-                    <v-btn color="red" variant="text" @click="snackbar = false">
+                    <v-btn
+                      color="red"
+                      variant="text"
+                      @click.prevent="deleteresumeUser"
+                    >
                       Delete
                     </v-btn>
                     <v-btn color="red" variant="text" @click="snackbar = false">
@@ -224,7 +273,56 @@
               <p class="font-italic text-h5 text-indigo">
                 <v-icon>mdi-folder-edit</v-icon>EXPERIENCES PROFESSIONELS
               </p>
-              <p>jgordjgsrjditxhjoxtfjkdfnjkfngwdfngjwd</p>
+              <v-container align="center" v-if="experiences == ''">
+                <img
+                  src="https://www.pngall.com/wp-content/uploads/8/Vector-Warning-PNG-Clipart.png"
+                  style="width: 30px; height: 30px"
+                />
+                <h5 class="text-h6 font-italic" style="color: black">
+                  Aucune Expérience
+                </h5>
+              </v-container>
+              <v-container
+                v-for="experience in experiences"
+                :key="experience.id"
+              >
+                <h5 style="color: green">{{ experience.poste }}</h5>
+                <h6>{{ experience.name_company }}</h6>
+                <h6>
+                  <strong>{{ experience.country }}</strong>
+                </h6>
+                <h6>
+                  {{ experience.debut }}<strong style="color: red">/</strong
+                  >{{ experience.fin }}
+                </h6>
+                <h6>
+                  <strong>{{ experience.description }}</strong>
+                </h6>
+
+                <v-btn
+                  class="ma-4"
+                  variant="outlined"
+                  icon
+                  color="green"
+                  v-if="experience.id_user == user.id"
+                  :to="{
+                    name: 'modifierexperience',
+                    params: { id: experience.id },
+                  }"
+                >
+                  <v-icon>mdi-lead-pencil</v-icon>
+                </v-btn>
+                <v-btn
+                  class="ma-2"
+                  variant="outlined"
+                  icon
+                  color="red"
+                  @click.prevent="deleteexperience(experience.id)"
+                  v-if="experience.id_user == user.id"
+                >
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </v-container>
             </v-col>
             <v-col cols="12" md="2">
               <v-dialog
@@ -239,6 +337,7 @@
                     variant="outlined"
                     icon
                     color="secondary"
+                    v-if="users.id == user.id"
                     v-bind="props"
                   >
                     <v-icon>mdi-plus-outline</v-icon>
@@ -259,7 +358,7 @@
                     <v-row>
                       <v-col cols="12" sm="6">
                         <v-text-field
-                          v-model="message3"
+                          v-model="poste_ex"
                           label="Poste"
                           variant="underlined"
                           clearable
@@ -268,7 +367,7 @@
 
                       <v-col cols="12" sm="6">
                         <v-text-field
-                          v-model="message4"
+                          v-model="name_company"
                           label="Nom de société"
                           variant="underlined"
                           clearable
@@ -276,28 +375,51 @@
                       </v-col>
                     </v-row>
                     <v-col cols="12" sm="6">
-                      <v-autocomplete
-                        ref="country"
+                      <v-select
                         v-model="country"
-                        :rules="[() => !!country || 'This field is required']"
-                        :items="countries"
-                        label="Country"
-                        placeholder="Select..."
-                        required
-                      ></v-autocomplete>
+                        label="where do youlive?"
+                        :items="[
+                          'Ariana',
+                          'Béja',
+                          'Ben Arous',
+                          'Bizerte',
+                          'Gabès',
+                          'Gafsa',
+                          'Jendouba',
+                          'Kairouan',
+                          'Kasserine',
+                          'Kébili',
+                          'Kef',
+                          'Mahdia',
+                          'Manouba',
+                          'Médenine',
+                          'Monastir',
+                          'Nabeul',
+                          'Sfax',
+                          'Sidi Bouzid',
+                          ' Siliana',
+                          'Sousse',
+                          ' Tataouine',
+                          'Tozeur',
+                          'Tunis',
+                          'Zaghouan',
+                        ]"
+                      ></v-select>
                     </v-col>
                     <v-row>
                       <v-col cols="12" sm="6">
                         <v-text-field
-                          v-model="message5"
+                          v-model="debut"
                           label="Date Début"
+                          type="date"
                           variant="underlined"
                           clearable
                         ></v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6">
                         <v-text-field
-                          v-model="message6"
+                          v-model="fin"
+                          type="date"
                           label="Date Fin"
                           variant="underlined"
                           clearable
@@ -306,17 +428,9 @@
                     </v-row>
                     <v-row>
                       <v-col cols="12" sm="6">
-                        <v-checkbox
-                          v-model="ex4"
-                          label="Actuellement en poste"
-                          color="success"
-                          value="success"
-                          hide-details
-                        ></v-checkbox>
-                      </v-col>
-                      <v-col cols="12" sm="6">
                         <v-textarea
                           filled
+                          v-model="description"
                           auto-grow
                           label="Describe your expérience"
                           rows="2"
@@ -334,156 +448,13 @@
                         text
                         rounded
                         style="background-color: #90caf9"
-                        @click="isActive.value = false"
+                        @click.prevent="addexperience"
                         >Enregistrer</v-btn
                       >
                     </v-row>
                   </v-container>
                 </v-card>
               </v-dialog>
-              <v-dialog
-                v-model="dialog1"
-                fullscreen
-                :scrim="false"
-                transition="dialog-bottom-transition"
-              >
-                <template v-slot:activator="{ props }">
-                  <v-btn
-                    class="ma-2"
-                    variant="outlined"
-                    icon
-                    color="red"
-                    v-bind="props"
-                  >
-                    <v-icon>mdi-lead-pencil</v-icon>
-                  </v-btn>
-                </template>
-                <v-card>
-                  <v-toolbar dark color="#90CAF9">
-                    <v-btn icon dark @click="dialog1 = false">
-                      <v-icon>mdi-close</v-icon>
-                    </v-btn>
-                    <v-toolbar-title>close</v-toolbar-title>
-                    <v-spacer></v-spacer>
-                  </v-toolbar>
-
-                  <v-container fluid align="center">
-                    <h5>Modifier an Expériences professionnelles</h5>
-                    <v-icon size="50">mdi-clipboard-check-outline</v-icon>
-                    <v-row>
-                      <v-col cols="12" sm="6">
-                        <v-text-field
-                          v-model="message3"
-                          label="Poste"
-                          variant="underlined"
-                          clearable
-                        ></v-text-field>
-                      </v-col>
-
-                      <v-col cols="12" sm="6">
-                        <v-text-field
-                          v-model="message4"
-                          label="Nom de société"
-                          variant="underlined"
-                          clearable
-                        ></v-text-field>
-                      </v-col>
-                    </v-row>
-                    <v-col cols="12" sm="6">
-                      <v-autocomplete
-                        ref="country"
-                        v-model="country1"
-                        :rules="[() => !!country1 || 'This field is required']"
-                        :items="countries1"
-                        label="Country"
-                        placeholder="Select..."
-                        required
-                      ></v-autocomplete>
-                    </v-col>
-                    <v-row>
-                      <v-col cols="12" sm="6">
-                        <v-text-field
-                          v-model="message5"
-                          label="Date Début"
-                          variant="underlined"
-                          clearable
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6">
-                        <v-text-field
-                          v-model="message6"
-                          label="Date Fin"
-                          variant="underlined"
-                          clearable
-                        ></v-text-field>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col cols="12" sm="6">
-                        <v-checkbox
-                          v-model="ex4"
-                          label="Actuellement en poste"
-                          color="success"
-                          value="success"
-                          hide-details
-                        ></v-checkbox>
-                      </v-col>
-                      <v-col cols="12" sm="6">
-                        <v-textarea
-                          filled
-                          auto-grow
-                          label="Describe your expérience"
-                          rows="2"
-                          row-height="20"
-                        ></v-textarea>
-                      </v-col>
-                    </v-row>
-
-                    <v-row>
-                      <v-btn text rounded @click="isActive.value = false"
-                        >Annuler</v-btn
-                      >
-                      <v-spacer></v-spacer>
-                      <v-btn
-                        text
-                        rounded
-                        style="background-color: #90caf9"
-                        @click="isActive.value = false"
-                        >Enregistrer</v-btn
-                      >
-                    </v-row>
-                  </v-container>
-                </v-card>
-              </v-dialog>
-              <v-btn
-                class="ma-2"
-                variant="outlined"
-                icon
-                color="green"
-                @click="snackbar6 = true"
-              >
-                <v-icon>mdi-delete</v-icon>
-                <v-snackbar v-model="snackbar6" multi-line>
-                  {{ text6 }}
-
-                  <template v-slot:actions>
-                    <v-btn
-                      color="red"
-                      variant="text"
-                      @click="snackbar6 = false"
-                    >
-                      supprimer
-                    </v-btn>
-                    <v-btn
-                      color="red"
-                      variant="text"
-                      @click="snackbar6 = false"
-                    >
-                      Annuler
-                    </v-btn>
-                  </template>
-                </v-snackbar>
-              </v-btn>
             </v-col>
           </v-row>
           <v-divider></v-divider>
@@ -492,7 +463,53 @@
               <p class="font-italic text-h5 text-indigo">
                 <v-icon>mdi-crop-free</v-icon>FORMATIONS ET DIPLOMES
               </p>
-              <p>jgordjgsrjditxhjoxtfjkdfnjkfngwdfngjwd</p>
+              <v-container align="center" v-if="diplomes == ''">
+                <img
+                  src="https://www.pngall.com/wp-content/uploads/8/Vector-Warning-PNG-Clipart.png"
+                  style="width: 30px; height: 30px"
+                />
+                <h5 class="text-h6 font-italic" style="color: black">
+                  Aucune Diplome
+                </h5>
+              </v-container>
+              <v-container v-for="diplome in diplomes" :key="diplome.id">
+                <h5 style="color: green">{{ diplome.etablissement }}</h5>
+                <h6>{{ diplome.diplome }}</h6>
+                <h6>
+                  <strong>{{ diplome.country }}</strong>
+                </h6>
+                <h6>
+                  {{ diplome.debut }}<strong style="color: red">/</strong
+                  >{{ diplome.fin }}
+                </h6>
+                <h6>
+                  <strong>{{ diplome.description }}</strong>
+                </h6>
+
+                <v-btn
+                  class="ma-4"
+                  variant="outlined"
+                  icon
+                  color="green"
+                  v-if="diplome.id_user == user.id"
+                  :to="{
+                    name: 'modifierdiplome',
+                    params: { id: diplome.id },
+                  }"
+                >
+                  <v-icon>mdi-lead-pencil</v-icon>
+                </v-btn>
+                <v-btn
+                  class="ma-2"
+                  variant="outlined"
+                  icon
+                  color="red"
+                  @click.prevent="deletediplome(diplome.id)"
+                  v-if="diplome.id_user == user.id"
+                >
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </v-container>
             </v-col>
             <v-col cols="12" md="2">
               <v-dialog
@@ -507,6 +524,7 @@
                     variant="outlined"
                     icon
                     color="secondary"
+                    v-if="users.id == user.id"
                     v-bind="props"
                   >
                     <v-icon>mdi-plus-outline</v-icon>
@@ -526,7 +544,7 @@
                     <v-row>
                       <v-col cols="12" sm="6">
                         <v-text-field
-                          v-model="message7"
+                          v-model="etablissement"
                           label="Établissement"
                           variant="underlined"
                           clearable
@@ -535,7 +553,7 @@
 
                       <v-col cols="12" sm="6">
                         <v-text-field
-                          v-model="message8"
+                          v-model="diplome"
                           label="Diplôme"
                           variant="underlined"
                           clearable
@@ -544,21 +562,40 @@
                     </v-row>
                     <v-row>
                       <v-col cols="12" sm="6">
-                        <v-autocomplete
-                          ref="country"
-                          v-model="country2"
-                          :rules="[
-                            () => !!country2 || 'This field is required',
+                        <v-select
+                          v-model="countrys"
+                          label="Country?"
+                          :items="[
+                            'Ariana',
+                            'Béja',
+                            'Ben Arous',
+                            'Bizerte',
+                            'Gabès',
+                            'Gafsa',
+                            'Jendouba',
+                            'Kairouan',
+                            'Kasserine',
+                            'Kébili',
+                            'Kef',
+                            'Mahdia',
+                            'Manouba',
+                            'Médenine',
+                            'Monastir',
+                            'Nabeul',
+                            'Sfax',
+                            'Sidi Bouzid',
+                            ' Siliana',
+                            'Sousse',
+                            ' Tataouine',
+                            'Tozeur',
+                            'Tunis',
+                            'Zaghouan',
                           ]"
-                          :items="countries2"
-                          label="Country"
-                          placeholder="Select..."
-                          required
-                        ></v-autocomplete>
+                        ></v-select>
                       </v-col>
                       <v-col cols="12" sm="6">
                         <v-text-field
-                          v-model="message9"
+                          v-model="discipline"
                           label="Discipline"
                           variant="underlined"
                           clearable
@@ -568,7 +605,7 @@
                     <v-row>
                       <v-col cols="12" sm="6">
                         <v-text-field
-                          v-model="message5"
+                          v-model="debuts"
                           label="Date Début"
                           variant="underlined"
                           clearable
@@ -576,7 +613,7 @@
                       </v-col>
                       <v-col cols="12" sm="6">
                         <v-text-field
-                          v-model="message6"
+                          v-model="fins"
                           label="Date Fin"
                           variant="underlined"
                           clearable
@@ -585,18 +622,10 @@
                     </v-row>
                     <v-row>
                       <v-col cols="12" sm="6">
-                        <v-checkbox
-                          v-model="ex4"
-                          label="Actuellement Etudiant(e)"
-                          color="success"
-                          value="success"
-                          hide-details
-                        ></v-checkbox>
-                      </v-col>
-                      <v-col cols="12" sm="6">
                         <v-textarea
                           filled
                           auto-grow
+                          v-model="descriptions"
                           label="Describe"
                           rows="2"
                           row-height="20"
@@ -613,167 +642,13 @@
                         text
                         rounded
                         style="background-color: #90caf9"
-                        @click="isActive.value = false"
+                        @click.prevent="adddiplome"
                         >Enregistrer</v-btn
                       >
                     </v-row>
                   </v-container>
                 </v-card>
               </v-dialog>
-              <v-dialog
-                v-model="dialog3"
-                fullscreen
-                :scrim="false"
-                transition="dialog-bottom-transition"
-              >
-                <template v-slot:activator="{ props }">
-                  <v-btn
-                    class="ma-2"
-                    variant="outlined"
-                    icon
-                    color="red"
-                    v-bind="props"
-                  >
-                    <v-icon>mdi-lead-pencil</v-icon>
-                  </v-btn>
-                </template>
-                <v-card>
-                  <v-toolbar dark color="#90CAF9">
-                    <v-btn icon dark @click="dialog3 = false">
-                      <v-icon>mdi-close</v-icon>
-                    </v-btn>
-                    <v-toolbar-title>close</v-toolbar-title>
-                    <v-spacer></v-spacer>
-                  </v-toolbar>
-                  <v-container fluid align="center">
-                    <h5>Modifier Formations et diplômes</h5>
-                    <v-icon size="50">mdi-paper-cut-vertical</v-icon>
-                    <v-row>
-                      <v-col cols="12" sm="6">
-                        <v-text-field
-                          v-model="message7"
-                          label="Établissement"
-                          variant="underlined"
-                          clearable
-                        ></v-text-field>
-                      </v-col>
-
-                      <v-col cols="12" sm="6">
-                        <v-text-field
-                          v-model="message8"
-                          label="Diplôme"
-                          variant="underlined"
-                          clearable
-                        ></v-text-field>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col cols="12" sm="6">
-                        <v-autocomplete
-                          ref="country"
-                          v-model="country3"
-                          :rules="[
-                            () => !!country3 || 'This field is required',
-                          ]"
-                          :items="countries3"
-                          label="Country"
-                          placeholder="Select..."
-                          required
-                        ></v-autocomplete>
-                      </v-col>
-                      <v-col cols="12" sm="6">
-                        <v-text-field
-                          v-model="message9"
-                          label="Discipline"
-                          variant="underlined"
-                          clearable
-                        ></v-text-field>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col cols="12" sm="6">
-                        <v-text-field
-                          v-model="message5"
-                          label="Date Début"
-                          variant="underlined"
-                          clearable
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6">
-                        <v-text-field
-                          v-model="message6"
-                          label="Date Fin"
-                          variant="underlined"
-                          clearable
-                        ></v-text-field>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col cols="12" sm="6">
-                        <v-checkbox
-                          v-model="ex4"
-                          label="Actuellement Etudiant(e)"
-                          color="success"
-                          value="success"
-                          hide-details
-                        ></v-checkbox>
-                      </v-col>
-                      <v-col cols="12" sm="6">
-                        <v-textarea
-                          filled
-                          auto-grow
-                          label="Describe"
-                          rows="2"
-                          row-height="20"
-                        ></v-textarea>
-                      </v-col>
-                    </v-row>
-
-                    <v-row>
-                      <v-btn text rounded @click="isActive.value = false"
-                        >Annuler</v-btn
-                      >
-                      <v-spacer></v-spacer>
-                      <v-btn
-                        text
-                        rounded
-                        style="background-color: #90caf9"
-                        @click="isActive.value = false"
-                        >Enregistrer</v-btn
-                      >
-                    </v-row>
-                  </v-container>
-                </v-card>
-              </v-dialog>
-              <v-btn
-                class="ma-2"
-                variant="outlined"
-                icon
-                color="green"
-                @click="snackbar7 = true"
-              >
-                <v-icon>mdi-delete</v-icon>
-                <v-snackbar v-model="snackbar7" multi-line>
-                  {{ text7 }}
-
-                  <template v-slot:actions>
-                    <v-btn
-                      color="red"
-                      variant="text"
-                      @click="snackbar7 = false"
-                    >
-                      supprimer
-                    </v-btn>
-                    <v-btn
-                      color="red"
-                      variant="text"
-                      @click="snackbar7 = false"
-                    >
-                      Annuler
-                    </v-btn>
-                  </template>
-                </v-snackbar>
-              </v-btn>
             </v-col>
           </v-row>
           <v-divider></v-divider>
@@ -782,7 +657,118 @@
               <p class="font-italic text-h5 text-indigo">
                 <v-icon>mdi-parachute</v-icon>COMPETENCES
               </p>
-              <p>jgordjgsrjditxhjoxtfjkdfnjkfngwdfngjwd</p>
+              <v-container align="center" v-if="competences == ''">
+                <img
+                  src="https://www.pngall.com/wp-content/uploads/8/Vector-Warning-PNG-Clipart.png"
+                  style="width: 30px; height: 30px"
+                />
+                <h5 class="text-h6 font-italic" style="color: black">
+                  Aucune Compétence
+                </h5>
+              </v-container>
+              <v-container
+                v-for="competence in competences"
+                :key="competence.id"
+              >
+                <h6>
+                  <strong>{{ competence.competence }}</strong
+                  >({{ competence.experience }})
+                </h6>
+
+                <v-dialog transition="dialog-top-transition">
+                  <template v-slot:activator="{ props }">
+                    <v-btn
+                      class="ma-2"
+                      variant="outlined"
+                      icon
+                      v-if="competence.id_user == user.id"
+                      color="green"
+                      v-bind="props"
+                    >
+                      <v-icon>mdi-lead-pencil</v-icon>
+                    </v-btn>
+                  </template>
+                  <template v-slot:default="{ isActive }">
+                    <v-card>
+                      <v-toolbar color="#90CAF9"
+                        >Modifier les compétences ecrites
+                      </v-toolbar>
+                      <v-card-text>
+                        <p>
+                          compétences
+                          <v-col cols="12" sm="12">
+                            <v-text-field
+                              v-model="competence.competence"
+                              variant="outlined"
+                              label="Compétences"
+                              clearable
+                              clear-icon="mdi-cancel"
+                              style="width: 550px"
+                            ></v-text-field>
+                          </v-col>
+                        </p>
+                        <p>
+                          Expériences
+
+                          <v-select
+                            v-model="competence.experience"
+                            label="Expérience"
+                            :items="[
+                              '0.5 ans',
+                              '1 ans',
+                              '2 ans',
+                              '3 ans',
+                              '4 ans',
+                              '5 ans',
+                              '6 ans',
+                              '7 ans',
+                              '8 ans',
+                              '9 ans',
+                              '10 ans',
+                              '11 ans',
+                              '12 ans',
+                              '13 ans',
+                              '14 ans',
+                              '15 ans',
+                              '16 ans',
+                              '17 ans',
+                              '18 ans',
+                              '19 ans',
+                              '20 ans',
+                            ]"
+                          ></v-select>
+                        </p>
+                      </v-card-text>
+                      <v-card-actions class="justify-end">
+                        <v-btn
+                          text
+                          @click.prevent="
+                            updatecompetence(
+                              competence.competence,
+                              competence.experience,
+                              competence.id
+                            )
+                          "
+                          >Modifier</v-btn
+                        >
+                        <v-btn text @click="isActive.value = false"
+                          >Annuler</v-btn
+                        >
+                      </v-card-actions>
+                    </v-card>
+                  </template>
+                </v-dialog>
+                <v-btn
+                  class="ma-2"
+                  variant="outlined"
+                  icon
+                  color="red"
+                  @click.prevent="deletecompetence(competence.id)"
+                  v-if="competence.id_user == user.id"
+                >
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </v-container>
             </v-col>
             <v-col cols="12" md="2">
               <v-dialog transition="dialog-top-transition">
@@ -792,6 +778,7 @@
                     variant="outlined"
                     icon
                     color="secondary"
+                    v-if="users.id == user.id"
                     v-bind="props"
                   >
                     <v-icon>mdi-plus-outline</v-icon>
@@ -807,11 +794,12 @@
                         compétences
                         <v-col cols="12" sm="12">
                           <v-text-field
-                            label="compétences"
+                            v-model="competence"
                             variant="outlined"
+                            label="Compétences"
                             clearable
                             clear-icon="mdi-cancel"
-                            style="width: 500px"
+                            style="width: 550px"
                           ></v-text-field>
                         </v-col>
                       </p>
@@ -819,19 +807,36 @@
                         Expériences
 
                         <v-select
-                          style="border-style: ridge"
-                          v-model="select2"
-                          :items="items2"
-                          :rules="[(v) => !!v || 'Item is required']"
-                          label="Item"
-                          required
+                          v-model="experience"
+                          label="Expérience"
+                          :items="[
+                            '0.5 ans',
+                            '1 ans',
+                            '2 ans',
+                            '3 ans',
+                            '4 ans',
+                            '5 ans',
+                            '6 ans',
+                            '7 ans',
+                            '8 ans',
+                            '9 ans',
+                            '10 ans',
+                            '11 ans',
+                            '12 ans',
+                            '13 ans',
+                            '14 ans',
+                            '15 ans',
+                            '16 ans',
+                            '17 ans',
+                            '18 ans',
+                            '19 ans',
+                            '20 ans',
+                          ]"
                         ></v-select>
                       </p>
                     </v-card-text>
                     <v-card-actions class="justify-end">
-                      <v-btn text @click="isActive.value = false"
-                        >Ajouter</v-btn
-                      >
+                      <v-btn text @click.prevent="addcompetence">Ajouter</v-btn>
                       <v-btn text @click="isActive.value = false"
                         >Annuler</v-btn
                       >
@@ -839,89 +844,6 @@
                   </v-card>
                 </template>
               </v-dialog>
-              <v-dialog transition="dialog-top-transition">
-                <template v-slot:activator="{ props }">
-                  <v-btn
-                    class="ma-2"
-                    variant="outlined"
-                    icon
-                    color="red"
-                    v-bind="props"
-                  >
-                    <v-icon>mdi-lead-pencil</v-icon>
-                  </v-btn>
-                </template>
-                <template v-slot:default="{ isActive }">
-                  <v-card>
-                    <v-toolbar color="#90CAF9"
-                      >Modifier les compétences ecrites
-                    </v-toolbar>
-                    <v-card-text>
-                      <p>
-                        compétences
-                        <v-col cols="12" sm="12">
-                          <v-text-field
-                            label="compétences"
-                            variant="outlined"
-                            clearable
-                            clear-icon="mdi-cancel"
-                            style="width: 500px"
-                          ></v-text-field>
-                        </v-col>
-                      </p>
-                      <p>
-                        Expériences
-
-                        <v-select
-                          style="border-style: ridge"
-                          v-model="select"
-                          :items="items"
-                          :rules="[(v) => !!v || 'Item is required']"
-                          label="Item"
-                          required
-                        ></v-select>
-                      </p>
-                    </v-card-text>
-                    <v-card-actions class="justify-end">
-                      <v-btn text @click="isActive.value = false"
-                        >Modifier</v-btn
-                      >
-                      <v-btn text @click="isActive.value = false"
-                        >Annuler</v-btn
-                      >
-                    </v-card-actions>
-                  </v-card>
-                </template>
-              </v-dialog>
-              <v-btn
-                class="ma-2"
-                variant="outlined"
-                icon
-                color="green"
-                @click="snackbar5 = true"
-              >
-                <v-icon>mdi-delete</v-icon>
-                <v-snackbar v-model="snackbar5" multi-line>
-                  {{ text5 }}
-
-                  <template v-slot:actions>
-                    <v-btn
-                      color="red"
-                      variant="text"
-                      @click="snackbar5 = false"
-                    >
-                      supprimer
-                    </v-btn>
-                    <v-btn
-                      color="red"
-                      variant="text"
-                      @click="snackbar5 = false"
-                    >
-                      Annuler
-                    </v-btn>
-                  </template>
-                </v-snackbar>
-              </v-btn>
             </v-col>
           </v-row>
           <v-divider></v-divider>
@@ -1077,13 +999,23 @@
             <v-col cols="12" md="10">
               <p class="font-italic text-h5 text-indigo">
                 <v-icon>mdi-school</v-icon>SKILLS
+                <v-container align="center" v-if="users.skills_user == null">
+                  <img
+                    src="https://www.pngall.com/wp-content/uploads/8/Vector-Warning-PNG-Clipart.png"
+                    style="width: 30px; height: 30px"
+                  />
+                  <h5 class="text-h6 font-italic" style="color: black">
+                    Aucune Skills
+                  </h5>
+                </v-container>
               </p>
-              <v-container v-if="users.skills_user != null">
+              <v-container>
                 <v-banner
                   lines="six"
                   icon="mdi-script-text"
                   color="grey"
                   class="my-4"
+                  v-if="users.skills_user != null"
                 >
                   <v-banner-text>
                     <h6>
@@ -1101,6 +1033,7 @@
                     class="ma-2"
                     variant="outlined"
                     icon
+                    v-if="users.id == user.id"
                     color="secondary"
                     v-bind="props"
                   >
@@ -1135,6 +1068,7 @@
                     class="ma-2"
                     variant="outlined"
                     icon
+                    v-if="users.id == user.id && users.skills_user != null"
                     color="red"
                     v-bind="props"
                   >
@@ -1169,6 +1103,7 @@
                 class="ma-2"
                 variant="outlined"
                 icon
+                v-if="users.id == user.id && users.skills_user != null"
                 color="green"
                 @click="snackbar3 = true"
               >
@@ -1326,13 +1261,56 @@
             <v-col cols="12" md="10">
               <p class="font-italic text-h5 text-indigo">
                 <v-icon>mdi-lightbulb-on-outline</v-icon>INTERETS
+                <v-container align="center" v-if="users.interet_user == null">
+                  <img
+                    src="https://www.pngall.com/wp-content/uploads/8/Vector-Warning-PNG-Clipart.png"
+                    style="width: 30px; height: 30px"
+                  />
+                  <h5 class="text-h6 font-italic" style="color: black">
+                    Aucune Interets
+                  </h5>
+                </v-container>
               </p>
-              <p>jgordjgsrjditxhjoxtfjkdfnjkfngwdfngjwd</p>
+              <p>{{ users.interet_user }}</p>
             </v-col>
             <v-col cols="12" md="2">
-              <v-btn class="ma-2" variant="outlined" icon color="secondary">
-                <v-icon>mdi-plus-outline</v-icon>
-              </v-btn>
+              <v-dialog transition="dialog-top-transition">
+                <template v-slot:activator="{ props }">
+                  <v-btn
+                    class="ma-2"
+                    variant="outlined"
+                    icon
+                    v-if="users.id == user.id"
+                    color="secondary"
+                    v-bind="props"
+                  >
+                    <v-icon>mdi-plus-outline</v-icon>
+                  </v-btn>
+                </template>
+                <template v-slot:default="{ isActive }">
+                  <v-card>
+                    <v-toolbar color="#90CAF9">Ajouter un Interet</v-toolbar>
+                    <v-card-text>
+                      <v-col cols="12" sm="12">
+                        <v-textarea
+                          label="Your Interets"
+                          style="width: 400px"
+                          v-model="users.interet_user"
+                          multiple
+                        ></v-textarea>
+                      </v-col>
+                    </v-card-text>
+                    <v-card-actions class="justify-end">
+                      <v-btn text @click.prevent="addinteretUser"
+                        >Ajouter</v-btn
+                      >
+                      <v-btn text @click="isActive.value = false"
+                        >Annuler</v-btn
+                      >
+                    </v-card-actions>
+                  </v-card>
+                </template>
+              </v-dialog>
 
               <v-dialog transition="dialog-bottom-transition">
                 <template v-slot:activator="{ props }">
@@ -1340,6 +1318,7 @@
                     class="ma-2"
                     variant="outlined"
                     icon
+                    v-if="users.id == user.id && users.interet_user != null"
                     color="red"
                     v-bind="props"
                   >
@@ -1355,12 +1334,13 @@
                       <v-textarea
                         background-color="grey lighten-2"
                         color="cyan"
+                        v-model="users.interet_user"
                         label="write your Intérets "
                         style="border-radius: 30px; width: 400px"
                       ></v-textarea>
                     </v-card-text>
                     <v-card-actions class="justify-end">
-                      <v-btn text @click="isActive.value = false"
+                      <v-btn text @click.prevent="addinteretuser"
                         >Modifier</v-btn
                       >
                       <v-btn text @click="isActive.value = false"
@@ -1374,6 +1354,7 @@
                 class="ma-2"
                 variant="outlined"
                 icon
+                v-if="users.id == user.id && users.interet_user != null"
                 color="green"
                 @click="snackbar1 = true"
               >
@@ -1385,7 +1366,7 @@
                     <v-btn
                       color="red"
                       variant="text"
-                      @click="snackbar1 = false"
+                      @click.prevent="deleteinteretuser"
                     >
                       Delete
                     </v-btn>
@@ -1417,14 +1398,26 @@ export default {
   data() {
     return {
       users: {},
+      dialog3: false,
+      dialog1: false,
+      dialog2: false,
+      dialog: false,
       skills_user: "",
-      message3: "ex:designer!",
-      message4: "Nom de la société!",
-      message5: "tell us!",
-      message6: "tell us!",
-      message7: "Enter your Établissement!",
-      message8: "Enter your Diplôme!",
-      message9: "Discipline!",
+      resume_user: "",
+      interet_user: "",
+      image: null,
+      image1: null,
+      poste_ex: "",
+      name_company: "",
+      country: "",
+      debut: "",
+      fin: "",
+      description: "",
+      experiences: {},
+      diplomes: {},
+      competences: {},
+      experience: "",
+      competence: "",
       ex4: "success",
       items1: ["Débutant", "Courant", "Avancé", "Langue Maternelle"],
       items3: ["Débutant", "Courant", "Avancé", "Langue Maternelle"],
@@ -1440,8 +1433,6 @@ export default {
       text4: `would you like to delete these langues?`,
       snackbar5: false,
       text5: `would you like to delete these competences?`,
-      snackbar6: false,
-      text6: `would you like to delete these expériences professionels?`,
       snackbar7: false,
       text7: `would you like to delete these Formations et Diplomes?`,
       cards: [
@@ -1461,12 +1452,75 @@ export default {
   created() {
     this.getUser();
   },
+  mounted() {
+    this.getExperience(), this.getDiplome(), this.getCompetence();
+  },
   methods: {
     async getUser() {
       axios
-        .get("http://localhost:8000/api/auth/getUser/" + this.user.id)
+        .get("http://localhost:8000/api/auth/getUser/" + this.$route.params.id)
         .then((response) => {
           this.users = response.data;
+        });
+    },
+    async getExperience() {
+      let url =
+        "http://localhost:8000/api/auth/getexperienceuser/" +
+        this.$route.params.id;
+      await axios.get(url).then((response) => {
+        this.experiences = response.data;
+      });
+    },
+    async getDiplome() {
+      let url =
+        "http://localhost:8000/api/auth/getdiplomeuser/" +
+        this.$route.params.id;
+      await axios.get(url).then((response) => {
+        this.diplomes = response.data;
+      });
+    },
+    async getCompetence() {
+      let url =
+        "http://localhost:8000/api/auth/getcompetenceuser/" +
+        this.$route.params.id;
+      await axios.get(url).then((response) => {
+        this.competences = response.data;
+      });
+    },
+    async deletediplome($id) {
+      axios
+        .delete("http://localhost:8000/api/auth/deletediplome/" + $id, {})
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+    async updatecompetence($competence, $experience, $id) {
+      axios
+        .post("http://localhost:8000/api/auth/modifiercompetence/" + $id, {
+          competence: $competence,
+          experience: $experience,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+    async deletecompetence($id) {
+      axios
+        .delete("http://localhost:8000/api/auth/deletecompetence/" + $id, {})
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
         });
     },
     async addskillsUser() {
@@ -1495,6 +1549,202 @@ export default {
             skills_user: null,
           }
         )
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+    async addresumeUser() {
+      axios
+        .post(
+          "http://localhost:8000/api/auth/addresumeuser/" +
+            this.$route.params.id,
+          {
+            resume_user: this.users.resume_user,
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          this.$toast.success(" Ajout resumé avec success.", {
+            position: "top-right",
+          });
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+          this.$toast.error(" Ajout resumé échoué.", {
+            position: "top-right",
+          });
+        });
+    },
+    async deleteresumeUser() {
+      axios
+        .post(
+          "http://localhost:8000/api/auth/addresumeuser/" +
+            this.$route.params.id,
+          {
+            resume_user: null,
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          this.$toast.success(" Resumé Supprimer avec success.", {
+            position: "top-right",
+          });
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+    async addinteretUser() {
+      axios
+        .post(
+          "http://localhost:8000/api/auth/addinteretuser/" +
+            this.$route.params.id,
+          {
+            interet_user: this.users.interet_user,
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          this.$toast.success(" Ajout interet avec success.", {
+            position: "top-right",
+          });
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+          this.$toast.error(" Ajout interet échoué.", {
+            position: "top-right",
+          });
+        });
+    },
+    async deleteinteretuser() {
+      axios
+        .post(
+          "http://localhost:8000/api/auth/addinteretuser/" +
+            this.$route.params.id,
+          {
+            interet_user: null,
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          this.$toast.success(" Supression interet avec success.", {
+            position: "top-right",
+          });
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+          this.$toast.error(" Suppression interet échoué.", {
+            position: "top-right",
+          });
+        });
+    },
+    onChange(e) {
+      console.log("selected file", e.target.files[0]);
+      this.image = e.target.files[0];
+    },
+    onChange1(e) {
+      console.log("selected file", e.target.files[0]);
+      this.image1 = e.target.files[0];
+    },
+    submit() {
+      let fd = new FormData();
+      fd.append("img", this.image);
+      axios
+        .post("http://localhost:8000/api/auth/upload/" + this.user.id, fd)
+        .then((res) => {
+          console.log("response", res.data);
+          this.$toast.success(" image updated.", {
+            position: "top-right",
+          });
+          this.$router.go(0);
+        })
+        .catch((err) => console.log(err));
+    },
+    submit1() {
+      let fd = new FormData();
+      fd.append("couverture", this.image1);
+      axios
+        .post(
+          "http://localhost:8000/api/auth/uploadcouverture/" + this.user.id,
+          fd
+        )
+        .then((res) => {
+          console.log("response", res.data);
+          this.$toast.success(" image updated.", {
+            position: "top-right",
+          });
+          this.$router.go(0);
+        })
+        .catch((err) => console.log(err));
+    },
+    async addexperience() {
+      axios
+        .post("http://localhost:8000/api/auth/addexperience", {
+          poste: this.poste_ex,
+          name_company: this.name_company,
+          country: this.country,
+          debut: this.debut,
+          fin: this.fin,
+          description: this.description,
+          id_cv: null,
+          id_user: this.user.id,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+    async deleteexperience($id) {
+      axios
+        .delete("http://localhost:8000/api/auth/deleteexperience/" + $id, {})
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+    async adddiplome() {
+      axios
+        .post("http://localhost:8000/api/auth/adddiplome", {
+          etablissement: this.etablissement,
+          diplome: this.diplome,
+          country: this.countrys,
+          discipline: this.discipline,
+          debut: this.debuts,
+          fin: this.fins,
+          description: this.descriptions,
+          id_user: this.user.id,
+          id_cv: null,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+    async addcompetence() {
+      axios
+        .post("http://localhost:8000/api/auth/addcompetence", {
+          competence: this.competence,
+          experience: this.experience,
+          id_user: this.user.id,
+          id_cv: null,
+        })
         .then((response) => {
           console.log(response);
           this.$router.go(0);

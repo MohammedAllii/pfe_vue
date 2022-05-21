@@ -314,7 +314,7 @@ export default {
           this.$toast.success(" Offre accepter.", {
             position: "top-right",
           });
-          this.toutoffres();
+          this.$router.go(0);
         });
     },
     async refuseroffre($id) {
@@ -327,7 +327,7 @@ export default {
           this.$toast.success(" Offre Refuser.", {
             position: "top-right",
           });
-          this.toutoffres();
+          this.$router.go(0);
         });
     },
     async deleteoffre($id) {

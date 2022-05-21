@@ -576,8 +576,7 @@
                               votre Compétences
                               <v-col cols="12" sm="12">
                                 <v-text-field
-                                  v-model="comp"
-                                  v-bind:label="competence.competence"
+                                  v-model="competence.competence"
                                   variant="outlined"
                                   clearable
                                   clear-icon="mdi-cancel"
@@ -589,8 +588,7 @@
                               Expériences
 
                               <v-select
-                                v-model="exper"
-                                v-bind:label="competence.experience"
+                                v-model="competence.experience"
                                 :items="[
                                   '0.5 ans',
                                   '1 ans',
@@ -627,7 +625,13 @@
                                 text
                                 rounded
                                 style="background-color: green"
-                                @click.prevent="updatecompetence(competence.id)"
+                                @click.prevent="
+                                  updatecompetence(
+                                    competence.competence,
+                                    competence.experience,
+                                    competence.id
+                                  )
+                                "
                                 >Modifier</v-btn
                               >
                             </v-card-actions>
@@ -1453,8 +1457,6 @@ export default {
       descriptions: "",
       competence: "",
       experience: "",
-      comp: "",
-      exper: "",
       titre: "",
       url: "",
       titr: "",
@@ -1653,6 +1655,7 @@ export default {
           fin: this.fin,
           description: this.description,
           id_cv: this.idc,
+          id_user: null,
         })
         .then((response) => {
           console.log(response);
@@ -1668,6 +1671,7 @@ export default {
           competence: this.competence,
           experience: this.experience,
           id_cv: this.idc,
+          id_user: null,
         })
         .then((response) => {
           console.log(response);
@@ -1694,11 +1698,11 @@ export default {
           this.error = err;
         });
     },
-    async updatecompetence($id) {
+    async updatecompetence($competence, $experience, $id) {
       axios
         .post("http://localhost:8000/api/auth/modifiercompetence/" + $id, {
-          competence: this.comp,
-          experience: this.exper,
+          competence: $competence,
+          experience: $experience,
         })
         .then((response) => {
           console.log(response);
@@ -1736,6 +1740,7 @@ export default {
           fin: this.fins,
           description: this.descriptions,
           id_cv: this.idc,
+          id_user: null,
         })
         .then((response) => {
           console.log(response);

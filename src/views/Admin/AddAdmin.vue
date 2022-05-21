@@ -9,6 +9,7 @@
       <v-col cols="12" sm="6">
         <v-text-field
           label="Nom de l'utilisateur "
+          v-model="name"
           prepend-inner-icon="mdi-account-circle-outline"
           placeholder="Placeholder"
           variant="outlined"
@@ -18,6 +19,7 @@
       <v-col cols="12" sm="6">
         <v-text-field
           label="Prénom de l'utilisateur"
+          v-model="last_name"
           prepend-inner-icon="mdi-account-circle-outline"
           placeholder="Placeholder"
           variant="outlined"
@@ -28,6 +30,7 @@
       <v-col cols="12" sm="6">
         <v-text-field
           label="Email "
+          v-model="email"
           placeholder="Placeholder"
           variant="outlined"
           prepend-inner-icon="mdi-email-check-outline"
@@ -36,6 +39,7 @@
       <v-col cols="12" sm="6">
         <v-text-field
           label="Spécialité"
+          v-model="specialite"
           placeholder="Placeholder"
           variant="outlined"
           prepend-inner-icon="mdi-account-star-outline"
@@ -46,6 +50,7 @@
       <v-col cols="12" sm="6">
         <v-text-field
           label="Mot de Passe"
+          v-model="password"
           placeholder="Placeholder"
           variant="outlined"
           prepend-inner-icon="mdi-onepassword"
@@ -53,7 +58,8 @@
       </v-col>
       <v-col cols="12" sm="6">
         <v-text-field
-          label="Location "
+          label="Adresse "
+          v-model="adresse"
           placeholder="Placeholder"
           variant="outlined"
           prepend-inner-icon="mdi-map-marker"
@@ -64,37 +70,38 @@
       <v-col cols="12" md="6">
         <v-text-field
           label="Civilité"
+          v-model="civilite"
           prepend-inner-icon="mdi-islam"
           placeholder="Placeholder"
           variant="outlined"
         ></v-text-field>
       </v-col>
-      <v-col cols="12" md="2">
+      <v-col cols="12" md="6">
         <v-text-field
-          color="success"
-          label="LinkedIn"
-          prepend-inner-icon="mdi-linkedin"
+          label="Phone"
+          v-model="phone"
+          prepend-inner-icon="mdi-phone"
           placeholder="Placeholder"
           variant="outlined"
         ></v-text-field>
       </v-col>
-      <v-col cols="12" md="2">
+    </v-row>
+    <v-row>
+      <v-col cols="12" md="6">
         <v-text-field
-          color="success"
-          label="Facebook"
-          prepend-inner-icon="mdi-facebook"
+          label="Gouvernorat"
+          v-model="gouvernorat"
+          prepend-inner-icon="mdi-map-marker"
           placeholder="Placeholder"
           variant="outlined"
         ></v-text-field>
       </v-col>
-      <v-col cols="12" md="2">
-        <v-text-field
-          color="success"
-          label="Twitter"
-          prepend-inner-icon="mdi-twitter"
-          placeholder="Placeholder"
-          variant="outlined"
-        ></v-text-field>
+      <v-col cols="12" md="6">
+        <v-select
+          label="Role"
+          v-model="role"
+          :items="['user', 'admin', 'company']"
+        ></v-select>
       </v-col>
     </v-row>
     <v-row>
@@ -105,6 +112,7 @@
           variant="outlined"
           color="#3E2723"
           prepend-icon="mdi-border-color"
+          @click.prevent="addAdmin"
         >
           Confirmer L'ajout
         </v-btn>
@@ -117,8 +125,54 @@
 <script>
 import NavbarView from "@/components/NavbarView.vue";
 import FooterView from "@/components/FooterView.vue";
+import axios from "axios";
 export default {
   components: { NavbarView, FooterView },
+  data: () => ({
+    role: "",
+    name: "",
+    last_name: "",
+    email: "",
+    specialite: "",
+    password: "",
+    adresse: "",
+    phone: "",
+    civilite: "",
+    gouvernorat: "",
+    admins: {},
+    text: ` Would you like to remove this Admin?`,
+    selectedItem: 1,
+  }),
+  methods: {
+    addAdmin() {
+      axios
+        .post("http://localhost:8000/api/auth/addAdmin", {
+          name: this.name,
+          last_name: this.last_name,
+          email: this.email,
+          specialite: this.specialite,
+          password: this.password,
+          adresse: this.adresse,
+          role: this.role,
+          phone: this.phone,
+          civilite: this.civilite,
+          gouvernorat: this.gouvernorat,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$toast.success(" Admin Ajouter Avec Success.", {
+            position: "top-right",
+          });
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          console.log(err);
+          this.$toast.error(" Email existe déja.", {
+            position: "top-right",
+          });
+        });
+    },
+  },
 };
 </script>
 
