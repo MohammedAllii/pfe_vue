@@ -38,14 +38,18 @@
               style="text-decoration: none"
               @click.prevent="getoffrebytype(this.cdin)"
             >
-              <p>CDI({{ this.cdi }})</p></router-link
+              <p>
+                Contrat à durée indéterminée(CDI)({{ this.cdi }})
+              </p></router-link
             >
             <router-link
               to="#"
               style="text-decoration: none"
               @click.prevent="getoffrebytype(this.cddn)"
             >
-              <p>CDD({{ this.cdd }})</p></router-link
+              <p>
+                Contrat à durée déterminée(CDD)({{ this.cdd }})
+              </p></router-link
             >
             <router-link
               to="#"
@@ -199,13 +203,49 @@
                 {{ offre.added }}
               </v-chip>
 
-              <v-chip class="ma-2" color="primary" variant="outlined">
+              <v-chip class="ma-2" color="blue" variant="outlined">
                 <v-icon end icon="mdi-face"></v-icon>
                 <router-link
                   :to="{ name: 'detailpost', params: { id: offre.id } }"
                   style="text-decoration: none"
                   >postuler maintenant
                 </router-link>
+              </v-chip>
+              <v-chip
+                class="ma-2"
+                color="#4dd3bd"
+                variant="outlined"
+                v-if="offre.nb_candidat > 0"
+              >
+                <v-icon start icon="mdi-counter"></v-icon>
+                {{ offre.nb_candidat }} Candidat demandé
+              </v-chip>
+              <v-chip
+                class="ma-2"
+                color="danger"
+                variant="outlined"
+                v-if="offre.nb_candidat == 0"
+              >
+                <v-icon start icon="mdi-counter"></v-icon>
+                nombre des candidatures épuisé
+              </v-chip>
+              <v-chip
+                class="ma-2"
+                color="success"
+                variant="outlined"
+                v-if="offre.validation == 1"
+              >
+                <v-icon start icon="mdi-check-circle"></v-icon>
+                Validé
+              </v-chip>
+              <v-chip
+                class="ma-2"
+                color="danger"
+                variant="outlined"
+                v-if="offre.validation == 0"
+              >
+                <v-icon start icon="mdi-clock-alert"></v-icon>
+                expiré
               </v-chip>
             </v-col>
             <v-divider></v-divider>

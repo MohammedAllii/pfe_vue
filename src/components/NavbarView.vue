@@ -2,7 +2,7 @@
   <v-toolbar dense app color="transparent">
     <v-toolbar-title class="text-uppercase-title"
       ><router-link to="/"
-        ><img src="../favicon.ico" style="width: 130px; height: 75px" />
+        ><img src="../favicon.ico" style="width: 130px; height: 70px" />
       </router-link>
     </v-toolbar-title>
     <v-spacer></v-spacer>
@@ -71,7 +71,7 @@
         <v-row>
           <v-menu>
             <template v-slot:activator="{ props }">
-              <v-btn right="10em" v-bind="props" rounded color="grey" dark>
+              <v-btn right="12em" v-bind="props" rounded color="grey" dark>
                 <v-avatar size="30" style="border-radius: 100%">
                   <v-img
                     v-bind:src="'../images/' + users.avatar"

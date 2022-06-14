@@ -115,43 +115,13 @@
             ></v-select>
           </v-col>
           <v-col cols="12" md="6">
-            <p>Pays *</p>
-            <v-select
-              v-model="pays"
-              label="Votre pays ..."
-              :items="[
-                'Tunisie',
-                'Algérie',
-                'Argentine',
-                'Belgique',
-                'Brésil',
-                'Bulgarie',
-                'Canada',
-                'Chine',
-                'Croatie',
-                'Danemark',
-                'Égypte',
-                'France',
-                'Allemagne',
-                'Italie',
-                'Japon',
-                'Koweït',
-                'Libye',
-                'Mauritanie',
-                'Maroc',
-                'Norvège',
-                'Qatar',
-                'Russie',
-                'Arabie Saoudite',
-                'Suède',
-                'Suisse',
-                'Turquie',
-                'Ukraine',
-                'États-Unis',
-                'Émirats Arabes Unis',
-                'Yémen',
-              ]"
-            ></v-select>
+            <p>Date d'expiration offre *</p>
+            <v-text-field
+              v-model="date_expiration"
+              type="date"
+              variant="outlined"
+              prepend-inner-icon="mdi-clock"
+            ></v-text-field>
           </v-col>
         </v-row>
         <v-row>
@@ -177,6 +147,8 @@
             <p>Salaire *</p>
             <v-text-field
               v-model="salaire"
+              type="number"
+              onkeyup="if(this.value<0){this.value= this.value * -1}"
               label="max/min tout les deux "
               placeholder="Placeholder"
               variant="outlined"
@@ -215,6 +187,18 @@
               ]"
             ></v-select>
           </v-col>
+          <v-col cols="12" md="6">
+            <p>Nombre des Candidats demander *</p>
+            <v-text-field
+              v-model="nb_candidat"
+              type="number"
+              onkeyup="if(this.value<0){this.value= this.value * -1}"
+              label="Nombre des candidats demander pour cette poste "
+              placeholder="Placeholder"
+              variant="outlined"
+              prepend-inner-icon="mdi-cash-usd"
+            ></v-text-field>
+          </v-col>
         </v-row>
         <v-row>
           <p>Description de l'offre d'emploi *</p>
@@ -244,16 +228,6 @@
             <v-col cols="12" sm="12" v-if="this.question1 != ''">
               <v-icon>mdi-account-edit</v-icon>
               <v-text-field
-                v-model="reponse_attendu1"
-                color="success"
-                label="Entrer Votre Premiére Réponse:"
-                placeholder="Placeholder"
-                variant="outlined"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" sm="12" v-if="this.reponse_attendu1 != ''">
-              <v-icon>mdi-account-edit</v-icon>
-              <v-text-field
                 v-model="question2"
                 color="success"
                 label="Entrer Votre Deuxiéme Question:"
@@ -264,29 +238,9 @@
             <v-col cols="12" sm="12" v-if="this.question2 != ''">
               <v-icon>mdi-account-edit</v-icon>
               <v-text-field
-                v-model="reponse_attendu2"
-                color="success"
-                label="Entrer Votre Deuxiéme Réponse:"
-                placeholder="Placeholder"
-                variant="outlined"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" sm="12" v-if="this.reponse_attendu2 != ''">
-              <v-icon>mdi-account-edit</v-icon>
-              <v-text-field
                 v-model="question3"
                 color="success"
                 label="Entrer Votre Troisiéme Question:"
-                placeholder="Placeholder"
-                variant="outlined"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" sm="12" v-if="this.question3 != ''">
-              <v-icon>mdi-account-edit</v-icon>
-              <v-text-field
-                v-model="reponse_attendu3"
-                color="success"
-                label="Entrer Votre Troisiéme Réponse:"
                 placeholder="Placeholder"
                 variant="outlined"
               ></v-text-field>
@@ -329,19 +283,17 @@ export default {
       radios: "oui",
       poste: "",
       lieu_travail: "",
-      pays: "",
+      date_expiration: "",
       contrat: "",
       temps_travail: "",
       salaire: "",
       monnaie: "",
       periode: "",
+      nb_candidat: "",
       description: "",
       question1: "",
       question2: "",
       question3: "",
-      reponse_attendu1: "",
-      reponse_attendu2: "",
-      reponse_attendu3: "",
       id_company: "",
       error: "",
       success: "",
@@ -362,8 +314,8 @@ export default {
         this.$toast.error(" Champ Lieu vide.", {
           position: "top-right",
         });
-      } else if (this.pays == "") {
-        this.$toast.error(" Champ pays vide.", {
+      } else if (this.date_expiration == "") {
+        this.$toast.error(" Champ Date d'expiration vide.", {
           position: "top-right",
         });
       } else if (this.contrat == "") {
@@ -390,24 +342,26 @@ export default {
         this.$toast.error(" Champ description vide.", {
           position: "top-right",
         });
+      } else if (this.nb_candidat == "") {
+        this.$toast.error(" Champ nombre de candidat vide.", {
+          position: "top-right",
+        });
       }
       axios
         .post("http://localhost:8000/api/auth/registeroffre", {
           poste: this.poste,
           lieu_travail: this.lieu_travail,
-          pays: this.pays,
+          date_expiration: this.date_expiration,
           contrat: this.contrat,
           temps_travail: this.temps_travail,
           salaire: this.salaire,
           monnaie: this.monnaie,
+          nb_candidat: this.nb_candidat,
           periode: this.periode,
           description: this.description,
           question1: this.question1,
           question2: this.question2,
           question3: this.question3,
-          reponse_attendu1: this.reponse_attendu1,
-          reponse_attendu2: this.reponse_attendu2,
-          reponse_attendu3: this.reponse_attendu3,
           id_company: this.user.id,
         })
         .then((response) => {

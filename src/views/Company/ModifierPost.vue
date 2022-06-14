@@ -47,45 +47,7 @@
             ]"
           ></v-select>
         </v-col>
-        <v-col cols="12" md="6">
-          <p>Pays</p>
-          <v-select
-            v-model="offre.pays"
-            label="Votre pays ..."
-            :items="[
-              'Tunisie',
-              'Algérie',
-              'Argentine',
-              'Belgique',
-              'Brésil',
-              'Bulgarie',
-              'Canada',
-              'Chine',
-              'Croatie',
-              'Danemark',
-              'Égypte',
-              'France',
-              'Allemagne',
-              'Italie',
-              'Japon',
-              'Koweït',
-              'Libye',
-              'Mauritanie',
-              'Maroc',
-              'Norvège',
-              'Qatar',
-              'Russie',
-              'Arabie Saoudite',
-              'Suède',
-              'Suisse',
-              'Turquie',
-              'Ukraine',
-              'États-Unis',
-              'Émirats Arabes Unis',
-              'Yémen',
-            ]"
-          ></v-select>
-        </v-col>
+        <v-col cols="12" md="6"> </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" md="6">
@@ -234,7 +196,6 @@ export default {
       diplomes: {},
       poste: "",
       lieu_travail: "",
-      pays: "",
       contrat: "",
       temps_travail: "",
       salaire: "",
@@ -270,7 +231,8 @@ export default {
           {
             poste: this.offre.poste,
             lieu_travail: this.offre.lieu_travail,
-            pays: this.offre.pays,
+            date_expiration: this.offre.date_expiration,
+            nb_candidat: this.offre.nb_candidat,
             contrat: this.offre.contrat,
             temps_travail: this.offre.temps_travail,
             salaire: this.offre.salaire,

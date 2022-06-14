@@ -17,7 +17,7 @@
             <template v-slot:activator="{ props }">
               <v-btn flat rounded v-bind="props"
                 ><v-icon>mdi-image-edit</v-icon></v-btn
-              >
+              ><br /><strong>{{ users.name }} {{ users.last_name }}</strong>
             </template>
             <template v-slot:default="{ isActive }">
               <v-card>
@@ -68,11 +68,11 @@
               <v-row>
                 <v-col cols="12" sm="6">
                   <v-text-field
-                    label="ex:https://www.company.com"
-                    v-model="users.site_web"
-                    prepend-inner-icon="mdi-web"
-                    placeholder="Placeholder"
+                    v-model="users.name"
+                    label="Full Name"
                     variant="outlined"
+                    clearable
+                    clear-icon="mdi-cancel"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6">
@@ -158,6 +158,16 @@
                     variant="outlined"
                   ></v-text-field>
                 </v-col>
+                <v-col cols="12" md="2">
+                  <v-text-field
+                    label="ex:https://www.company.com"
+                    v-model="users.site_web"
+                    type="url"
+                    prepend-inner-icon="mdi-web"
+                    placeholder="Placeholder"
+                    variant="outlined"
+                  ></v-text-field>
+                </v-col>
               </v-row>
               <v-row>
                 <v-btn
@@ -216,20 +226,20 @@
               <v-row>
                 <v-col cols="12" sm="6">
                   <v-text-field
-                    label="Adresse "
-                    placeholder="Placeholder"
-                    v-model="users.adresse"
+                    v-model="users.name"
+                    label="Full Name"
                     variant="outlined"
-                    prepend-inner-icon="mdi-garage"
+                    clearable
+                    clear-icon="mdi-cancel"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6">
                   <v-text-field
-                    label="Gouvernorat "
-                    v-model="users.gouvernorat"
-                    placeholder="Placeholder"
+                    v-model="users.last_name"
+                    label="Last Name"
                     variant="outlined"
-                    prepend-inner-icon="mdi-map-marker"
+                    clearable
+                    clear-icon="mdi-cancel"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -265,9 +275,9 @@
                 </v-col>
                 <v-col cols="12" sm="6">
                   <v-text-field
-                    label="Last Name "
+                    label="Adresse "
                     placeholder="Placeholder"
-                    v-model="users.last_name"
+                    v-model="users.adresse"
                     variant="outlined"
                     prepend-inner-icon="mdi-garage"
                   ></v-text-field>
@@ -314,50 +324,6 @@
       <v-col>
         <h5>Informations professionnelles</h5>
       </v-col>
-      <v-col>
-        <v-row justify="space-around">
-          <v-col cols="auto">
-            <v-dialog transition="dialog-bottom-transition">
-              <template v-slot:activator="{ props }">
-                <v-btn flat rounded v-bind="props">
-                  <v-icon right size="20">mdi-briefcase-edit-outline</v-icon>
-                </v-btn>
-              </template>
-              <template v-slot:default="{ isActive }">
-                <v-card>
-                  <v-toolbar color="primary"
-                    >Informations personnelles</v-toolbar
-                  >
-                  <v-icon style="margin-left: 200px" size="50">
-                    mdi-check-outline
-                  </v-icon>
-                  <v-card-text>
-                    <v-col cols="12" sm="12">
-                      <v-text-field
-                        v-model="users.name"
-                        label="Full Name"
-                        variant="outlined"
-                        clearable
-                        clear-icon="mdi-cancel"
-                        style="width: 400px"
-                      ></v-text-field>
-                    </v-col>
-                  </v-card-text>
-                  <v-card-actions class="justify-end">
-                    <v-btn text rounded @click="isActive.value = false"
-                      >Annuler</v-btn
-                    >
-                    <v-btn text rounded @click.prevent="updatename"
-                      >ENregistrer</v-btn
-                    >
-                  </v-card-actions>
-                </v-card>
-              </template>
-            </v-dialog>
-          </v-col>
-        </v-row>
-      </v-col>
-      <h6>{{ users.name }}</h6>
       <v-divider></v-divider>
       <v-col>
         <h5>Email</h5>
@@ -476,6 +442,7 @@
                 rounded
                 v-bind="props"
                 color="grey"
+                v-if="user.role != 'admin'"
                 style="padding-left: 65px; padding-right: 65px"
               >
                 Supprimer ce Compte
@@ -608,21 +575,10 @@ export default {
           this.$store.commit("SET_token", null);
           this.$store.commit("SET_user", null);
           this.$store.commit("SET_loggedIn", false);
+          this.$store.commit("SET_loggedUser", false);
+          this.$store.commit("SET_loggedCompany", false);
           this.$router.go(0);
           this.$router.push("/SignIn");
-        });
-    },
-    async updatename() {
-      axios
-        .post("http://localhost:8000/api/auth/updatename/" + this.user.id, {
-          name: this.users.name,
-        })
-        .then((response) => {
-          console.log(response);
-          this.$toast.success(" Name updated.", {
-            position: "top-right",
-          });
-          this.$router.go(0);
         });
     },
     async updateemail() {
@@ -682,6 +638,7 @@ export default {
       axios
         .post("http://localhost:8000/api/auth/updatecompany/" + this.user.id, {
           site_web: this.users.site_web,
+          name: this.users.name,
           annee_fondation: this.users.annee_fondation,
           nb_employee: this.users.nb_employee,
           gouvernorat: this.users.gouvernorat,

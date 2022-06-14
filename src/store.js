@@ -144,7 +144,7 @@ const store = createStore({
             name: payload.name,
             email: payload.email,
             poste: payload.poste,
-            localite: payload.localite,
+            adresse: payload.adresse,
             id_user: payload.id_user,
           })
           .then((res) => {
@@ -170,24 +170,6 @@ const store = createStore({
           })
           .then((res) => {
             commit("SET_lettre", res.data.user);
-            resolve(res);
-          })
-          .catch((err) => {
-            reject(err);
-          });
-      });
-    },
-    updateUserProfileAction({ commit, state }, payload) {
-      return new Promise((resolve, reject) => {
-        axios
-          .patch("http://localhost:8000/api/auth/update", {
-            name: payload.name,
-            email: payload.email,
-            token: state.token,
-          })
-          .then((res) => {
-            commit("SET_user", res.data.user);
-
             resolve(res);
           })
           .catch((err) => {

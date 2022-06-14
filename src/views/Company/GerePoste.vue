@@ -148,10 +148,6 @@
                         {{ offre.added }}
                       </v-chip>
 
-                      <v-chip class="ma-2" color="primary" variant="outlined">
-                        postuler facilement
-                        <v-icon end icon="mdi-face"></v-icon>
-                      </v-chip>
                       <v-chip
                         class="ma-2"
                         color="orange"
@@ -169,6 +165,28 @@
                       >
                         <v-icon start icon="mdi-progress-clock"></v-icon>
                         Accepter
+                      </v-chip>
+                      <v-chip class="ma-2" color="#4dd3bd" variant="outlined">
+                        <v-icon start icon="mdi-counter"></v-icon>
+                        {{ offre.nb_candidat }} Candidat demandé
+                      </v-chip>
+                      <v-chip
+                        class="ma-2"
+                        color="success"
+                        variant="outlined"
+                        v-if="offre.validation == 1"
+                      >
+                        <v-icon start icon="mdi-check-circle"></v-icon>
+                        Validé
+                      </v-chip>
+                      <v-chip
+                        class="ma-2"
+                        color="danger"
+                        variant="outlined"
+                        v-if="offre.validation == 0"
+                      >
+                        <v-icon start icon="mdi-clock-alert"></v-icon>
+                        expiré
                       </v-chip>
                     </v-col>
                   </v-banner-text>

@@ -1005,36 +1005,77 @@
           <v-row>
             <v-col cols="12" md="10">
               <p class="font-italic text-h5 text-indigo">
-                <v-icon>mdi-school</v-icon>SKILLS
-                <v-container align="center" v-if="users.skills_user == null">
-                  <img
-                    src="https://www.pngall.com/wp-content/uploads/8/Vector-Warning-PNG-Clipart.png"
-                    style="width: 30px; height: 30px"
-                  />
-                  <h5 class="text-h6 font-italic" style="color: black">
-                    Aucune Skills
-                  </h5>
-                </v-container>
+                <v-icon>mdi-lightbulb-on-outline</v-icon>SKILLS
               </p>
-              <v-container>
-                <v-banner
-                  lines="six"
-                  icon="mdi-script-text"
-                  color="grey"
-                  class="my-4"
-                  v-if="users.skills_user != null"
+              <v-container align="center" v-if="skills == ''">
+                <img
+                  src="https://www.pngall.com/wp-content/uploads/8/Vector-Warning-PNG-Clipart.png"
+                  style="width: 30px; height: 30px"
+                />
+                <h5 class="text-h6 font-italic" style="color: black">
+                  Aucune Skills
+                </h5>
+              </v-container>
+              <v-container v-for="skill in skills" :key="skill.id">
+                <h6>
+                  <strong>{{ skill.skill }}</strong>
+                </h6>
+                <v-dialog transition="dialog-bottom-transition">
+                  <template v-slot:activator="{ props }">
+                    <v-btn
+                      class="ma-2"
+                      variant="outlined"
+                      icon
+                      v-if="users.id == user.id && skills != ''"
+                      color="red"
+                      v-bind="props"
+                    >
+                      <v-icon>mdi-lead-pencil</v-icon>
+                    </v-btn>
+                  </template>
+                  <template v-slot:default="{ isActive }">
+                    <v-card>
+                      <v-toolbar color="#90CAF9">Modifier skills</v-toolbar>
+                      <v-card-text>
+                        <v-row>
+                          <v-col cols="12" md="12">
+                            <v-textarea
+                              background-color="amber lighten-4"
+                              color="orange orange-darken-4"
+                              label="Ecrire"
+                              style="width: 600px; border-style: ridge"
+                              v-model="skill.skill"
+                            ></v-textarea>
+                          </v-col>
+                        </v-row>
+                      </v-card-text>
+                      <v-card-actions class="justify-end">
+                        <v-btn
+                          text
+                          @click.prevent="updateskills(skill.id, skill.skill)"
+                          >Modifier</v-btn
+                        >
+                        <v-btn text @click="isActive.value = false"
+                          >Annuler</v-btn
+                        >
+                      </v-card-actions>
+                    </v-card>
+                  </template>
+                </v-dialog>
+                <v-btn
+                  class="ma-2"
+                  variant="outlined"
+                  icon
+                  v-if="users.id == user.id && skills != ''"
+                  color="green"
+                  @click.prevent="deleteskillsUser(skill.id)"
                 >
-                  <v-banner-text>
-                    <h6>
-                      {{ users.skills_user }}
-                    </h6>
-                    <br />
-                  </v-banner-text>
-                </v-banner>
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
               </v-container>
             </v-col>
             <v-col cols="12" md="2">
-              <v-dialog transition="dialog-top-transition">
+              <v-dialog transition="dialog-bottom-transition">
                 <template v-slot:activator="{ props }">
                   <v-btn
                     class="ma-2"
@@ -1049,16 +1090,19 @@
                 </template>
                 <template v-slot:default="{ isActive }">
                   <v-card>
-                    <v-toolbar color="#90CAF9">Ajouter un skill</v-toolbar>
+                    <v-toolbar color="#90CAF9">Ajouter un skills</v-toolbar>
                     <v-card-text>
-                      <v-col cols="12" sm="12">
-                        <v-textarea
-                          label="Your skills"
-                          style="width: 400px"
-                          v-model="users.skills_user"
-                          multiple
-                        ></v-textarea>
-                      </v-col>
+                      <v-row>
+                        <v-col cols="12" md="12">
+                          <v-textarea
+                            background-color="amber lighten-4"
+                            color="orange orange-darken-4"
+                            label="Ecrire"
+                            style="width: 600px; border-style: ridge"
+                            v-model="skill"
+                          ></v-textarea>
+                        </v-col>
+                      </v-row>
                     </v-card-text>
                     <v-card-actions class="justify-end">
                       <v-btn text @click.prevent="addskillsUser">Ajouter</v-btn>
@@ -1069,69 +1113,6 @@
                   </v-card>
                 </template>
               </v-dialog>
-              <v-dialog transition="dialog-top-transition">
-                <template v-slot:activator="{ props }">
-                  <v-btn
-                    class="ma-2"
-                    variant="outlined"
-                    icon
-                    v-if="users.id == user.id && users.skills_user != null"
-                    color="red"
-                    v-bind="props"
-                  >
-                    <v-icon>mdi-lead-pencil</v-icon>
-                  </v-btn>
-                </template>
-                <template v-slot:default="{ isActive }">
-                  <v-card>
-                    <v-toolbar color="#90CAF9">Modifier tes skills</v-toolbar>
-                    <v-card-text>
-                      <v-col cols="12" sm="12">
-                        <v-textarea
-                          label="Your skills"
-                          style="width: 400px"
-                          v-model="users.skills_user"
-                          multiple
-                        ></v-textarea>
-                      </v-col>
-                    </v-card-text>
-                    <v-card-actions class="justify-end">
-                      <v-btn text @click.prevent="addskillsUser"
-                        >Modifier</v-btn
-                      >
-                      <v-btn text @click="isActive.value = false"
-                        >Annuler</v-btn
-                      >
-                    </v-card-actions>
-                  </v-card>
-                </template>
-              </v-dialog>
-              <v-btn
-                class="ma-2"
-                variant="outlined"
-                icon
-                v-if="users.id == user.id && users.skills_user != null"
-                color="green"
-                @click="snackbar3 = true"
-              >
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
-              <v-snackbar v-model="snackbar3" multi-line>
-                {{ text3 }}
-
-                <template v-slot:actions>
-                  <v-btn
-                    color="red"
-                    variant="text"
-                    @click.prevent="deleteskillsUser"
-                  >
-                    supprimer
-                  </v-btn>
-                  <v-btn color="red" variant="text" @click="snackbar3 = false">
-                    Annuler
-                  </v-btn>
-                </template>
-              </v-snackbar>
             </v-col>
           </v-row>
           <v-divider></v-divider>
@@ -1187,6 +1168,7 @@
                               v-model="lien.url"
                               prepend-inner-icon="mdi-link"
                               variant="outlined"
+                              style="height: 70px"
                             ></v-text-field>
                           </v-col>
                         </v-row>
@@ -1270,21 +1252,79 @@
           <v-row>
             <v-col cols="12" md="10">
               <p class="font-italic text-h5 text-indigo">
-                <v-icon>mdi-lightbulb-on-outline</v-icon>INTERETS
-                <v-container align="center" v-if="users.interet_user == null">
-                  <img
-                    src="https://www.pngall.com/wp-content/uploads/8/Vector-Warning-PNG-Clipart.png"
-                    style="width: 30px; height: 30px"
-                  />
-                  <h5 class="text-h6 font-italic" style="color: black">
-                    Aucune Interets
-                  </h5>
-                </v-container>
+                <v-icon>mdi-lightbulb-on-outline</v-icon>Interets
               </p>
-              <p>{{ users.interet_user }}</p>
+              <v-container align="center" v-if="interets == ''">
+                <img
+                  src="https://www.pngall.com/wp-content/uploads/8/Vector-Warning-PNG-Clipart.png"
+                  style="width: 30px; height: 30px"
+                />
+                <h5 class="text-h6 font-italic" style="color: black">
+                  Aucune Interet
+                </h5>
+              </v-container>
+              <v-container v-for="interet in interets" :key="interet.id">
+                <h6>
+                  <strong>{{ interet.interet }}</strong>
+                </h6>
+                <v-dialog transition="dialog-bottom-transition">
+                  <template v-slot:activator="{ props }">
+                    <v-btn
+                      class="ma-2"
+                      variant="outlined"
+                      icon
+                      v-if="users.id == user.id && interets != ''"
+                      color="red"
+                      v-bind="props"
+                    >
+                      <v-icon>mdi-lead-pencil</v-icon>
+                    </v-btn>
+                  </template>
+                  <template v-slot:default="{ isActive }">
+                    <v-card>
+                      <v-toolbar color="#90CAF9">Modifier interet</v-toolbar>
+                      <v-card-text>
+                        <v-row>
+                          <v-col cols="12" md="12">
+                            <v-textarea
+                              background-color="amber lighten-4"
+                              color="orange orange-darken-4"
+                              label="Ecrire"
+                              style="width: 600px; border-style: ridge"
+                              v-model="interet.interet"
+                            ></v-textarea>
+                          </v-col>
+                        </v-row>
+                      </v-card-text>
+                      <v-card-actions class="justify-end">
+                        <v-btn
+                          text
+                          @click.prevent="
+                            updateinteret(interet.id, interet.interet)
+                          "
+                          >Modifier</v-btn
+                        >
+                        <v-btn text @click="isActive.value = false"
+                          >Annuler</v-btn
+                        >
+                      </v-card-actions>
+                    </v-card>
+                  </template>
+                </v-dialog>
+                <v-btn
+                  class="ma-2"
+                  variant="outlined"
+                  icon
+                  v-if="users.id == user.id && interets != ''"
+                  color="green"
+                  @click.prevent="deleteinteret(interet.id)"
+                >
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </v-container>
             </v-col>
             <v-col cols="12" md="2">
-              <v-dialog transition="dialog-top-transition">
+              <v-dialog transition="dialog-bottom-transition">
                 <template v-slot:activator="{ props }">
                   <v-btn
                     class="ma-2"
@@ -1299,16 +1339,19 @@
                 </template>
                 <template v-slot:default="{ isActive }">
                   <v-card>
-                    <v-toolbar color="#90CAF9">Ajouter un Interet</v-toolbar>
+                    <v-toolbar color="#90CAF9">Ajouter un interet</v-toolbar>
                     <v-card-text>
-                      <v-col cols="12" sm="12">
-                        <v-textarea
-                          label="Your Interets"
-                          style="width: 400px"
-                          v-model="users.interet_user"
-                          multiple
-                        ></v-textarea>
-                      </v-col>
+                      <v-row>
+                        <v-col cols="12" md="12">
+                          <v-textarea
+                            background-color="amber lighten-4"
+                            color="orange orange-darken-4"
+                            label="Ecrire"
+                            style="width: 600px; border-style: ridge"
+                            v-model="interet"
+                          ></v-textarea>
+                        </v-col>
+                      </v-row>
                     </v-card-text>
                     <v-card-actions class="justify-end">
                       <v-btn text @click.prevent="addinteretUser"
@@ -1321,75 +1364,6 @@
                   </v-card>
                 </template>
               </v-dialog>
-
-              <v-dialog transition="dialog-bottom-transition">
-                <template v-slot:activator="{ props }">
-                  <v-btn
-                    class="ma-2"
-                    variant="outlined"
-                    icon
-                    v-if="users.id == user.id && users.interet_user != null"
-                    color="red"
-                    v-bind="props"
-                  >
-                    <v-icon>mdi-lead-pencil</v-icon>
-                  </v-btn>
-                </template>
-                <template v-slot:default="{ isActive }">
-                  <v-card>
-                    <v-toolbar color="#90CAF9"
-                      >Modifier ton Intérets ici
-                    </v-toolbar>
-                    <v-card-text>
-                      <v-textarea
-                        background-color="grey lighten-2"
-                        color="cyan"
-                        v-model="users.interet_user"
-                        label="write your Intérets "
-                        style="border-radius: 30px; width: 400px"
-                      ></v-textarea>
-                    </v-card-text>
-                    <v-card-actions class="justify-end">
-                      <v-btn text @click.prevent="addinteretuser"
-                        >Modifier</v-btn
-                      >
-                      <v-btn text @click="isActive.value = false"
-                        >Annuler</v-btn
-                      >
-                    </v-card-actions>
-                  </v-card>
-                </template>
-              </v-dialog>
-              <v-btn
-                class="ma-2"
-                variant="outlined"
-                icon
-                v-if="users.id == user.id && users.interet_user != null"
-                color="green"
-                @click="snackbar1 = true"
-              >
-                <v-icon>mdi-delete</v-icon>
-                <v-snackbar v-model="snackbar1" multi-line>
-                  {{ text1 }}
-
-                  <template v-slot:actions>
-                    <v-btn
-                      color="red"
-                      variant="text"
-                      @click.prevent="deleteinteretuser"
-                    >
-                      Delete
-                    </v-btn>
-                    <v-btn
-                      color="red"
-                      variant="text"
-                      @click="snackbar1 = false"
-                    >
-                      Annuler
-                    </v-btn>
-                  </template>
-                </v-snackbar>
-              </v-btn>
             </v-col>
           </v-row>
         </v-col>
@@ -1412,9 +1386,9 @@ export default {
       dialog1: false,
       dialog2: false,
       dialog: false,
-      skills_user: "",
+      skill: "",
       resume_user: "",
-      interet_user: "",
+      interet: "",
       image: null,
       image1: null,
       poste_ex: "",
@@ -1431,6 +1405,8 @@ export default {
       url: "",
       titre: "",
       liens: {},
+      interets: {},
+      skills: {},
       niveau: "",
       langue: "",
       langues: {},
@@ -1473,7 +1449,9 @@ export default {
       this.getDiplome(),
       this.getCompetence(),
       this.getLien(),
-      this.getLangue();
+      this.getLangue(),
+      this.getInterets(),
+      this.getSkills();
   },
   methods: {
     async getUser() {
@@ -1519,6 +1497,9 @@ export default {
         .delete("http://localhost:8000/api/auth/deletediplome/" + $id, {})
         .then((response) => {
           console.log(response);
+          this.$toast.error(" diplome Supprimé avec succés.", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {
@@ -1526,6 +1507,15 @@ export default {
         });
     },
     async addlien() {
+      if (this.titre == "") {
+        this.$toast.error(" Champ titre vide.", {
+          position: "top-right",
+        });
+      } else if (this.url == "") {
+        this.$toast.error(" Champ Url vide.", {
+          position: "top-right",
+        });
+      }
       axios
         .post("http://localhost:8000/api/auth/addlien", {
           titre: this.titre,
@@ -1548,11 +1538,45 @@ export default {
         this.liens = response.data;
       });
     },
+    async getSkills() {
+      let url =
+        "http://localhost:8000/api/auth/getskillsuser/" + this.$route.params.id;
+      await axios.get(url).then((response) => {
+        this.skills = response.data;
+      });
+    },
     async updatelien($titre, $url, $id) {
+      if ($titre == "") {
+        this.$toast.error(" Champ Titre vide.", {
+          position: "top-right",
+        });
+      } else if ($url == "") {
+        this.$toast.error(" Champ Url vide.", {
+          position: "top-right",
+        });
+      }
       axios
         .post("http://localhost:8000/api/auth/modifierlien/" + $id, {
           titre: $titre,
           url: $url,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+    async updateskills($id, $skill) {
+      if ($skill == "") {
+        this.$toast.error(" Champ Skill vide.", {
+          position: "top-right",
+        });
+      }
+      axios
+        .post("http://localhost:8000/api/auth/modifierskills/" + $id, {
+          skill: $skill,
         })
         .then((response) => {
           console.log(response);
@@ -1567,6 +1591,9 @@ export default {
         .delete("http://localhost:8000/api/auth/deletelien/" + $id, {})
         .then((response) => {
           console.log(response);
+          this.$toast.error(" lien supprimé avec succés", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {
@@ -1574,6 +1601,15 @@ export default {
         });
     },
     async addlangue() {
+      if (this.langue == "") {
+        this.$toast.error(" Champ Langue vide.", {
+          position: "top-right",
+        });
+      } else if (this.niveau == "") {
+        this.$toast.error(" Champ niveau vide.", {
+          position: "top-right",
+        });
+      }
       axios
         .post("http://localhost:8000/api/auth/addlangue", {
           langue: this.langue,
@@ -1590,6 +1626,15 @@ export default {
         });
     },
     async updateLangue($langue, $niveau, $id) {
+      if ($langue == "") {
+        this.$toast.error(" Champ Langue vide.", {
+          position: "top-right",
+        });
+      } else if ($niveau == "") {
+        this.$toast.error(" Champ niveau vide.", {
+          position: "top-right",
+        });
+      }
       axios
         .post("http://localhost:8000/api/auth/modifierlangue/" + $id, {
           langue: $langue,
@@ -1608,6 +1653,9 @@ export default {
         .delete("http://localhost:8000/api/auth/deletelangue/" + $id, {})
         .then((response) => {
           console.log(response);
+          this.$toast.error(" Langue supprimé avec succés", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {
@@ -1615,6 +1663,15 @@ export default {
         });
     },
     async updatecompetence($competence, $experience, $id) {
+      if ($competence == "") {
+        this.$toast.error(" Champ Competence vide.", {
+          position: "top-right",
+        });
+      } else if ($experience == "") {
+        this.$toast.error(" Champ experience vide.", {
+          position: "top-right",
+        });
+      }
       axios
         .post("http://localhost:8000/api/auth/modifiercompetence/" + $id, {
           competence: $competence,
@@ -1628,11 +1685,35 @@ export default {
           this.error = err;
         });
     },
+    async updateinteret($id, $interet) {
+      if ($interet == "") {
+        this.$toast.error(" Champ interet vide.", {
+          position: "top-right",
+        });
+      }
+      axios
+        .post("http://localhost:8000/api/auth/modifierinteret/" + $id, {
+          interet: $interet,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$toast.success(" Interet modifié avec success.", {
+            position: "top-right",
+          });
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
     async deletecompetence($id) {
       axios
         .delete("http://localhost:8000/api/auth/deletecompetence/" + $id, {})
         .then((response) => {
           console.log(response);
+          this.$toast.error(" competence supprimé avec succés", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {
@@ -1640,14 +1721,17 @@ export default {
         });
     },
     async addskillsUser() {
+      if (this.skill == "") {
+        this.$toast.error(" Champ skill vide.", {
+          position: "top-right",
+        });
+      }
       axios
-        .post(
-          "http://localhost:8000/api/auth/addskillsusers/" +
-            this.$route.params.id,
-          {
-            skills_user: this.users.skills_user,
-          }
-        )
+        .post("http://localhost:8000/api/auth/addskills", {
+          skill: this.skill,
+          id_cv: null,
+          id_user: this.user.id,
+        })
         .then((response) => {
           console.log(response);
           this.$router.go(0);
@@ -1656,17 +1740,14 @@ export default {
           this.error = err;
         });
     },
-    async deleteskillsUser() {
+    async deleteskillsUser($id) {
       axios
-        .post(
-          "http://localhost:8000/api/auth/addskillsusers/" +
-            this.$route.params.id,
-          {
-            skills_user: null,
-          }
-        )
+        .delete("http://localhost:8000/api/auth/deleteskills/" + $id)
         .then((response) => {
           console.log(response);
+          this.$toast.error(" skill supprimé avec succés", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {
@@ -1707,7 +1788,7 @@ export default {
         )
         .then((response) => {
           console.log(response);
-          this.$toast.success(" Resumé Supprimer avec success.", {
+          this.$toast.success(" Resumé Supprimé avec success.", {
             position: "top-right",
           });
           this.$router.go(0);
@@ -1716,15 +1797,26 @@ export default {
           this.error = err;
         });
     },
+    async getInterets() {
+      let url =
+        "http://localhost:8000/api/auth/getinteretuser/" +
+        this.$route.params.id;
+      await axios.get(url).then((response) => {
+        this.interets = response.data;
+      });
+    },
     async addinteretUser() {
+      if (this.interet == "") {
+        this.$toast.error(" Champ Interet vide.", {
+          position: "top-right",
+        });
+      }
       axios
-        .post(
-          "http://localhost:8000/api/auth/addinteretuser/" +
-            this.$route.params.id,
-          {
-            interet_user: this.users.interet_user,
-          }
-        )
+        .post("http://localhost:8000/api/auth/addinteret", {
+          interet: this.interet,
+          id_cv: null,
+          id_user: this.user.id,
+        })
         .then((response) => {
           console.log(response);
           this.$toast.success(" Ajout interet avec success.", {
@@ -1739,27 +1831,18 @@ export default {
           });
         });
     },
-    async deleteinteretuser() {
+    async deleteinteret($id) {
       axios
-        .post(
-          "http://localhost:8000/api/auth/addinteretuser/" +
-            this.$route.params.id,
-          {
-            interet_user: null,
-          }
-        )
+        .delete("http://localhost:8000/api/auth/deleteinteret/" + $id, {})
         .then((response) => {
           console.log(response);
-          this.$toast.success(" Supression interet avec success.", {
+          this.$toast.success(" interet supprimé avec succés.", {
             position: "top-right",
           });
           this.$router.go(0);
         })
         .catch((err) => {
           this.error = err;
-          this.$toast.error(" Suppression interet échoué.", {
-            position: "top-right",
-          });
         });
     },
     onChange(e) {
@@ -1802,6 +1885,31 @@ export default {
         .catch((err) => console.log(err));
     },
     async addexperience() {
+      if (this.poste_ex == "") {
+        this.$toast.error(" Champ Poste vide.", {
+          position: "top-right",
+        });
+      } else if (this.name_company == "") {
+        this.$toast.error(" Champ Nom entreprise vide.", {
+          position: "top-right",
+        });
+      } else if (this.country == "") {
+        this.$toast.error(" Champ Country vide.", {
+          position: "top-right",
+        });
+      } else if (this.debut == "") {
+        this.$toast.error(" Champ Date de debut vide.", {
+          position: "top-right",
+        });
+      } else if (this.fin == "") {
+        this.$toast.error(" Champ Date de fin vide.", {
+          position: "top-right",
+        });
+      } else if (this.description == "") {
+        this.$toast.error(" Champ Description vide.", {
+          position: "top-right",
+        });
+      }
       axios
         .post("http://localhost:8000/api/auth/addexperience", {
           poste: this.poste_ex,
@@ -1826,6 +1934,9 @@ export default {
         .delete("http://localhost:8000/api/auth/deleteexperience/" + $id, {})
         .then((response) => {
           console.log(response);
+          this.$toast.error(" experience supprimé avec succés", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {
@@ -1833,6 +1944,35 @@ export default {
         });
     },
     async adddiplome() {
+      if (this.etablissement == "") {
+        this.$toast.error(" Champ Etablissement vide.", {
+          position: "top-right",
+        });
+      } else if (this.diplome == "") {
+        this.$toast.error(" Champ diplome vide.", {
+          position: "top-right",
+        });
+      } else if (this.countrys == "") {
+        this.$toast.error(" Champ Country vide.", {
+          position: "top-right",
+        });
+      } else if (this.discipline == "") {
+        this.$toast.error(" Champ Discipline vide.", {
+          position: "top-right",
+        });
+      } else if (this.debuts == "") {
+        this.$toast.error(" Champ Date de debut vide.", {
+          position: "top-right",
+        });
+      } else if (this.fins == "") {
+        this.$toast.error(" Champ Date de fin vide.", {
+          position: "top-right",
+        });
+      } else if (this.descriptions == "") {
+        this.$toast.error(" Champ Description vide.", {
+          position: "top-right",
+        });
+      }
       axios
         .post("http://localhost:8000/api/auth/adddiplome", {
           etablissement: this.etablissement,
@@ -1854,6 +1994,15 @@ export default {
         });
     },
     async addcompetence() {
+      if (this.competence == "") {
+        this.$toast.error(" Champ Competence vide.", {
+          position: "top-right",
+        });
+      } else if (this.experience == "") {
+        this.$toast.error(" Champ experience vide.", {
+          position: "top-right",
+        });
+      }
       axios
         .post("http://localhost:8000/api/auth/addcompetence", {
           competence: this.competence,

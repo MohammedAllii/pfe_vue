@@ -96,13 +96,6 @@
           variant="outlined"
         ></v-text-field>
       </v-col>
-      <v-col cols="12" md="6">
-        <v-select
-          label="Role"
-          v-model="role"
-          :items="['user', 'admin', 'company']"
-        ></v-select>
-      </v-col>
     </v-row>
     <v-row>
       <v-col cols="12" md="4"> </v-col>
@@ -129,7 +122,7 @@ import axios from "axios";
 export default {
   components: { NavbarView, FooterView },
   data: () => ({
-    role: "",
+    role: "admin",
     name: "",
     last_name: "",
     email: "",

@@ -22,8 +22,18 @@
                   ><h5>{{ offre.poste }}</h5>
                 </router-link>
               </h5>
-              <v-icon color="blue" size="25">mdi-home-city-outline</v-icon>
-              &nbsp;<strong style="font-size: 20px">{{ offre.name }}</strong>
+              <p>
+                <v-icon color="blue">mdi-home-city-outline</v-icon>
+                &nbsp;
+                <router-link
+                  :to="{
+                    name: 'companypage',
+                    params: { id: offre.id_company },
+                  }"
+                  style="text-decoration: none"
+                  >{{ offre.name }}
+                </router-link>
+              </p>
               <v-row>
                 <v-row>
                   <v-col cols="10" md="2"></v-col>
@@ -49,34 +59,53 @@
                   &nbsp;&nbsp;&nbsp;
                 </v-row>
               </v-row>
-              <p v-if="offre.description.length > 100">
+              <p v-if="offre.description.length > 5">
                 {{
-                  showAll ? offre.description : offre.description.slice(0, 120)
+                  showAll
+                    ? offre.description
+                    : offre.description.slice(0, 60) + "..."
                 }}
-                <a
-                  ><span @click="showAll = true" style="color: blue"
-                    >Read more</span
-                  ></a
-                >
               </p>
               <v-chip class="ma-2" color="#A1887F" variant="outlined">
                 <v-icon start icon="mdi-progress-clock"></v-icon>
                 {{ offre.created_at }}
               </v-chip>
-
-              <v-chip class="ma-2" color="primary" variant="outlined">
-                postuler Maintenant
-                <v-icon end icon="mdi-face"></v-icon>
-              </v-chip>
               <v-chip class="ma-2" color="green" variant="outlined">
                 postuler Déja
                 <v-icon end icon="mdi-checkbox-marked-circle-outline"></v-icon>
               </v-chip>
+              <v-chip
+                class="ma-2"
+                color="danger"
+                variant="outlined"
+                v-if="offre.validation == 0"
+              >
+                <v-icon start icon="mdi-clock-alert"></v-icon>
+                expiré
+              </v-chip>
               <v-chip class="ma-2" color="red" variant="outlined">
                 <v-btn @click.prevent="deleteoffrepostuler(offre.id_offre)">
-                  supprimer la candidature à cette poste</v-btn
+                  Annuler Postulation à cette poste</v-btn
                 >
-                <v-icon end icon="mdi-delete-empty"></v-icon>
+                <v-icon end icon="mdi-close-box"></v-icon>
+              </v-chip>
+              <v-chip
+                class="ma-2"
+                color="orange"
+                variant="outlined"
+                v-if="offre.valide == 0"
+              >
+                <v-icon start icon="mdi-timer-sand"></v-icon>
+                en attente d'acceptation
+              </v-chip>
+              <v-chip
+                class="ma-2"
+                color="success"
+                variant="outlined"
+                v-if="offre.valide == 1"
+              >
+                <v-icon start icon="mdi-check-underline-circle"></v-icon>
+                Félicitations vous êtes accepter
               </v-chip>
             </v-col>
           </v-col>
@@ -87,36 +116,6 @@
     </v-row>
   </v-container>
   <v-divider></v-divider>
-  <v-container align="center">
-    <div class="text-center">
-      <v-btn
-        class="ma-2"
-        color="grey"
-        rounded
-        @click="snackbar = true"
-        prepend-icon="mdi-delete-empty"
-      >
-        supprimer la candidature pour toute les postes
-      </v-btn>
-
-      <v-snackbar v-model="snackbar" multi-line>
-        {{ text }}
-
-        <template v-slot:actions>
-          <v-btn
-            color="red"
-            variant="text"
-            @click.prevent="deletealloffrepostuler"
-          >
-            Supprimer
-          </v-btn>
-          <v-btn color="red" variant="text" @click="snackbar = false">
-            Annuler
-          </v-btn>
-        </template>
-      </v-snackbar>
-    </div>
-  </v-container>
   <footer-view />
 </template>
 <script>

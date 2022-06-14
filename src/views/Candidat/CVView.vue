@@ -63,37 +63,21 @@
         >&nbsp;&nbsp;{{ cvs.name }} {{ cvs.last_name }}</strong
       >
       <h5>
-        <v-icon>mdi-domain</v-icon><strong>Poste :</strong>&nbsp;&nbsp;{{
-          cvs.poste
-        }}
+        <v-icon>mdi-domain</v-icon><strong></strong>&nbsp;&nbsp;{{ cvs.poste }}
       </h5>
       <h5>
-        <v-icon>mdi-map-marker-check</v-icon
-        ><strong>Localité :</strong>&nbsp;&nbsp;{{ cvs.localite }}
+        <v-icon>mdi-map-marker-check</v-icon><strong></strong>&nbsp;&nbsp;{{
+          cvs.adresse
+        }}
       </h5>
-
-      <br />
-      <div v-if="cvs.adresse != null">
-        <h5>
-          <v-icon>mdi-home-map-marker</v-icon
-          ><strong>Adresse :</strong>&nbsp;&nbsp;{{ cvs.adresse }}
-        </h5>
-      </div>
-      <br />
-      <div v-if="cvs.nationalite != null">
-        <h5>
-          <v-icon>mdi-map-marker-check</v-icon
-          ><strong>Nationalité :</strong>&nbsp;&nbsp;{{ cvs.nationalite }}
-        </h5>
-      </div>
       <div v-if="cvs.date_naissance != null">
         <h5>
-          <v-icon>mdi-cake-variant</v-icon
-          ><strong>Date de naissance :</strong>&nbsp;&nbsp;{{
+          <v-icon>mdi-cake-variant</v-icon><strong></strong>&nbsp;&nbsp;{{
             cvs.date_naissance
           }}
         </h5>
       </div>
+      <br /><br />
       <v-row justify="center">
         <v-dialog
           v-model="dialog2"
@@ -130,43 +114,79 @@
                 <v-window v-model="step">
                   <v-window-item :value="1">
                     <v-card-text>
-                      <v-row>
-                        <v-col cols="12" sm="6" md="4">
+                      <v-row cols="12">
+                        <v-col cols="12">
                           <v-icon>mdi-account-edit</v-icon>
                           <v-text-field
                             color="success"
-                            label="Name"
-                            v-model="name"
+                            label="Nom *"
+                            v-model="cvs.name"
+                            type="text"
                             variant="outlined"
                           ></v-text-field>
                         </v-col>
                         <v-spacer></v-spacer>
-                        <v-col cols="12" sm="6" md="4">
+                        <v-col cols="12">
                           <v-icon>mdi-account-edit</v-icon>
                           <v-text-field
                             color="success"
-                            label="Last name               "
-                            v-model="last_name"
+                            label="Prénom"
+                            v-model="cvs.last_name"
+                            type="text"
                             variant="outlined"
                           ></v-text-field>
                         </v-col>
                       </v-row>
-                      <v-row>
-                        <v-col cols="12" sm="6" md="4">
-                          <v-icon>mdi-network-outline</v-icon>
+                      <p style="text-align: left">* : champ obligatoire</p>
+                    </v-card-text>
+                  </v-window-item>
+
+                  <v-window-item :value="2">
+                    <v-card-text>
+                      <v-card-text>
+                        <v-row cols="12">
+                          <v-col cols="12">
+                            <v-icon>mdi-email-check-outline</v-icon>
+                            <v-text-field
+                              color="success"
+                              label="Email *"
+                              type="email"
+                              v-model="cvs.email"
+                              variant="outlined"
+                            ></v-text-field>
+                          </v-col>
+                          <v-col cols="12">
+                            <v-icon>mdi-cellphone-wireless</v-icon>
+                            <v-text-field
+                              color="success"
+                              label="Téléphone"
+                              placeholder="Placeholder"
+                              v-model="cvs.phone"
+                              variant="outlined"
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+                      </v-card-text>
+                    </v-card-text>
+                  </v-window-item>
+
+                  <v-window-item :value="3">
+                    <v-container>
+                      <v-row cols="12">
+                        <v-col cols="6">
+                          <v-icon>mdi-update</v-icon>
                           <v-text-field
                             color="success"
-                            label="Votre poste actuel"
-                            v-model="poste"
+                            label="Poste *"
                             variant="outlined"
+                            v-model="cvs.poste"
                           ></v-text-field>
                         </v-col>
-                        <v-spacer></v-spacer>
-                        <v-col cols="12" sm="6" md="4">
-                          <v-icon>mdi-account-search-outline</v-icon>
+                        <v-col cols="6">
+                          <v-icon>mdi-update</v-icon>
                           <v-select
-                            v-model="localite"
-                            label="where do youlive?"
+                            v-model="cvs.adresse"
+                            label="Votre Adresse actuel *"
                             :items="[
                               'Ariana',
                               'Béja',
@@ -196,97 +216,6 @@
                           ></v-select>
                         </v-col>
                       </v-row>
-                    </v-card-text>
-                  </v-window-item>
-
-                  <v-window-item :value="2">
-                    <v-card-text>
-                      <v-card-text>
-                        <v-row>
-                          <v-col cols="12" sm="6" md="4">
-                            <v-icon>mdi-email-check-outline</v-icon>
-                            <v-text-field
-                              color="success"
-                              label="Email"
-                              type="email"
-                              v-model="email"
-                              variant="outlined"
-                            ></v-text-field>
-                          </v-col>
-                          <v-spacer></v-spacer>
-                          <v-col cols="12" sm="6" md="4">
-                            <v-icon>mdi-cellphone-wireless</v-icon>
-                            <v-text-field
-                              color="success"
-                              label="Téléphone"
-                              placeholder="Placeholder"
-                              v-model="phone"
-                              variant="outlined"
-                            ></v-text-field>
-                          </v-col>
-                        </v-row>
-                        <v-row>
-                          <v-col cols="12" sm="6" md="4">
-                            <v-icon>mdi-map-marker-outline</v-icon>
-                            <v-text-field
-                              color="success"
-                              label="Adresse"
-                              placeholder="Placeholder"
-                              v-model="adresse"
-                              variant="outlined"
-                            ></v-text-field>
-                          </v-col>
-                          <v-spacer></v-spacer>
-                          <v-col cols="12" sm="6" md="4">
-                            <v-icon>mdi-code-tags-check</v-icon>
-                            <v-text-field
-                              color="success"
-                              label="Code postal"
-                              placeholder="Placeholder"
-                              v-model="code_postal"
-                              variant="outlined"
-                            ></v-text-field>
-                          </v-col>
-                        </v-row>
-                        <v-row>
-                          <v-col cols="12" sm="6" md="4">
-                            <v-icon>mdi-account-question-outline</v-icon>
-                            <v-text-field
-                              color="success"
-                              label="Etat"
-                              placeholder="Placeholder"
-                              v-model="etat"
-                              variant="outlined"
-                            ></v-text-field>
-                          </v-col>
-                          <v-spacer></v-spacer>
-                          <v-col cols="12" sm="6" md="4">
-                            <v-icon>mdi-airplane</v-icon>
-                            <v-text-field
-                              color="success"
-                              label="Ville"
-                              variant="outlined"
-                              v-model="ville"
-                            ></v-text-field>
-                          </v-col>
-                        </v-row>
-                      </v-card-text>
-                    </v-card-text>
-                  </v-window-item>
-
-                  <v-window-item :value="3">
-                    <v-container>
-                      <v-row>
-                        <v-col cols="12" sm="12">
-                          <v-icon>mdi-map-minus</v-icon>
-                          <v-text-field
-                            color="success"
-                            label="Nationalité"
-                            variant="outlined"
-                            v-model="nationalite"
-                          ></v-text-field>
-                        </v-col>
-                      </v-row>
                       <v-row>
                         <v-col cols="12" sm="12">
                           <v-icon>mdi-update</v-icon>
@@ -294,7 +223,7 @@
                             color="success"
                             label="Date de naissance"
                             type="date"
-                            v-model="date_naissance"
+                            v-model="cvs.date_naissance"
                             variant="outlined"
                           ></v-text-field>
                         </v-col>
@@ -342,9 +271,9 @@
     <br />
     <br />
     <div v-if="cvs.resume != null">
-      <h5 align="left">Résumé</h5>
+      <h5 align="left" style="color: green">Résumé</h5>
       <v-container>
-        <v-banner lines="six" icon="mdi-note-text" color="grey" class="my-4">
+        <v-banner lines="six" color="grey" class="my-4">
           <v-banner-text>
             <h6>
               {{ cvs.resume }}
@@ -374,13 +303,13 @@
       </v-container>
     </div>
     <br />
-    <div v-if="cvs.interet != null">
-      <h5 align="left">Intéret</h5>
-      <v-container>
-        <v-banner lines="six" icon="mdi-script-text" color="grey" class="my-4">
+    <div v-if="interets != ''">
+      <h5 align="left" style="color: green">Intéret</h5>
+      <v-container v-for="interet in interets" :key="interet.id">
+        <v-banner lines="six" color="grey" class="my-4">
           <v-banner-text>
             <h6>
-              {{ cvs.interet }}
+              {{ interet.interet }}
             </h6>
             <br />
           </v-banner-text>
@@ -396,8 +325,53 @@
                   <v-list-item>
                     <v-btn
                       v-text="'supprimer'"
-                      @click.prevent="deleteinteret"
+                      @click.prevent="deleteinteret(interet.id)"
                     ></v-btn>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-col cols="auto">
+                      <v-dialog transition="dialog-bottom-transition">
+                        <template v-slot:activator="{ props }">
+                          <v-btn rounded flat v-bind="props"> Modifier</v-btn>
+                        </template>
+                        <template v-slot:default="{ isActive }">
+                          <v-card align="center">
+                            <v-icon size="50"
+                              >mdi-account-heart
+                              <h6>Intérêts</h6></v-icon
+                            >
+                            <p>
+                              Intérêts
+                              <br />
+                              <v-textarea
+                                background-color="amber lighten-4"
+                                color="orange orange-darken-4"
+                                label="Ecrire"
+                                style="width: 600px; border-style: ridge"
+                                v-model="interet.interet"
+                              ></v-textarea>
+                            </p>
+                            <v-card-actions class="justify-end">
+                              <v-btn
+                                text
+                                rounded
+                                @click="isActive.value = false"
+                                >Annuler</v-btn
+                              >
+                              <v-btn
+                                text
+                                rounded
+                                style="background-color: green"
+                                @click.prevent="
+                                  updateinteret(interet.id, interet.interet)
+                                "
+                                >Enregistrer</v-btn
+                              >
+                            </v-card-actions>
+                          </v-card>
+                        </template>
+                      </v-dialog>
+                    </v-col>
                   </v-list-item>
                 </v-list>
               </v-menu>
@@ -408,9 +382,9 @@
     </div>
     <br />
     <div v-if="experiences != ''">
-      <h5 align="left">Expérience Professionnelles</h5>
+      <h5 align="left" style="color: green">Expérience Professionnelles</h5>
       <v-container v-for="experience in experiences" :key="experience.id">
-        <v-banner lines="six" icon="mdi-file-compare" color="grey" class="my-4">
+        <v-banner lines="six" color="grey" class="my-4">
           <h5 style="color: green">{{ experience.poste }}</h5>
           <h6>{{ experience.name_company }}</h6>
           <h6>
@@ -456,9 +430,9 @@
     </div>
     <br />
     <div v-if="diplomes != ''">
-      <h5 align="left">Formations et Diplômes</h5>
+      <h5 align="left" style="color: green">Formations et Diplômes</h5>
       <v-container v-for="diplome in diplomes" :key="diplome.id">
-        <v-banner lines="six" icon="mdi-file-compare" color="grey" class="my-4">
+        <v-banner lines="six" color="grey" class="my-4">
           <h5 style="color: green">{{ diplome.etablissement }}</h5>
           <h6>{{ diplome.diplome }}</h6>
           <h6>
@@ -503,13 +477,13 @@
       </v-container>
     </div>
     <br />
-    <div v-if="cvs.skills != null">
-      <h5 align="left">Skills</h5>
-      <v-container>
-        <v-banner lines="six" icon="mdi-script-text" color="grey" class="my-4">
+    <div v-if="skills != ''">
+      <h5 align="left" style="color: green">Skills</h5>
+      <v-container v-for="skill in skills" :key="skill.id">
+        <v-banner lines="six" color="grey" class="my-4">
           <v-banner-text>
             <h6>
-              {{ cvs.skills }}
+              {{ skill.skill }}
             </h6>
             <br />
           </v-banner-text>
@@ -523,10 +497,51 @@
                 </template>
                 <v-list>
                   <v-list-item>
-                    <v-btn
-                      v-text="'supprimer'"
-                      @click.prevent="deleteskills"
-                    ></v-btn>
+                    <v-btn @click.prevent="deleteskills(skill.id)">
+                      Supprimer</v-btn
+                    >
+                  </v-list-item>
+                  <v-list-item>
+                    <v-col cols="auto">
+                      <v-dialog transition="dialog-bottom-transition">
+                        <template v-slot:activator="{ props }">
+                          <v-btn rounded flat v-bind="props"> Modifier</v-btn>
+                        </template>
+                        <template v-slot:default="{ isActive }">
+                          <v-card align="center">
+                            <v-icon size="50"> mdi-check-outline </v-icon>
+                            <h5>show us your skills</h5>
+                            <v-card-text>
+                              <v-col cols="12" sm="12">
+                                <v-textarea
+                                  label="Your skills"
+                                  style="width: 400px"
+                                  v-model="skill.skill"
+                                  multiple
+                                ></v-textarea>
+                              </v-col>
+                            </v-card-text>
+                            <v-card-actions class="justify-end">
+                              <v-btn
+                                text
+                                rounded
+                                @click="isActive.value = false"
+                                >Annuler</v-btn
+                              >
+                              <v-btn
+                                text
+                                rounded
+                                style="background-color: green"
+                                @click.prevent="
+                                  updateskills(skill.id, skill.skill)
+                                "
+                                >Modifier</v-btn
+                              >
+                            </v-card-actions>
+                          </v-card>
+                        </template>
+                      </v-dialog>
+                    </v-col>
                   </v-list-item>
                 </v-list>
               </v-menu>
@@ -537,9 +552,9 @@
     </div>
     <br />
     <div v-if="competences != ''">
-      <h5 align="left">Compétences</h5>
+      <h5 align="left" style="color: green">Compétences</h5>
       <v-container v-for="competence in competences" :key="competence.id">
-        <v-banner lines="six" icon="mdi-file-compare" color="grey" class="my-4">
+        <v-banner lines="six" color="grey" class="my-4">
           <h6>
             <strong>{{ competence.competence }}</strong
             >({{ competence.experience }})
@@ -649,9 +664,9 @@
     </div>
     <br />
     <div v-if="liens != ''">
-      <h5 align="left">Liens</h5>
+      <h5 align="left" style="color: green">Liens</h5>
       <v-container v-for="lien in liens" :key="lien.id">
-        <v-banner lines="six" icon="mdi-file-compare" color="grey" class="my-4">
+        <v-banner lines="six" color="grey" class="my-4">
           <h6>
             <strong>{{ lien.titre }}</strong>
           </h6>
@@ -740,9 +755,9 @@
     </div>
     <br />
     <div v-if="langues != ''">
-      <h5 align="left">Langues</h5>
+      <h5 align="left" style="color: green">Langues</h5>
       <v-container v-for="langue in langues" :key="langue.id">
-        <v-banner lines="six" icon="mdi-file-compare" color="grey" class="my-4">
+        <v-banner lines="six" color="grey" class="my-4">
           <h6>
             <strong>{{ langue.langue }}</strong
             >({{ langue.niveau }})
@@ -1301,7 +1316,7 @@
                         <v-textarea
                           label="Your skills"
                           style="width: 400px"
-                          v-model="cvs.skills"
+                          v-model="skill"
                           multiple
                         ></v-textarea>
                       </v-col>
@@ -1403,7 +1418,7 @@
                         color="orange orange-darken-4"
                         label="Ecrire"
                         style="width: 600px; border-style: ridge"
-                        v-model="cvs.interet"
+                        v-model="interet"
                       ></v-textarea>
                     </p>
                     <v-card-actions class="justify-end">
@@ -1446,9 +1461,13 @@ export default {
       cvs: {},
       experiences: {},
       diplomes: {},
+      interets: {},
+      interet: "",
       competences: {},
       liens: {},
       langues: {},
+      skills: {},
+      skill: "",
       poste_ex: "",
       name_company: "",
       country: "",
@@ -1506,7 +1525,9 @@ export default {
       this.getDiplome(),
       this.getCompetence(),
       this.getLien(),
-      this.getLangue();
+      this.getLangue(),
+      this.getSkills(),
+      this.getInterets();
   },
   created() {
     this.getCvById();
@@ -1541,19 +1562,32 @@ export default {
         .catch((err) => console.log(err));
     },
     async updateinfo() {
+      if (this.cvs.name == "") {
+        this.$toast.error(" Champ name vide.", {
+          position: "top-right",
+        });
+      } else if (this.cvs.poste == "") {
+        this.$toast.error(" Champ poste vide.", {
+          position: "top-right",
+        });
+      } else if (this.cvs.email == "") {
+        this.$toast.error(" Champ email vide.", {
+          position: "top-right",
+        });
+      } else if (this.cvs.adresse == "") {
+        this.$toast.error(" Champ adresse vide.", {
+          position: "top-right",
+        });
+      }
       axios
         .post("http://localhost:8000/api/auth/updateinfo/" + this.idc, {
-          name: this.name,
-          last_name: this.last_name,
-          poste: this.poste,
-          localite: this.localite,
-          email: this.email,
-          phone: this.phone,
-          adresse: this.adresse,
-          code_postal: this.code_postal,
-          etat: this.etat,
-          nationalite: this.nationalite,
-          date_naissance: this.date_naissance,
+          name: this.cvs.name,
+          last_name: this.cvs.last_name,
+          poste: this.cvs.poste,
+          email: this.cvs.email,
+          phone: this.cvs.phone,
+          adresse: this.cvs.adresse,
+          date_naissance: this.cvs.date_naissance,
         })
         .then((response) => {
           console.log(response);
@@ -1561,12 +1595,14 @@ export default {
         })
         .catch((err) => {
           this.error = err;
-          this.$toast.error(" Ajout les champ obligatoire sont vide.", {
-            position: "top-right",
-          });
         });
     },
     async addresume() {
+      if (this.cvs.resume == "") {
+        this.$toast.error(" Champ Résumé vide.", {
+          position: "top-right",
+        });
+      }
       axios
         .post("http://localhost:8000/api/auth/addresume/" + this.idc, {
           resume: this.cvs.resume,
@@ -1580,9 +1616,6 @@ export default {
         })
         .catch((err) => {
           this.error = err;
-          this.$toast.error(" Ajout resumé échoué.", {
-            position: "top-right",
-          });
         });
     },
     async deleteresume() {
@@ -1592,6 +1625,9 @@ export default {
         })
         .then((response) => {
           console.log(response);
+          this.$toast.error(" Résumé supprimé avec succés.", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {
@@ -1600,50 +1636,44 @@ export default {
     },
     async addinteret() {
       axios
-        .post("http://localhost:8000/api/auth/addinteret/" + this.idc, {
-          interet: this.cvs.interet,
+        .post("http://localhost:8000/api/auth/addinteret", {
+          interet: this.interet,
+          id_cv: this.idc,
+          id_user: null,
         })
         .then((response) => {
           console.log(response);
+          this.$toast.success(" Interet Ajouté avec succés.", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {
           this.error = err;
         });
     },
-    async addskills() {
+    async deleteskills($id) {
       axios
-        .post("http://localhost:8000/api/auth/addskills/" + this.idc, {
-          skills: this.cvs.skills,
-        })
+        .delete("http://localhost:8000/api/auth/deleteskills/" + $id, {})
         .then((response) => {
           console.log(response);
+          this.$toast.success(" Skills supprimé avec succés.", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {
           this.error = err;
         });
     },
-    async deleteskills() {
+    async deleteinteret($id) {
       axios
-        .post("http://localhost:8000/api/auth/addskills/" + this.idc, {
-          skills: null,
-        })
+        .delete("http://localhost:8000/api/auth/deleteinteret/" + $id, {})
         .then((response) => {
           console.log(response);
-          this.$router.go(0);
-        })
-        .catch((err) => {
-          this.error = err;
-        });
-    },
-    async deleteinteret() {
-      axios
-        .post("http://localhost:8000/api/auth/addinteret/" + this.idc, {
-          interet: null,
-        })
-        .then((response) => {
-          console.log(response);
+          this.$toast.success(" interet supprimé avec succés.", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {
@@ -1651,6 +1681,31 @@ export default {
         });
     },
     async addexperience() {
+      if (this.poste_ex == "") {
+        this.$toast.error(" Champ poste vide.", {
+          position: "top-right",
+        });
+      } else if (this.name_company == "") {
+        this.$toast.error(" Champ nom du société vide.", {
+          position: "top-right",
+        });
+      } else if (this.country == "") {
+        this.$toast.error(" Champ country vide.", {
+          position: "top-right",
+        });
+      } else if (this.debut == "") {
+        this.$toast.error(" Champ date de début vide.", {
+          position: "top-right",
+        });
+      } else if (this.fin == "") {
+        this.$toast.error(" Champ date de dfinébut vide.", {
+          position: "top-right",
+        });
+      } else if (this.description == "") {
+        this.$toast.error(" Champ description vide.", {
+          position: "top-right",
+        });
+      }
       axios
         .post("http://localhost:8000/api/auth/addexperience", {
           poste: this.poste_ex,
@@ -1664,6 +1719,9 @@ export default {
         })
         .then((response) => {
           console.log(response);
+          this.$toast.success(" Expérience Ajouté avec succés.", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {
@@ -1671,6 +1729,15 @@ export default {
         });
     },
     async addcompetence() {
+      if (this.competence == "") {
+        this.$toast.error(" Champ Competence vide.", {
+          position: "top-right",
+        });
+      } else if (this.experience == "") {
+        this.$toast.error(" Champ expérience vide.", {
+          position: "top-right",
+        });
+      }
       axios
         .post("http://localhost:8000/api/auth/addcompetence", {
           competence: this.competence,
@@ -1680,6 +1747,9 @@ export default {
         })
         .then((response) => {
           console.log(response);
+          this.$toast.success(" Compétence Ajouté avec succés.", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {
@@ -1692,11 +1762,20 @@ export default {
         this.competences = response.data;
       });
     },
+    async getInterets() {
+      let url = "http://localhost:8000/api/auth/getinteret/" + this.idc;
+      await axios.get(url).then((response) => {
+        this.interets = response.data;
+      });
+    },
     async deletecompetence($id) {
       axios
         .delete("http://localhost:8000/api/auth/deletecompetence/" + $id, {})
         .then((response) => {
           console.log(response);
+          this.$toast.success(" Compétence supprimé avec succés.", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {
@@ -1704,6 +1783,15 @@ export default {
         });
     },
     async updatecompetence($competence, $experience, $id) {
+      if ($competence == "") {
+        this.$toast.error(" Champ competence vide.", {
+          position: "top-right",
+        });
+      } else if ($experience == "") {
+        this.$toast.error(" Champ experience vide.", {
+          position: "top-right",
+        });
+      }
       axios
         .post("http://localhost:8000/api/auth/modifiercompetence/" + $id, {
           competence: $competence,
@@ -1711,6 +1799,9 @@ export default {
         })
         .then((response) => {
           console.log(response);
+          this.$toast.success(" Compétence Modifié avec succés.", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {
@@ -1728,6 +1819,9 @@ export default {
         .delete("http://localhost:8000/api/auth/deleteexperience/" + $id, {})
         .then((response) => {
           console.log(response);
+          this.$toast.success(" Expérience Supprimé avec succés.", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {
@@ -1735,6 +1829,35 @@ export default {
         });
     },
     async adddiplome() {
+      if (this.etablissement == "") {
+        this.$toast.error(" Champ établissement vide.", {
+          position: "top-right",
+        });
+      } else if (this.diplome == "") {
+        this.$toast.error(" Champ diplome vide.", {
+          position: "top-right",
+        });
+      } else if (this.countrys == "") {
+        this.$toast.error(" Champ diplome vide.", {
+          position: "top-right",
+        });
+      } else if (this.discipline == "") {
+        this.$toast.error(" Champ discipline vide.", {
+          position: "top-right",
+        });
+      } else if (this.debuts == "") {
+        this.$toast.error(" Champ date de début vide.", {
+          position: "top-right",
+        });
+      } else if (this.fins == "") {
+        this.$toast.error(" Champ date de fin vide.", {
+          position: "top-right",
+        });
+      } else if (this.descriptions == "") {
+        this.$toast.error(" Champ description vide.", {
+          position: "top-right",
+        });
+      }
       axios
         .post("http://localhost:8000/api/auth/adddiplome", {
           etablissement: this.etablissement,
@@ -1749,6 +1872,9 @@ export default {
         })
         .then((response) => {
           console.log(response);
+          this.$toast.success(" Diplome Ajouté avec succés.", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {
@@ -1766,6 +1892,9 @@ export default {
         .delete("http://localhost:8000/api/auth/deletediplome/" + $id, {})
         .then((response) => {
           console.log(response);
+          this.$toast.success(" Diplome supprimé avec succés.", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {
@@ -1773,6 +1902,15 @@ export default {
         });
     },
     async addlien() {
+      if (this.titre == "") {
+        this.$toast.error(" Champ titre vide.", {
+          position: "top-right",
+        });
+      } else if (this.url == "") {
+        this.$toast.error(" Champ url vide.", {
+          position: "top-right",
+        });
+      }
       axios
         .post("http://localhost:8000/api/auth/addlien", {
           titre: this.titre,
@@ -1782,6 +1920,9 @@ export default {
         })
         .then((response) => {
           console.log(response);
+          this.$toast.success(" Lien Ajouté avec succés.", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {
@@ -1795,6 +1936,15 @@ export default {
       });
     },
     async updatelien($titre, $url, $id) {
+      if ($titre == "") {
+        this.$toast.error(" Champ titre vide.", {
+          position: "top-right",
+        });
+      } else if ($url == "") {
+        this.$toast.error(" Champ url vide.", {
+          position: "top-right",
+        });
+      }
       axios
         .post("http://localhost:8000/api/auth/modifierlien/" + $id, {
           titre: $titre,
@@ -1802,6 +1952,30 @@ export default {
         })
         .then((response) => {
           console.log(response);
+          this.$toast.success(" Lien modifié avec succés.", {
+            position: "top-right",
+          });
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+    async updateinteret($id, $interet) {
+      if ($interet == "") {
+        this.$toast.error(" Champ interet vide.", {
+          position: "top-right",
+        });
+      }
+      axios
+        .post("http://localhost:8000/api/auth/modifierinteret/" + $id, {
+          interet: $interet,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$toast.success(" Interet modifié avec succés.", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {
@@ -1813,6 +1987,9 @@ export default {
         .delete("http://localhost:8000/api/auth/deletelien/" + $id, {})
         .then((response) => {
           console.log(response);
+          this.$toast.success(" Lien supprimé avec succés.", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {
@@ -1820,6 +1997,15 @@ export default {
         });
     },
     async addlangue() {
+      if (this.langue == "") {
+        this.$toast.error(" Champ langue vide.", {
+          position: "top-right",
+        });
+      } else if (this.niveau == "") {
+        this.$toast.error(" Champ niveau vide.", {
+          position: "top-right",
+        });
+      }
       axios
         .post("http://localhost:8000/api/auth/addlangue", {
           langue: this.langue,
@@ -1829,6 +2015,32 @@ export default {
         })
         .then((response) => {
           console.log(response);
+          this.$toast.success(" Langue Ajouté avec succés.", {
+            position: "top-right",
+          });
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+    async addskills() {
+      if (this.skill == "") {
+        this.$toast.error(" Champ skill vide.", {
+          position: "top-right",
+        });
+      }
+      axios
+        .post("http://localhost:8000/api/auth/addskills", {
+          skill: this.skill,
+          id_cv: this.idc,
+          id_user: null,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$toast.success(" Skills Ajouté avec succés.", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {
@@ -1841,7 +2053,22 @@ export default {
         this.langues = response.data;
       });
     },
+    async getSkills() {
+      let url = "http://localhost:8000/api/auth/getskills/" + this.idc;
+      await axios.get(url).then((response) => {
+        this.skills = response.data;
+      });
+    },
     async updateLangue($langue, $niveau, $id) {
+      if ($langue == "") {
+        this.$toast.error(" Champ langue vide.", {
+          position: "top-right",
+        });
+      } else if ($niveau == "") {
+        this.$toast.error(" Champ niveau vide.", {
+          position: "top-right",
+        });
+      }
       axios
         .post("http://localhost:8000/api/auth/modifierlangue/" + $id, {
           langue: $langue,
@@ -1849,6 +2076,30 @@ export default {
         })
         .then((response) => {
           console.log(response);
+          this.$toast.success("Langue Modifié avec succés.", {
+            position: "top-right",
+          });
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+        });
+    },
+    async updateskills($id, $skill) {
+      if ($skill == "") {
+        this.$toast.error(" Champ skill vide.", {
+          position: "top-right",
+        });
+      }
+      axios
+        .post("http://localhost:8000/api/auth/modifierskills/" + $id, {
+          skill: $skill,
+        })
+        .then((response) => {
+          console.log(response);
+          this.$toast.success(" Skills modifié avec succés.", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {
@@ -1860,6 +2111,9 @@ export default {
         .delete("http://localhost:8000/api/auth/deletelangue/" + $id, {})
         .then((response) => {
           console.log(response);
+          this.$toast.success(" Langue supprimé avec succés.", {
+            position: "top-right",
+          });
           this.$router.go(0);
         })
         .catch((err) => {

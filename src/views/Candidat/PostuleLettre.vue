@@ -68,8 +68,6 @@
                           <div class="input-icons">
                             <v-file-input
                               label="File input"
-                              outlined
-                              dense
                               @change="onChange"
                             ></v-file-input>
                           </div>
@@ -91,6 +89,7 @@
                               flat
                               block
                               tile
+                              v-if="titr1 != '' && this.image != null"
                               type="submit"
                               >go!</v-btn
                             >

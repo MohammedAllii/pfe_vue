@@ -98,8 +98,9 @@ export default {
           this.$router.push("/");
         })
         .catch((err) => {
-          this.isLoading = false;
-          this.error = " Registration faild";
+          this.$toast.error(" Email Existe déja  .", {
+            position: "top-right",
+          });
           console.log(err.message);
         });
     },

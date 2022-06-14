@@ -153,10 +153,12 @@ export default {
         })
         .then((response) => {
           console.log(response);
+          this.$toast.success(" Expérience modifié avec succés.", {
+            position: "top-right",
+          });
           this.$router.back();
         })
         .catch((err) => {
-          this.isLoading = false;
           this.error = " impossible de changer info personnels";
           console.log(err.message);
         });

@@ -44,21 +44,6 @@
             >
           </v-hover>
           <br /><br />
-          <div align="center" justify="center">
-            <v-btn style="width: 350px; border-radius: 30px" color="white "
-              ><v-icon color="blue">mdi-facebook</v-icon> Facebook</v-btn
-            >
-            <br />
-            <br />
-            <v-btn style="width: 350px; border-radius: 30px" color="white"
-              ><v-icon color="red">mdi-google</v-icon> Google</v-btn
-            >
-            <br />
-            <br />
-            <v-btn style="width: 350px; border-radius: 30px" color="white"
-              ><v-icon color="black">mdi-github</v-icon> Github</v-btn
-            >
-          </div>
         </form>
       </center>
     </div>

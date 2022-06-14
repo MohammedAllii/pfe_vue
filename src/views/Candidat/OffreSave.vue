@@ -21,8 +21,18 @@
                   ><h5>{{ offre.poste }}</h5>
                 </router-link>
               </h5>
-              <v-icon color="blue" size="25">mdi-home-city-outline</v-icon>
-              &nbsp;<strong style="font-size: 20px">{{ offre.name }}</strong>
+              <p>
+                <v-icon color="blue">mdi-home-city-outline</v-icon>
+                &nbsp;
+                <router-link
+                  :to="{
+                    name: 'companypage',
+                    params: { id: offre.id_company },
+                  }"
+                  style="text-decoration: none"
+                  >{{ offre.name }}
+                </router-link>
+              </p>
               <v-row>
                 <v-col cols="12" md="8"> </v-col>
                 <v-col cols="12" md="4">
@@ -59,7 +69,7 @@
                   &nbsp;&nbsp;&nbsp;
                 </v-row>
               </v-row>
-              <p v-if="offre.description.length > 100">
+              <p v-if="offre.description.length > 10">
                 {{
                   showAll ? offre.description : offre.description.slice(0, 120)
                 }}

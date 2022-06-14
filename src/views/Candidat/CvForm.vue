@@ -84,16 +84,18 @@
             </h6>
             <div v-for="langue in langues" :key="langue.id">
               <p>
-                <strong>{{ langue.langue }} :</strong> {{ langue.niveau }}<br />
+                <strong>{{ langue.langue }} :</strong> {{ langue.niveau }}
               </p>
             </div>
             <h6 class="text-uppercase" style="background-color: #ede7f6">
               <v-icon color="green" size="25">mdi-clipboard-text-outline</v-icon
               >CENTRE D'INTERETS:
             </h6>
-            <p>
-              {{ cvs.interet }}
-            </p>
+            <div v-for="interet in interets" :key="interet.id">
+              <p>
+                {{ interet.interet }}
+              </p>
+            </div>
           </v-col>
         </v-row>
       </v-col>
@@ -116,6 +118,7 @@ export default {
     competences: {},
     liens: {},
     langues: {},
+    interets: {},
     rating: 1,
     rating1: 1,
     rating2: 1,
@@ -130,7 +133,8 @@ export default {
       this.getLien(),
       this.getExperience(),
       this.getDiplome(),
-      this.getLangue();
+      this.getLangue(),
+      this.getInterets();
   },
   methods: {
     async getCvById() {
@@ -138,6 +142,13 @@ export default {
         "http://localhost:8000/api/auth/affichecv/" + this.$route.params.id;
       await axios.get(url).then((response) => {
         this.cvs = response.data;
+      });
+    },
+    async getInterets() {
+      let url =
+        "http://localhost:8000/api/auth/getinteret/" + this.$route.params.id;
+      await axios.get(url).then((response) => {
+        this.interets = response.data;
       });
     },
     async getCompetence() {

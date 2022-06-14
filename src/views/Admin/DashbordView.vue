@@ -148,6 +148,7 @@
               @click="snackbar = true"
               class="ma-2"
               rounded="pill"
+              v-if="admin.id != user.id"
               color="#F1F8E9"
               prepend-icon="mdi-delete-empty"
             >

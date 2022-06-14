@@ -31,7 +31,10 @@
           </p>
         </v-col>
         <v-col cols="12" md="2" v-if="info.civilite != null">
-          <p><v-icon color="green">mdi-flag</v-icon>{{ info.civilite }}</p>
+          <p>
+            <v-icon color="green">mdi-human-male-female</v-icon
+            >{{ info.civilite }}
+          </p>
         </v-col>
         <v-col cols="12" md="2" v-if="info.date_naissance != null">
           <p>
@@ -39,15 +42,11 @@
           </p>
         </v-col>
       </v-row>
-      <v-chip class="ma-2" color="success" variant="outlined">
-        <v-icon start icon="mdi-account-check"></v-icon>
-        {{ info.created_at }}
-      </v-chip>
       <br /><br />
       <v-row>
         <v-btn
           variant="outlined"
-          color="primary"
+          color="green"
           rounded
           flat
           prepend-icon="mdi-emoticon-excited-outline"
@@ -60,7 +59,7 @@ voici le lien de la réunion :
         </v-btn>
         <v-btn
           variant="outlined"
-          color="#EF5350"
+          color="red"
           rounded
           flat
           prepend-icon="mdi-emoticon-dead-outline"
@@ -69,6 +68,62 @@ voici le lien de la réunion :
         >
           Candidate réfusé
         </v-btn>
+        <v-container v-if="info.valide == 0">
+          <p style="color: red">Vous acceptez ce Candidat?</p>
+          <p>
+            <img
+              src="https://i.gifer.com/origin/41/41340ab1a4529c7dd753f03268087e08.gif"
+              style="width: 60px; height: 60px"
+            />
+            <v-btn transparent flat rounded @click="snackbar = true">
+              Accepter Ce Candidat
+            </v-btn>
+
+            <v-snackbar v-model="snackbar" multi-line>
+              {{ text }}
+
+              <template v-slot:actions>
+                <v-btn
+                  color="red"
+                  variant="text"
+                  @click.prevent="acceptercandidat"
+                >
+                  Accepter
+                </v-btn>
+                <v-btn color="red" variant="text" @click="snackbar = false">
+                  Annuler
+                </v-btn>
+              </template>
+            </v-snackbar>
+          </p>
+
+          <p>
+            <img
+              src="https://c.tenor.com/hmbt9N7tR0gAAAAj/incorrect-nah.gif"
+              style="width: 60px; height: 60px"
+            />
+            <v-btn transparent flat rounded @click="snackbar1 = true">
+              Réfuser Ce Candidat
+            </v-btn>
+
+            <v-snackbar v-model="snackbar1" multi-line>
+              {{ text1 }}
+
+              <template v-slot:actions>
+                <v-btn
+                  color="red"
+                  variant="text"
+                  @click.prevent="refusercandidat"
+                >
+                  Accepter
+                </v-btn>
+                <v-btn color="red" variant="text" @click="snackbar1 = false">
+                  Annuler
+                </v-btn>
+              </template>
+            </v-snackbar>
+          </p>
+        </v-container>
         <v-menu transition="slide-y-transition">
           <template v-slot:activator="{ props }">
             <v-btn
@@ -93,42 +148,12 @@ voici le lien de la réunion :
     </v-container>
     <v-divider></v-divider>
     <v-container align="center">
-      <v-container align="center" v-if="diplomes == ''">
-        <v-icon style="width: 100px; height: 100px">mdi-alert-octagon</v-icon>
-        <h5 class="text-h6 font-italic" style="color: green">
-          Aucune Cv Créer dans notre site
-        </h5>
-      </v-container>
-      <v-container align="center" v-if="diplomes != ''">
+      <v-container align="center">
         <h5 style="color: #0277bd">
           <v-icon color="#01579B">mdi-folder-account-outline</v-icon>Insights
           from profile
         </h5>
       </v-container>
-      <div v-if="diplomes != ''">
-        <h5 align="left"><strong>Formations & Diplomes:</strong></h5>
-        <v-container v-for="diplome in diplomes" :key="diplome.id" align="left">
-          <v-banner
-            lines="six"
-            icon="mdi-file-compare"
-            color="grey"
-            class="my-4"
-          >
-            <h5 style="color: green">{{ diplome.etablissement }}</h5>
-            <h6>{{ diplome.diplome }}</h6>
-            <h6>
-              <strong>{{ diplome.country }}</strong>
-            </h6>
-            <h6>
-              {{ diplome.debut }}<strong style="color: red">/</strong
-              >{{ diplome.fin }}
-            </h6>
-            <h6>
-              <strong>{{ diplome.description }}</strong>
-            </h6>
-          </v-banner>
-        </v-container>
-      </div>
       <v-container align="center">
         <v-row>
           <v-col cols="12" md="6">
@@ -212,15 +237,16 @@ export default {
   data() {
     return {
       info: {},
-      diplomes: {},
+      snackbar1: false,
+      snackbar: false,
+      etat_accepter: 1,
+      etat_refuser: -1,
+      valide: "",
     };
   },
   components: { NavbarView, FooterView },
-  mounted() {
-    this.getDiplomes();
-  },
   created() {
-    this.getInfo(), this.getDiplomes();
+    this.getInfo();
   },
   methods: {
     async getInfo() {
@@ -233,13 +259,56 @@ export default {
         this.info = response.data;
       });
     },
-    async getDiplomes() {
-      let url =
-        "http://localhost:8000/api/auth/getcandidatinfo/" +
-        this.$route.query.id_user;
-      await axios.get(url).then((response) => {
-        this.diplomes = response.data;
-      });
+    async acceptercandidat() {
+      if (this.info.nb_candidat > 0) {
+        axios
+          .post(
+            "http://localhost:8000/api/auth/acceptercandidat/" +
+              this.$route.query.id_user +
+              "/" +
+              this.$route.query.id_offre,
+            {
+              valide: this.etat_accepter,
+            }
+          )
+          .then((response) => {
+            console.log(response);
+            this.$toast.success(" Candidat accepter.", {
+              position: "top-right",
+            });
+            this.$router.go(0);
+          })
+          .catch((err) => {
+            this.error = err;
+          });
+      } else {
+        this.$toast.error("nombre des candidatures épuisé.", {
+          position: "top-right",
+        });
+      }
+    },
+    async refusercandidat() {
+      axios
+        .post(
+          "http://localhost:8000/api/auth/refusercandidat/" +
+            this.$route.query.id_user,
+          {
+            valide: this.etat_refuser,
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          this.$toast.success(" Candidat refuser.", {
+            position: "top-right",
+          });
+          this.$router.go(0);
+        })
+        .catch((err) => {
+          this.error = err;
+          this.$toast.error(" Candidat refuser.", {
+            position: "top-right",
+          });
+        });
     },
   },
 };

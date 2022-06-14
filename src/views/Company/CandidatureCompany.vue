@@ -156,15 +156,6 @@
         </v-row>
         <br />
         <v-row>
-          <v-col cols="12" md="6">
-            <v-text-field
-              label="Your Locality"
-              prepend-inner-icon="mdi-map-marker-check"
-              variant="outlined"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
           <v-col cols="12" md="12">
             <v-tabs v-model="tab">
               <v-tab value="one">Applicants[{{ this.applicant }}]</v-tab>

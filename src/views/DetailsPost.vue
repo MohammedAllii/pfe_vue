@@ -76,11 +76,23 @@
             v-bind="props"
             v-if="
               this.$store.state.loggedCompany == false &&
-              this.$store.state.loggedAdmin == false
+              this.$store.state.loggedAdmin == false &&
+              offres.validation == 1 &&
+              offres.nb_candidat != 0
             "
           >
             postuler
           </v-btn>
+          <v-chip
+            style="padding-left: 130px; padding-right: 110px"
+            rounded
+            flat
+            variant="outlined"
+            color="red"
+            v-if="offres.validation == 0"
+            ><v-icon>mdi-clock-alert</v-icon>
+            expiré
+          </v-chip>
         </template>
         <v-card>
           <v-toolbar dark color="#69F0AE">
@@ -99,12 +111,14 @@
               <v-card-title
                 class="text-h6 font-weight-regular justify-space-between"
               >
-                <span>{{ currentTitle }}</span>
                 <v-avatar color="green" size="24" v-text="step"></v-avatar>
               </v-card-title>
               <form @submit.prevent="submit">
                 <v-window v-model="step">
                   <v-window-item :value="1">
+                    <p v-if="offres.question1 != null" style="color: red">
+                      Cette offre contient des questions
+                    </p>
                     <v-card-text>
                       <v-row>
                         <v-col cols="12" sm="6">
@@ -221,15 +235,16 @@
                 <v-divider></v-divider>
 
                 <v-card-actions>
-                  <v-btn v-if="step > 1" text @click="step--"> Back </v-btn>
+                  <v-btn v-if="step > 1" text @click="step--"> Retour </v-btn>
                   <v-spacer></v-spacer>
                   <v-btn
                     v-if="step < 2 && offres.question1 != null"
                     color="black"
+                    style="background-color: green"
                     depressed
                     @click="step++"
                   >
-                    Next
+                    La Partie Questions
                   </v-btn>
                   <v-btn
                     v-if="offres.question1 == null"
@@ -238,7 +253,7 @@
                     style="background-color: green"
                     type="submit"
                   >
-                    Enregistrer
+                    Postuler
                   </v-btn>
                   <v-btn
                     v-if="step > 1 && offres.question1 != null"
@@ -247,7 +262,7 @@
                     style="background-color: green"
                     type="submit"
                   >
-                    Enregistrer
+                    Postuler
                   </v-btn>
                 </v-card-actions>
               </form>
@@ -443,9 +458,12 @@ export default {
       console.log("selected file", e.target.files[0]);
       this.image = e.target.files[0];
     },
-    onChange2(e) {
-      console.log("selected file", e.target.files[0]);
-      this.image1 = e.target.files[0];
+    onChange2(f) {
+      console.log("selected file", f.target.files[0]);
+      this.image1 = f.target.files[0];
+      if (!this.image1) {
+        f.target.files[0] == null;
+      }
     },
     submit() {
       let fd = new FormData();
@@ -481,9 +499,6 @@ export default {
           });
           console.log(err);
         });
-    },
-    refresh() {
-      this.$router.go(0);
     },
   },
   mounted() {

@@ -91,8 +91,7 @@
                         />
                       </div>
 
-                      <div class="input-icons">
-                        <v-icon>mdi-map-marker-radius</v-icon>
+                      <div>
                         <v-select
                           v-model="localite1"
                           label="Votre localite actuel"
@@ -210,28 +209,19 @@
                           </p>
                         </div>
                         <div class="input-icons">
-                          <v-icon>mdi-account</v-icon>
-                          <input
-                            class="input-field"
-                            type="email"
-                            v-model="email"
-                            placeholder="Entrer Email"
-                          />
-                        </div>
-                        <div class="input-icons">
                           <v-icon>mdi-account-details</v-icon>
                           <input
                             class="input-field"
                             type="text"
-                            v-model="poste"
+                            v-model="user.specialite"
                             placeholder="Votre poste actuel ou profession"
                           />
                         </div>
 
-                        <div class="input-icons">
+                        <div>
                           <v-select
-                            v-model="localite"
-                            label="Votre localite actuel"
+                            v-model="user.gouvernorat"
+                            label="Votre Adresse actuel"
                             :items="[
                               'Ariana',
                               'Béja',
@@ -320,7 +310,7 @@
           <div v-if="cv.pdf != null">
             <h5>{{ cv.poste }}</h5>
           </div>
-          <h6><v-icon icon="mdi-map-marker"></v-icon>{{ cv.localite }}</h6>
+          <h6><v-icon icon="mdi-map-marker"></v-icon>{{ cv.adresse }}</h6>
           <div v-if="cv.pdf == null">
             <h6><v-icon icon="mdi-file-check-outline"></v-icon>CATCH IT CV</h6>
           </div>
@@ -517,7 +507,7 @@ export default {
       name: "",
       email: "",
       poste: "",
-      localite: "",
+      adresse: "",
       email1: "",
       poste1: "",
       localite1: "",
@@ -539,9 +529,9 @@ export default {
       this.$store
         .dispatch("cvRegisterAction", {
           name: this.user.name,
-          email: this.email,
-          poste: this.poste,
-          localite: this.localite,
+          email: this.user.email,
+          poste: this.user.specialite,
+          adresse: this.user.gouvernorat,
           id_user: this.user.id,
         })
         .then((result) => {

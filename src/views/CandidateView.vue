@@ -80,12 +80,23 @@ export default {
       password: "",
       role: "user",
       error: "",
-      isLoading: false,
     };
   },
   methods: {
     performRegister() {
-      this.isLoading = true;
+      if (this.name == "") {
+        this.$toast.error(" Champ Name vide.", {
+          position: "top-right",
+        });
+      } else if (this.email == "") {
+        this.$toast.error(" Champ email vide.", {
+          position: "top-right",
+        });
+      } else if (this.password == "") {
+        this.$toast.error(" Champ password vide.", {
+          position: "top-right",
+        });
+      }
       this.$store
         .dispatch("performRegisterAction", {
           name: this.name,
@@ -95,13 +106,12 @@ export default {
         })
         .then((res) => {
           console.log(res);
-          this.isLoading = false;
-
           this.$router.push("/");
         })
         .catch((err) => {
-          this.isLoading = false;
-          this.error = " Registration faild";
+          this.$toast.error(" Email existe déja  .", {
+            position: "top-right",
+          });
           console.log(err.message);
         });
     },

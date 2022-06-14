@@ -8,12 +8,9 @@
   <v-container fluid id="whats">
     <v-row>
       <v-col cols="12" md="4">
-        <h5 class="text-h3 font-italic">
-          {{ lettres.titre }}
-        </h5>
+        <h1>{{ user.name }} {{ user.last_name }}</h1>
         <p class="text-h5">
-          <v-icon color="#2E7D32">mdi-face-agent</v-icon
-          ><strong>{{ lettres.poste }}</strong>
+          <br /><strong>{{ lettres.poste }}</strong>
         </p>
         <p>
           <v-icon color="#2E7D32">mdi-cellphone</v-icon
@@ -69,6 +66,11 @@ export default {
   components: { NavbarView, FooterView },
   mounted() {
     this.getLettreById();
+  },
+  computed: {
+    user() {
+      return this.$store.getters.get_user;
+    },
   },
   methods: {
     async getLettreById() {
