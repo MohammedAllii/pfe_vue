@@ -11,6 +11,7 @@ import SignIn from "../views/SignIn";
 import CompanyPage from "../views/CompanyPage";
 import SideBar from "../components/SideBar";
 import DashbordView from "@/views/Admin/DashbordView.vue";
+import AdminStatistique from "@/views/Admin/AdminStatistique";
 import GestionUser from "@/views/Admin/GestionUser";
 import GestionOffresAdmin from "@/views/Admin/GestionOffresAdmin";
 import AddAdmin from "@/views/Admin/AddAdmin";
@@ -99,6 +100,14 @@ const routes = [
     path: "/StatistCompany",
     name: "StatistCompany",
     component: StatistCompany,
+    meta: {
+      secure: true,
+    },
+  },
+  {
+    path: "/StatistAdmin",
+    name: "StatistAdmin",
+    component: AdminStatistique,
     meta: {
       secure: true,
     },

@@ -215,7 +215,7 @@ export default {
       {
         text: "Les statestiques",
         icon: "mdi-chart-line",
-        route: "/GestionStatistiqueAdmin",
+        route: "/StatistAdmin",
       },
     ],
   }),
